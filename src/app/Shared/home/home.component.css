@@ -5,7 +5,14 @@
     background-position: center; /* Centers the image */
     background-repeat: no-repeat; /* Prevents the image from repeating */
     height: 100vh; /* Full viewport height */
+   
+  }
+._mx-auto{
     padding-left: 5rem;
     padding-right: 5rem;
-  }
-
+}
+.image_styles{
+    background-size: cover; /* Ensures the image covers the entire element */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents the image from repeating */ 
+}
