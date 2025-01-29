@@ -27,12 +27,11 @@ module.exports = {
     extend: {
       
       colors: {
-        background: {
         'purple_dark': '#6A2CE5',
         'purple_medium': '#A9A3F5',
         'purple_light': '#D4D1FA',
         'bright_sky_blue': '#3DB8F5',
-        'font_color': '#2E2E2E'
+        'font_color': '#2E2E2E',
       },
       fontFamily: {
         sans: ['Poppins', ...fontFamily.sans],
@@ -45,5 +44,4 @@ module.exports = {
   plugins: [
         require('flowbite/plugin')
     ]
-}
 }
