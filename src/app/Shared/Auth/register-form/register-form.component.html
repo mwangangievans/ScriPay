@@ -1,4 +1,4 @@
-<div class="  min-h-screen flex w-screen overflow-y-hidden">
+<div class="min-h-screen flex w-screen overflow-y-hidden">
     <!-- Left Section -->
     <div class="w-1/2 bg-[#E1D5FA] p-12">
         <div class="max-w-md flex flex-col mx-auto">
@@ -398,98 +398,35 @@
             </div>
 
             <div class="justify-items-center my-auto flex flex-col items-center mt-40 md:px-40">
-                <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-4 mx-4 w-full">
+                <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-2 mx-4 w-[80%]">
                     <div class="mb-12 mx-auto">
                         <h1 class="text-3xl font-bold mb-4">Join Us!</h1>
                         <p class="text-gray-600">Please login to access your account.</p>
                     </div>
-                    <div class="space-y-2 my-2 relative">
-                        <div class="flex items-center justify-between">
-                            <label for="username">Username</label>
-                            <button type="button" class="h-4 w-4 text-gray-500 relative group">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <g clip-path="url(#clip0_1947_1615)">
-                                        <path
-                                            d="M8.00004 4.00004V5.33337M8.00004 14.6667C11.682 14.6667 14.6667 11.682 14.6667 8.00004C14.6667 4.31804 11.682 1.33337 8.00004 1.33337C4.31804 1.33337 1.33337 4.31804 1.33337 8.00004C1.33337 11.682 4.31804 14.6667 8.00004 14.6667ZM8.00004 6.66671V12V6.66671Z"
-                                            stroke="#455360"
-                                            stroke-width="1.33333"
-                                        />
-                                    </g>
-                                    <defs>
-                                        <clipPath id="clip0_1947_1615">
-                                            <rect width="16" height="16" fill="white" />
-                                        </clipPath>
-                                    </defs>
-                                </svg>
 
-                                <!-- Tooltip -->
-                                <div class="absolute left-1/2 bottom-full w-max mb-2 p-3 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 transform -translate-x-1/2 shadow-lg">
-                                    <p>An SMS will be sent to your phone number to confirm the authentication.</p>
-                                    <div class="absolute top-full left-1/2 -translate-x-1/2 w-3 h-3 bg-gray-800 rotate-45"></div>
-                                </div>
-                            </button>
-                        </div>
-                        <input id="username" formControlName="username" placeholder="Your Username" class="w-full bg-[#ECF2F7] p-3 rounded-md border" />
-                    </div>
+                    <app-text-input label="Username" tooltip="An SMS will be sent to your phone number to confirm the authentication." type="text" placeholder="Enter your username"> </app-text-input>
 
-                    <div class="space-y-2 my-2 relative">
-                        <div class="flex items-center justify-between">
-                            <label for="email">Email or phone number</label>
-                            <button type="button" class="h-4 w-4 text-gray-500 relative group">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <g clip-path="url(#clip0_1947_1615)">
-                                        <path
-                                            d="M8.00004 4.00004V5.33337M8.00004 14.6667C11.682 14.6667 14.6667 11.682 14.6667 8.00004C14.6667 4.31804 11.682 1.33337 8.00004 1.33337C4.31804 1.33337 1.33337 4.31804 1.33337 8.00004C1.33337 11.682 4.31804 14.6667 8.00004 14.6667ZM8.00004 6.66671V12V6.66671Z"
-                                            stroke="#455360"
-                                            stroke-width="1.33333"
-                                        />
-                                    </g>
-                                    <defs>
-                                        <clipPath id="clip0_1947_1615">
-                                            <rect width="16" height="16" fill="white" />
-                                        </clipPath>
-                                    </defs>
-                                </svg>
+                    <app-text-input label="Email or phone number" tooltip="An SMS will be sent to your phone number to confirm the authentication." type="text" placeholder="Email or phone number"> </app-text-input>
 
-                                <!-- Tooltip -->
-                                <div class="absolute left-1/2 bottom-full w-max mb-2 p-3 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 transform -translate-x-1/2 shadow-lg">
-                                    <p>An SMS will be sent to your phone number to confirm the authentication.</p>
-                                    <div class="absolute top-full left-1/2 -translate-x-1/2 w-3 h-3 bg-gray-800 rotate-45"></div>
-                                </div>
-                            </button>
-                        </div>
-                        <input id="email" type="email" formControlName="email" placeholder="Your email or phone number" class="w-full bg-[#ECF2F7] p-3 rounded-md border" />
-                    </div>
+                    <app-password-input
+                        label="Password "
+                        placeholder="Your password"
+                        [control]="getControl('password')"
+                        [errorMessages]="{ 
+                            required: 'Password is required', 
+                            minlength: 'Password must be at least 6 characters' }"
+                    ></app-password-input>
 
-                    <div class="space-y-2 my-2">
-                        <label for="password">Password</label>
-                        <div class="relative">
-                            <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password" placeholder="Your password" class="w-full bg-[#ECF2F7] p-3 rounded-md border pr-10" />
-                            <button type="button" (click)="togglePasswordVisibility()" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500">
-                                <svg *ngIf="!showPassword" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm-3 5c5 0 8-5 8-5s-3-5-8-5-8 5-8 5 3 5 8 5Z" />
-                                </svg>
-                                <svg *ngIf="showPassword" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 3l18 18m-9-6a3 3 0 0 1 0-6m6 6a3 3 0 0 0-6 0m0 0a3 3 0 1 1-6 0m12-6c-1-2-4-4-6-4s-5 2-6 4" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="space-y-2 my-2">
-                        <label for="confirm-password">Confirm Password</label>
-                        <div class="relative">
-                            <input [type]="showConfirmPassword ? 'text' : 'password'" id="confirm-password" formControlName="confirmPassword" placeholder="Confirm your password" class="w-full bg-[#ECF2F7] p-3 rounded-md border pr-10" />
-                            <button type="button" (click)="toggleConfirmPasswordVisibility()" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500">
-                                <svg *ngIf="!showConfirmPassword" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm-3 5c5 0 8-5 8-5s-3-5-8-5-8 5-8 5 3 5 8 5Z" />
-                                </svg>
-                                <svg *ngIf="showConfirmPassword" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 3l18 18m-9-6a3 3 0 0 1 0-6m6 6a3 3 0 0 0-6 0m0 0a3 3 0 1 1-6 0m12-6c-1-2-4-4-6-4s-5 2-6 4" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
+                    <app-password-input
+                    label="Password "
+                    placeholder="Confirm your password"
+                    [control]="getControl('confirmPassword')"
+                    [errorMessages]="{ 
+                    required: 'Password is required',
+                     minlength: 'Password must be at least 6 characters',
+                     passwordsDoNotMatch: 'Passwords do not match' 
+                    }"
+                ></app-password-input>
                     <div class="mt-5">
                         <button type="submit" [disabled]="registerForm.invalid" class="w-full bg-purple_dark hover:bg-[#6c37cc] text-white p-3 rounded-md mt-4">
                             Register

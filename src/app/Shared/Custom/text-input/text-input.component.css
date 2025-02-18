@@ -1,0 +1,19 @@
+/* .default-input {
+    color: #7B8389;
+    margin-top: 8px;
+    padding: 12px 24px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background-color: #ECF2F7;
+    text-align: start;
+    border-style: hidden;
+  }
+  
+  .default-input:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+  } */
+input{
+    padding-left: 14px !important;
+}
