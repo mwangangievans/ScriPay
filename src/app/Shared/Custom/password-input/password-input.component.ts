@@ -4,8 +4,8 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-password-input',
-      standalone: true,
-      imports: [CommonModule ,ReactiveFormsModule],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './password-input.component.html',
   styleUrls: ['./password-input.component.css']
 })
@@ -28,5 +28,5 @@ export class PasswordInputComponent {
   get errorKeys(): string[] {
     return Object.keys(this.errorMessages);
   }
-  
+
 }

@@ -1,42 +1,49 @@
-<!-- <input 
-  [type]="type" 
-  [placeholder]="placeholder"
- class=" w-full text-[#7B8389] mt-8 border-transparent  py-3 border border-gray-300 rounded-md bg-[#ECF2F7] "
-  [value]="value"
-  (input)="onInput($event)"
-/>
- -->
+<div class=" w-full">
+  <!-- Label and Info Icon Container -->
+  <div class="relative flex justify-between space-y-1 my-1">
+    <!-- Label -->
+    <!-- <label class="text-sm font-medium text-gray-700">{{ label }}</label> -->
+    <label *ngIf="showLabel" [for]="label.toLowerCase()">{{ label }}</label>
 
 
- <div class="relative w-full space-y-2 mt-8">
-    <!-- Label and Info Icon Container -->
-    <div class="relative flex justify-between space-y-2 my-2">
-      <!-- Label -->
-      <label class="text-sm font-medium text-gray-700">{{ label }}</label>
-  
-      <!-- Info Icon with Tooltip -->
-      <div class="group ">
-        <svg class="h-5 w-5 cursor-pointer text-gray-400 hover:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-  
-        <!-- Tooltip (Full width with arrow) -->
-        <div class="absolute top-full left-1/2 z-10 hidden w-full -translate-x-1/2 text-start rounded-md bg-[#474747] px-4 py-2 text-sm text-white shadow-lg group-hover:block">
-          <!-- <div class="absolute top-full right-4 border-x-8 border-x-transparent border-t-8 border-t-gray-700"></div> -->
-          {{ tooltip }}
-        </div>
+    <!-- Info Icon with Tooltip -->
+    <div  *ngIf="showIcon"  class="group">
+      <svg class="h-5 w-5 cursor-pointer text-gray-400 hover:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+
+      <!-- Tooltip (Full width with arrow) -->
+      <div class="absolute top-full left-1/2 z-10 hidden w-full -translate-x-1/2 text-start rounded-md bg-[#474747] px-4 py-2 text-sm text-white shadow-lg group-hover:block">
+        {{ tooltip }}
       </div>
     </div>
-  
-    <!-- Input Field -->
-    <div class="relative">
-        <input 
-        [type]="type" 
-        [placeholder]="placeholder"
-       class="w-full text-[#7B8389]  border-transparent  py-3 border border-gray-300 rounded-md bg-[#ECF2F7] "
-        [value]="value"
-        (input)="onInput($event)"
-      />
-    </div>
   </div>
-  
+
+  <!-- Input Field -->
+  <div class="relative">
+    <input 
+      [type]="type" 
+      [placeholder]="placeholder"
+      class="w-full text-[#7B8389]  border-transparent py-3 border border-gray-300 rounded-md bg-[#ECF2F7]"
+      [ngClass]="{ 'border-red-500': control.invalid && (control.dirty || control.touched) }"
+      [formControl]="control"
+      (input)="onInput($event)"
+    />
+
+
+  </div>
+
+  <!-- Error Messages -->
+  <ng-container *ngFor="let error of errorKeys">
+    <div *ngIf="hasError(error)" class="text-red-500 text-sm px-4 py-2 flex">
+      <svg width="16" height="16" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11 7V8M11 10.5V15M11 21C16.5228 21 21 16.5228 21 11C21 5.47715 16.5228 1 11 1C5.47715 1 1 5.47715 1 11C1 16.5228 5.47715 21 11 21Z" stroke="#FF3363" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <p class="mx-2">{{ errorMessages[error] }}</p>
+    </div>
+  </ng-container>
+
+
+
+
+</div>

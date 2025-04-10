@@ -23,7 +23,8 @@
 
     <!-- Right Section -->
     <div class="w-full md:w-1/2 flex flex-col justify-center items-center bg-white p-12">
-        <div class="max-w-md w-full py-4 text-center">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()"  class="max-w-md w-full py-4 text-center">              
+
             <h2 class="text-3xl font-bold text-gray-900">Second Step Verification</h2>
             <!-- Changed the container div and added SVG centering -->
             <div class="w-36 mx-auto my-4">
@@ -64,17 +65,36 @@
             <p class="text-gray-700">Enter the verification code we sent to <br>
                 <span class="text-[#4F2DBF] my-2 font-semibold">+25476767677</span>
             </p>
-            <!-- <app-text-input placeholder="Type code here" type="text"></app-text-input> -->
 
-            <app-text-input label="Username"
-                tooltip="An SMS will be sent to your phone number to confirm the authentication." type="text"
-                placeholder="Enter your username">
-            </app-text-input>
 
-            <button class="w-full bg-[#4F2DBF] text-white py-3 rounded-md mt-8 hover:bg-[#3C1D9B] transition">
+            <div class="my-4">
+                <app-text-input 
+                label="Username" 
+                tooltip="An SMS will be sent to your phone number to confirm the authentication."
+                type="text" 
+                [showIcon]="false"
+                [showLabel]="false"
+                placeholder="Type code here"
+                [control]="getControl('code')"  
+                [errorMessages]="{ required: 'Code is required' }"
+                customClass="bg-gray-100 border border-gray-400 rounded-lg p-2 text-gray-700">
+              </app-text-input>
+            </div>
+  
+        
+          
+
+            <!-- <button class="w-full bg-[#4F2DBF] text-white py-3 rounded-md mt-8 hover:bg-[#3C1D9B] transition">
+                Submit
+            </button> -->  
+
+            <!-- <button type="submit" [disabled]="registerForm.invalid" class="w-full bg-purple_dark hover:bg-[#6c37cc] text-white p-3 rounded-md mt-4">
+                Submit
+            </button> -->
+            <button routerLink="/personal" class="w-full bg-purple_dark hover:bg-[#6c37cc] text-white p-3 rounded-md mt-4">
                 Submit
             </button>
             <p class="text-gray-700 mt-4">Didn't get the code? <a href="#" class="text-[#4F2DBF]">Resend</a></p>
-        </div>
+        </form>
     </div>
 </div>

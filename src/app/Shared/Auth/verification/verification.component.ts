@@ -1,14 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TextInputComponent } from '../../Custom/text-input/text-input.component';
+import { RouterModule } from '@angular/router';
+
 
 
 
 @Component({
   selector: 'app-verification',
   standalone: true,
-  imports: [CommonModule, FormsModule,TextInputComponent],
+  imports: [ReactiveFormsModule, RouterModule, CommonModule, FormsModule,TextInputComponent],
+  
   templateUrl: './verification.component.html',
   styleUrl: './verification.component.css'
 })
@@ -30,4 +33,28 @@ export class VerificationComponent {
       description: 'Easily switch between different currencies for seamless transactions.',
     }
   ];
+
+   registerForm: FormGroup;
+  
+    constructor() {
+      this.registerForm = new FormGroup(
+        {
+          code: new FormControl('', [Validators.required]),
+  
+        }
+      );
+    }
+  
+    getControl(controlName: string): FormControl {
+      return this.registerForm.get(controlName) as FormControl;
+    }
+  
+    onSubmit() {
+      if (this.registerForm.valid) {
+        
+        console.log(this.registerForm.value);
+        
+      }
+      
+    }
 }

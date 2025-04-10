@@ -404,10 +404,34 @@
                         <p class="text-gray-600">Please login to access your account.</p>
                     </div>
 
-                    <app-text-input label="Username" tooltip="An SMS will be sent to your phone number to confirm the authentication." type="text" placeholder="Enter your username"> </app-text-input>
+                    <!-- <app-text-input label="Username" tooltip="An SMS will be sent to your phone number to confirm the authentication." type="text" placeholder="Enter your username"> </app-text-input> -->
 
-                    <app-text-input label="Email or phone number" tooltip="An SMS will be sent to your phone number to confirm the authentication." type="text" placeholder="Email or phone number"> </app-text-input>
 
+                    <app-text-input 
+                    label="Username" 
+                    tooltip="An SMS will be sent to your phone number to confirm the authentication."
+                    type="text" 
+                    placeholder="Username"
+                    [control]="getControl('username')"  
+                    [errorMessages]="{ required: 'Username is required' }"
+                    [showIcon]="true"
+                    [showLabel]="true"
+                    >
+                  </app-text-input>
+                  
+       
+                    <app-text-input 
+                    label="Email or phone number" 
+                    tooltip="An SMS will be sent to your phone number to confirm the authentication."
+                    type="text" 
+                    [showIcon]="true"
+                    [showLabel]="true"
+                    placeholder="Email or phone number"
+                    [control]="getControl('email')"  
+                    [errorMessages]="{ 
+                        required: 'Email or phone number is require' }">
+                  </app-text-input>
+                  
                     <app-password-input
                         label="Password "
                         placeholder="Your password"
@@ -427,9 +451,14 @@
                      passwordsDoNotMatch: 'Passwords do not match' 
                     }"
                 ></app-password-input>
-                    <div class="mt-5">
-                        <button type="submit" [disabled]="registerForm.invalid" class="w-full bg-purple_dark hover:bg-[#6c37cc] text-white p-3 rounded-md mt-4">
+
+
+                    <div  routerLink="/verification" class="mt-5">
+                        <!-- <button type="submit" [disabled]="registerForm.invalid" class="w-full bg-purple_dark hover:bg-[#6c37cc] text-white p-3 rounded-md mt-4">
                             Register
+                        </button> -->
+                        <button class="w-full bg-purple_dark hover:bg-[#6c37cc] text-white p-3 rounded-md mt-4">
+                            Register 
                         </button>
                     </div>
                 </form>
