@@ -1,8 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
 /* styles.css or styles.scss */
 
+@import 'swiper/css';
+@import 'swiper/css/pagination';
+
 
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+app-text-input{
+    padding-left: 0;
+    border-style: hidden;
+}
+[type=text]{
+    padding-left: 0;
+}
+input{
+    padding-left: 14px !important;
+}

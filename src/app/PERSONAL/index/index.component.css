@@ -1,0 +1,78 @@
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    width: 350px;
+    font-family: 'Segoe UI', sans-serif;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .header h3 {
+    margin: 0;
+    font-size: 18px;
+  }
+  
+  .date-range {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .date-range select {
+    border: none;
+    background: transparent;
+    font-weight: bold;
+  }
+  
+  .totals {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0;
+  }
+  
+  .totals div {
+    text-align: center;
+  }
+  
+  .totals small {
+    display: block;
+    color: #888;
+  }
+  
+  .totals strong {
+    font-size: 16px;
+    color: #1B1D21;
+  }
+  
+  .chart-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .legend {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+  

@@ -1,0 +1,263 @@
+<div class="grid grid-cols-4 gap-6 px-10 w-full">
+     <!-- Card 1 -->
+   <div class="w-full h-40 rounded-2xl bg-gradient-to-tr from-purple-500 to-indigo-500 text-white p-4 relative shadow-lg overflow-hidden">
+    <p class="text-sm mb-2">Main Wallet</p>
+    <h2 class="text-2xl font-bold">KES 45,500</h2>
+    <p class="mt-8 text-yellow-300 tracking-wider">444 221 224 ***</p>
+    <div class="absolute bottom-4 right-4 opacity-40">
+      <div class="w-10 h-10 bg-white rounded-full inline-block mr-[-10px]"></div>
+      <div class="w-10 h-10 bg-white rounded-full inline-block"></div>
+    </div>
+  </div>
+
+  <!-- Card 2 -->
+  <div class="w-full h-40 rounded-2xl bg-gradient-to-tr from-lime-400 to-green-500 text-white p-4 relative shadow-lg overflow-hidden">
+    <p class="text-sm mb-2">XYZ Wallet</p>
+    <h2 class="text-2xl font-bold">KES 2,505</h2>
+    <p class="mt-8 text-yellow-300 tracking-wider">444 221 224 ***</p>
+  </div>
+
+  <!-- Card 3 -->
+  <div class="w-full h-40 rounded-2xl bg-gradient-to-tr from-purple-900 to-fuchsia-800 text-white p-4 relative shadow-lg overflow-hidden">
+    <p class="text-sm mb-2">Main Wallet</p>
+    <h2 class="text-2xl font-bold">KES 45,500</h2>
+    <p class="mt-8 text-yellow-300 tracking-wider">444 221 224 ***</p>
+    <div class="absolute bottom-4 right-4 opacity-40">
+      <div class="w-10 h-10 bg-white rounded-full inline-block mr-[-10px]"></div>
+      <div class="w-10 h-10 bg-white rounded-full inline-block"></div>
+    </div>
+  </div>
+
+  <!-- Add New Card -->
+  <div [routerLink]="['/personal/add-card']" class="w-full h-40 rounded-2xl border-2 border-dashed border-gray-500 flex flex-col items-center justify-center text-gray-400 cursor-pointer hover:border-[#6A2CE5] hover:text-[#6A2CE5] transition duration-300">
+    <div class="text-2xl">➕</div>
+    <p class="mt-2">Add new Card</p>
+  </div>
+  
+  
+</div>
+  
+  
+
+<div class="grid grid-cols-1 gap-6 px-10 w-full my-8 ">
+    <div class="bg-white p-4 rounded-lg shadow-lg flex space-x-8 w-full ">
+        <!-- Left Section: Card Details -->
+        <div class="flex-1  ">
+            <div class="p-4">
+                <p class="text-gray-500 text-sm">CARD NAME</p>
+                <p class="text-lg font-semibold">Main Balance</p>
+            </div>
+            <div class="p-4">
+                <p class="text-gray-500 text-sm">Valid Date</p>
+                <p class="text-lg font-semibold">08/22</p>
+            </div>
+            <div class="p-4">
+                <p class="text-gray-500 text-sm">CARD NUMBER</p>
+                <p class="text-lg font-semibold">**** **** **** 1234</p>
+            </div>
+        </div>
+
+        <!-- Middle Section: Bank Name, Card Holder, and Theme -->
+        <div class="flex-1">
+            <div class="p-4">
+                <p class="text-gray-500 text-sm">BANK NAME</p>
+                <p class="text-lg font-semibold">ABC CENTER BANK</p>
+            </div>
+            <div class="p-4">
+                <p class="text-gray-500 text-sm">Card Holder</p>
+                <p class="text-lg font-semibold">Sammy Maina</p>
+            </div>
+            <div class="p-4">
+                <p class="text-gray-500 text-sm">CARD THEME</p>
+                <div class="flex space-x-2 mt-2">
+                    <div class="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-orange-500"></div>
+                    <div class="w-8 h-8 rounded-full bg-green-500"></div>
+                    <div class="w-8 h-8 rounded-full bg-teal-500"></div>
+                    <div class="w-8 h-8 rounded-full bg-pink-500"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Section: Monthly Limits -->
+        <div class="flex-1">
+            <p class="text-gray-500 text-sm p-4">Monthly Limits</p>
+            <div class="flex space-x-4 p-4 ">
+                <!-- Main Limits -->
+                <div class="text-center">
+                    <div class="progress-circle">
+                        <svg width="100" height="100">
+                            <circle class="bg" cx="50" cy="50" r="45"></circle>
+                            <circle class="progress" cx="50" cy="50" r="45" stroke="#f97316" stroke-dashoffset="102"></circle>
+                        </svg>
+                        <div class="text">66%</div>
+                    </div>
+                    <p class="text-sm mt-4">Main Limits</p>
+                    <p class="text-lg font-semibold">KES 10,000</p>
+                </div>
+                <!-- Seconds -->
+                <div class="text-center">
+                    <div class="progress-circle">
+                        <svg width="100" height="100">
+                            <circle class="bg" cx="50" cy="50" r="45"></circle>
+                            <circle class="progress" cx="50" cy="50" r="45" stroke="#22c55e" stroke-dashoffset="197"></circle>
+                        </svg>
+                        <div class="text">31%</div>
+                    </div>
+                    <p class="text-sm mt-4">Seconds</p>
+                    <p class="text-lg font-semibold">Ksh 500</p>
+                </div>
+                <!-- Others -->
+                <div class="text-center">
+                    <div class="progress-circle">
+                        <svg width="100" height="100">
+                            <circle class="bg" cx="50" cy="50" r="45"></circle>
+                            <circle class="progress" cx="50" cy="50" r="45" stroke="#9ca3af" stroke-dashoffset="263"></circle>
+                        </svg>
+                        <div class="text">7%</div>
+                    </div>
+                    <p class="text-sm mt-4">Others</p>
+                    <p class="text-lg font-semibold">Ksh 10,000</p>
+                </div>
+            </div>
+        </div>
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="15" cy="15" r="15" fill="#6A2CE5"/>
+            <g clip-path="url(#clip0_1036_17697)">
+            <path d="M22.5872 11.1631L21.2366 12.5137C21.0989 12.6514 20.8763 12.6514 20.7386 12.5137L17.4866 9.26172C17.3489 9.12402 17.3489 8.90137 17.4866 8.76367L18.8372 7.41309C19.385 6.86523 20.2757 6.86523 20.8265 7.41309L22.5872 9.17383C23.138 9.72168 23.138 10.6123 22.5872 11.1631ZM16.3265 9.92383L8.63309 17.6172L8.012 21.1768C7.92704 21.6572 8.34599 22.0732 8.82645 21.9912L12.386 21.3672L20.0794 13.6738C20.2171 13.5361 20.2171 13.3135 20.0794 13.1758L16.8274 9.92383C16.6868 9.78613 16.4642 9.78613 16.3265 9.92383ZM11.636 16.958C11.4749 16.7969 11.4749 16.5391 11.636 16.3779L16.1477 11.8662C16.3089 11.7051 16.5667 11.7051 16.7278 11.8662C16.889 12.0273 16.889 12.2852 16.7278 12.4463L12.2161 16.958C12.055 17.1191 11.7972 17.1191 11.636 16.958ZM10.5784 19.4219H11.9847V20.4854L10.095 20.8164L9.18388 19.9053L9.51493 18.0156H10.5784V19.4219Z" fill="white"/>
+            </g>
+            <defs>
+            <clipPath id="clip0_1036_17697">
+            <rect width="15" height="15" fill="white" transform="translate(8 7)"/>
+            </clipPath>
+            </defs>
+            </svg>
+      
+    </div>
+        
+</div>
+
+
+<div class="grid grid-cols-1 gap-6 px-10 w-full my-8 ">
+    <div class="w-full border-none shadow-none bg-white rounded-md">
+        <div class="px-6 pt-6 pb-0">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <h2 class="text-xl font-bold">Recent transactions</h2>
+              <p class="text-muted-foreground mt-1">
+                These are details about the last transactions
+              </p>
+            </div>
+      
+            <div class="flex items-center gap-2">
+              <div class="relative">
+                <svg
+                  class="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <input
+                  type="text"
+                  placeholder="Search"
+                  class="w-full md:w-[250px] pl-8 h-10 bg-white border border-gray-200 rounded"
+                />
+              </div>
+              <button class="flex items-center bg-purple_dark hover:bg-purple_dark text-white px-4 py-2 rounded">
+                <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M2.1001 12.3999C2.1001 12.0133 2.4135 11.6999 2.8001 11.6999H11.2001C11.5867 11.6999 11.9001 12.0133 11.9001 12.3999C11.9001 12.7865 11.5867 13.0999 11.2001 13.0999H2.8001C2.4135 13.0999 2.1001 12.7865 2.1001 12.3999ZM4.40512 7.00493C4.67849 6.73156 5.1217 6.73156 5.39507 7.00493L6.3001 7.90996V2.5999C6.3001 2.21331 6.61349 1.8999 7.0001 1.8999C7.38671 1.8999 7.7001 2.2133 7.7001 2.5999V7.90996L8.60513 7.00493C8.87848 6.73156 9.32172 6.73156 9.59507 7.00493C9.86842 7.2783 9.86842 7.72152 9.59507 7.99487L7.49507 10.0949C7.36382 10.2261 7.18574 10.2999 7.0001 10.2999C6.81444 10.2999 6.6364 10.2261 6.50512 10.0949L4.40512 7.99487C4.13176 7.72152 4.13176 7.2783 4.40512 7.00493Z" fill="white"/>
+                    </svg>
+                    
+                
+                Download
+              </button>
+            </div>
+          </div>
+        </div>
+      
+        <div class="px-6 pt-6 overflow-x-auto">
+          <table class="w-full border-collapse">
+            <thead>
+              <tr class="border-b border-gray-200 text-sm text-muted-foreground">
+                <th class="pb-3 text-left font-medium">Transaction</th>
+                <th class="pb-3 text-left font-medium">Amount</th>
+                <th class="pb-3 text-left font-medium">Date</th>
+                <th class="pb-3 text-left font-medium">Status</th>
+                <th class="pb-3 text-left font-medium">Account</th>
+                <th class="pb-3 text-right font-medium"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let transaction of transactions" class="border-b border-gray-100">
+                <td class="py-4">
+                  <div class="flex items-center gap-3">
+                    <div class="flex h-8 w-8 items-center justify-center rounded-full ">
+                      <img [src]="transaction.icon" [alt]="transaction.name" width="20" height="20" />
+                    </div>
+                    <span class="font-medium">{{ transaction.name }}</span>
+                  </div>
+                </td>
+      
+                <td class="py-4 text-gray-600">{{ transaction.amount }}</td>
+                <td class="py-4 text-gray-600">{{ transaction.date }}</td>
+      
+                <td class="py-4">
+                  <span
+                    class="px-2 py-0.5 rounded-sm text-sm border"
+                    [ngClass]="transaction.status === 'Paid'
+                      ? 'bg-green-50 text-green-600 border-green-200'
+                      : 'bg-orange-50 text-orange-600 border-orange-200'"
+                  >
+                    {{ transaction.status === 'Paid' ? '✓' : '•' }} {{ transaction.status }}
+                  </span>
+                </td>
+      
+                <td class="py-4">
+                  <div class="flex items-center gap-2">
+                    <img
+                      [src]="transaction.account.icon"
+                      [alt]="transaction.account.type"
+                      width="32"
+                      height="20"
+                    />
+                    <div class="flex flex-col">
+                      <span class="font-medium">
+                        {{ transaction.account.type }} {{ transaction.account.number }}
+                      </span>
+                      <span class="text-xs text-gray-500">
+                        Expiry {{ transaction.account.expiry }}
+                      </span>
+                    </div>
+                  </div>
+                </td>
+      
+                <td class="py-4 text-right">
+                  <button class="h-8 w-8 flex items-center justify-center rounded hover:bg-gray-100">
+                    <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15.232 5.232l3.536 3.536M9 13l6-6 3 3-6 6H9v-3z"
+                      />
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+</div>
+
+<router-outlet></router-outlet>
+
+  
