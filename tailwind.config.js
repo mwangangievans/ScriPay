@@ -32,6 +32,13 @@ module.exports = {
         'purple_light': '#D4D1FA',
         'bright_sky_blue': '#3DB8F5',
         'font_color': '#2E2E2E',
+        'gray_secondary': '#696f8c',
+        'highlight_primary': '#0085FF',
+        '_red': '#FF3363',
+        '_green': '#6CBC6E'
+
+
+
       },
       fontFamily: {
         sans: ['Poppins', ...fontFamily.sans],

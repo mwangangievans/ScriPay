@@ -9,6 +9,7 @@ import { MyCardsComponent } from './PERSONAL/my-cards/my-cards.component';
 import { NotificationsComponent } from './PERSONAL/notifications/notifications.component';
 import { ActivityComponent } from './PERSONAL/activity/activity.component';
 import { AddCardComponent } from './PERSONAL/add-card/add-card.component';
+import { SettingsComponent } from './PERSONAL/settings/settings.component';
 
 
 export const routes: Routes = [
@@ -29,6 +30,8 @@ export const routes: Routes = [
             { path: 'add-card', component: AddCardComponent }, // Example child route
             { path: 'activity', component: ActivityComponent },
             { path: 'notifications', component: NotificationsComponent },
+            { path: 'settings', component: SettingsComponent },
+
 
 
         ]
