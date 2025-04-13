@@ -2,7 +2,7 @@
   <div class="mx-auto">
       <!-- Top Action Buttons -->
       <div class="flex gap-4 mb-6">
-          <div class="bg-white rounded-lg p-4 flex items-center gap-3 shadow-sm w-48 cursor-pointer hover:bg-gray-50">
+          <div [routerLink]="['/personal/send-money']" class="bg-white rounded-lg p-4 flex items-center gap-3 shadow-sm w-48 cursor-pointer hover:bg-gray-50">
               <div class="p-2 rounded-lg">
                   <svg width="41" height="41" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <rect x="0.652832" y="0.309814" width="39.9667" height="39.9667" rx="8.32639" fill="#6A2CE5" fill-opacity="0.2" />
@@ -299,74 +299,71 @@
 
 
 <!-- ----------------convert section------------------- -->
-<div class="flex w-full py-4 h-full">
-  <div class="rounded-xl w-full h-full mx-auto">
-      <div class="bg-white h-full rounded-xl shadow-md p-6">
-          <h2 class="text-lg font-medium mb-2">Convert</h2>
-          <p class="text-sm text-gray-500 mb-4">1 USD = 0.90 Euro</p>
+<div class="flex py-4">
+    <div class="bg-white rounded-3xl shadow-sm p-6 w-full">
+        <h1 class="text-2xl font-medium text-gray-800">Convert</h1>
+        <p class="text-gray-500 mt-1 mb-6">1 USD = 0.90 Euro</p>
 
-          <div class="flex items-center justify-center">
-              <div class="grid grid-cols-2 gap-4 relative">
-                  <!-- Dollar -->
-                  <div class="bg-gray-100 px-4 py-3 rounded-lg flex items-center gap-2">
-                      <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <rect x="0.5" width="24" height="24" rx="12" fill="#6A2CE5" />
-                          <path
-                              d="M9.16675 14.6667C9.83341 15.3333 11.1667 16 12.5001 16M12.5001 16C14.1667 16 15.8334 15.6667 15.8334 14C15.8334 12.3333 14.1998 12 12.5001 12M12.5001 16V12M12.5001 16V18M12.5001 12C10.8334 12 9.16675 11.6667 9.16675 10C9.16675 8.33333 10.8334 8 12.5001 8M12.5001 12V8M12.5001 8C13.8334 8 15.1667 8.66667 15.8334 9.33333M12.5001 8V6"
-                              stroke="white"
-                          />
-                      </svg>
-                      <span class="font-medium">Dollar</span>
-                  </div>
+        <!-- Centering wrapper -->
+        <div class="w-full flex items-center justify-center">
+            <div class="relative flex flex-col md:flex-row gap-4 items-center justify-center w-full ">
+                <!-- Left currency selector -->
+                <div class="w-full">
+                    <div class="flex items-center bg-gray-100 rounded-xl p-3 mb-3">
+                        <span class="text-gray-400 mr-2">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
+                                <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </span>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 rounded-full  flex items-center justify-center text-white mr-2">
+                                <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="0.5" width="24" height="24" rx="12" fill="#6A2CE5"/>
+                                    <path d="M9.16675 14.6667C9.83341 15.3333 11.1667 16 12.5001 16M12.5001 16C14.1667 16 15.8334 15.6667 15.8334 14C15.8334 12.3333 14.1998 12 12.5001 12M12.5001 16V12M12.5001 16V18M12.5001 12C10.8334 12 9.16675 11.6667 9.16675 10C9.16675 8.33333 10.8334 8 12.5001 8M12.5001 12V8M12.5001 8C13.8334 8 15.1667 8.66667 15.8334 9.33333M12.5001 8V6" stroke="white"/>
+                                    </svg>
+                                                                </div>
+                            <span class="font-medium">Dollar</span>
+                        </div>
+                    </div>
+                    <input type="text" [value]="dollarValue" class="w-full bg-gray-100 rounded-xl p-4 text-left focus:outline-none" readonly />
+                </div>
 
-                  <!-- Euro -->
-                  <div class="bg-gray-100 px-4 py-3 rounded-lg flex items-center gap-2">
-                      <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <rect x="0.5" width="24" height="24" rx="12" fill="#FFC01E" />
-                          <path
-                              d="M16.1667 8.33337C15.8334 8.00004 14.8334 7.33337 13.1667 7.33337C10.7454 7.33337 9.62688 8.85345 9.28552 10.6667M16.1667 15.6667C15.8334 16 14.8334 16.6667 13.1667 16.6667C10.7454 16.6667 9.62688 15.1466 9.28552 13.3334M9.28552 10.6667C9.20395 11.1 9.16675 11.55 9.16675 12C9.16675 12.4501 9.20395 12.9001 9.28552 13.3334M9.28552 10.6667H7.16675M9.28552 10.6667H13.8334M9.28552 13.3334H7.16675H13.8334"
-                              stroke="black"
-                          />
-                      </svg>
-                      <span class="font-medium">Euro</span>
-                  </div>
+                <!-- Swap button -->
+                <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md">
+                    <button class="w-8 h-8 flex items-center justify-center" (click)="swapCurrencies()">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10.0002 -0.000365178C11.6972 -0.000365029 13.3336 0.499635 14.9093 1.49964C16.4851 2.49964 17.7275 3.64357 18.6366 4.93145L18.6366 1.81782L20.0002 1.81782L20.0002 7.27236L14.5457 7.27236L14.5457 5.90873L17.6593 5.90873C16.8866 4.74206 15.7843 3.69282 14.3525 2.761C12.9207 1.82918 11.4699 1.36327 10.0002 1.36327C8.81843 1.36327 7.701 1.59054 6.64797 2.04509C5.59494 2.49963 4.67828 3.11706 3.89798 3.89736C3.11767 4.67766 2.50025 5.59433 2.0457 6.64736C1.59116 7.70039 1.36388 8.81782 1.36388 9.99963L0.000246922 9.99963C0.000247043 8.62084 0.261611 7.32539 0.784337 6.11327C1.30707 4.90115 2.02298 3.84054 2.93207 2.93145C3.84116 2.02236 4.90176 1.30645 6.11388 0.783725C7.326 0.260999 8.62146 -0.000365298 10.0002 -0.000365178ZM20.0002 9.99963C20.0002 11.3784 19.7389 12.6739 19.2162 13.886C18.6934 15.0981 17.9775 16.1587 17.0684 17.0678C16.1593 17.9769 15.0987 18.6928 13.8866 19.2155C12.6745 19.7383 11.379 19.9996 10.0002 19.9996C8.30328 19.9996 6.66691 19.4996 5.09116 18.4996C3.5154 17.4996 2.27297 16.3557 1.36388 15.0678L1.36388 18.1815L0.000246207 18.1815L0.000246684 12.7269L5.45479 12.7269L5.45479 14.0905L2.34115 14.0905C3.11388 15.2572 4.21237 16.3065 5.63661 17.2383C7.06085 18.1701 8.5154 18.636 10.0002 18.636C11.1821 18.636 12.2995 18.4087 13.3525 17.9542C14.4055 17.4996 15.3222 16.8822 16.1025 16.1019C16.8828 15.3216 17.5002 14.4049 17.9548 13.3519C18.4093 12.2989 18.6366 11.1815 18.6366 9.99963L20.0002 9.99963Z" fill="black"/>
+                            </svg>
+                            
+                    </button>
+                </div>
 
-                  <!-- Dollar Value -->
-                  <input type="text" class="col-span-1 bg-gray-100 px-4 py-3 rounded-lg outline-none h-full" [value]="dollarAmount" readonly />
-
-                  <!-- Euro Value -->
-                  <input type="text" class="col-span-1 bg-gray-100 px-4 py-3 rounded-lg outline-none h-full" [value]="euroAmount_" readonly />
-
-                  <!-- Swap Icon -->
-
-                  <button class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2" (click)="swapCurrencies()">
-                      <svg width="74" height="74" viewBox="0 0 74 74" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <g filter="url(#filter0_d_558_2762)">
-                              <rect x="15.0002" y="10.9996" width="44" height="44" rx="22" fill="white" />
-                              <path
-                                  d="M37.0002 22.9996C38.6972 22.9996 40.3336 23.4996 41.9093 24.4996C43.4851 25.4996 44.7275 26.6436 45.6366 27.9315L45.6366 24.8178L47.0002 24.8178L47.0002 30.2724L41.5457 30.2724L41.5457 28.9087L44.6593 28.9087C43.8866 27.7421 42.7843 26.6928 41.3525 25.761C39.9207 24.8292 38.4699 24.3633 37.0002 24.3633C35.8184 24.3633 34.701 24.5905 33.648 25.0451C32.5949 25.4996 31.6783 26.1171 30.898 26.8974C30.1177 27.6777 29.5002 28.5943 29.0457 29.6474C28.5912 30.7004 28.3639 31.8178 28.3639 32.9996L27.0002 32.9996C27.0002 31.6208 27.2616 30.3254 27.7843 29.1133C28.3071 27.9011 29.023 26.8405 29.9321 25.9315C30.8412 25.0224 31.9018 24.3065 33.1139 23.7837C34.326 23.261 35.6215 22.9996 37.0002 22.9996ZM47.0002 32.9996C47.0002 34.3784 46.7389 35.6739 46.2162 36.886C45.6934 38.0981 44.9775 39.1587 44.0684 40.0678C43.1593 40.9769 42.0987 41.6928 40.8866 42.2155C39.6745 42.7383 38.379 42.9996 37.0002 42.9996C35.3033 42.9996 33.6669 42.4996 32.0912 41.4996C30.5154 40.4996 29.273 39.3557 28.3639 38.0678L28.3639 41.1815L27.0002 41.1815L27.0002 35.7269L32.4548 35.7269L32.4548 37.0905L29.3412 37.0905C30.1139 38.2572 31.2124 39.3065 32.6366 40.2383C34.0609 41.1701 35.5154 41.636 37.0002 41.636C38.1821 41.636 39.2995 41.4087 40.3525 40.9542C41.4055 40.4996 42.3222 39.8822 43.1025 39.1019C43.8828 38.3216 44.5002 37.4049 44.9548 36.3519C45.4093 35.2989 45.6366 34.1815 45.6366 32.9996L47.0002 32.9996Z"
-                                  fill="black"
-                              />
-                          </g>
-                          <defs>
-                              <filter id="filter0_d_558_2762" x="0.000244141" y="-0.000366211" width="74" height="74" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                                  <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                                  <feOffset dy="4" />
-                                  <feGaussianBlur stdDeviation="7.5" />
-                                  <feComposite in2="hardAlpha" operator="out" />
-                                  <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0" />
-                                  <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_558_2762" />
-                                  <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_558_2762" result="shape" />
-                              </filter>
-                          </defs>
-                      </svg>
-                  </button>
-              </div>
-          </div>
-      </div>
-  </div>
+                <!-- Right currency selector -->
+                <div class="w-full">
+                    <div class="flex items-center bg-gray-100 rounded-xl p-3 mb-3">
+                        <span class="text-gray-400 mr-2">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
+                                <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </span>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 rounded-full  flex items-center justify-center text-white mr-2">
+                                <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="0.5" width="24" height="24" rx="12" fill="#FFC01E"/>
+                                    <path d="M16.1667 8.33337C15.8334 8.00004 14.8334 7.33337 13.1667 7.33337C10.7454 7.33337 9.62688 8.85345 9.28552 10.6667M16.1667 15.6667C15.8334 16 14.8334 16.6667 13.1667 16.6667C10.7454 16.6667 9.62688 15.1466 9.28552 13.3334M9.28552 10.6667C9.20395 11.1 9.16675 11.55 9.16675 12C9.16675 12.4501 9.20395 12.9001 9.28552 13.3334M9.28552 10.6667H7.16675M9.28552 10.6667H13.8334M9.28552 13.3334H7.16675H13.8334" stroke="black"/>
+                                    </svg>
+                                                                </div>
+                            <span class="font-medium">Euro</span>
+                        </div>
+                    </div>
+                    <input type="text" [value]="euroValue" class="w-full bg-gray-100 rounded-xl p-4 text-left focus:outline-none" readonly />
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+
 
 
 </div>

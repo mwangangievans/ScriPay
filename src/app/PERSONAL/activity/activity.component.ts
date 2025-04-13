@@ -4,22 +4,23 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 import { curveCardinal } from 'd3-shape';
 import { WindowService } from '../../Service/window.service';
+import { RouterModule } from '@angular/router';
 
 
 
 @Component({
   selector: 'app-activity',
   standalone: true,
-  imports: [NgxChartsModule],
+  imports: [NgxChartsModule , RouterModule],
   templateUrl: './activity.component.html',
   styleUrl: './activity.component.css'
 })
 export class ActivityComponent {
   @HostListener('window:resize', ['$event'])
 
-  usdToEuroRate = 0.90;
-  dollarAmount = 23.576;
-  euroAmount_ = +(this.dollarAmount * this.usdToEuroRate).toFixed(3);
+  dollarValue = '23.576';
+  euroValue = '1.485';
+
 
   chartData: any[] = [];
   colorScheme: Color = {
@@ -54,9 +55,7 @@ export class ActivityComponent {
   }
 
   swapCurrencies() {
-    const temp = this.dollarAmount;
-    this.dollarAmount = this.euroAmount;
-    this.euroAmount = +(temp / this.usdToEuroRate).toFixed(3);
+    [this.dollarValue, this.euroValue] = [this.euroValue, this.dollarValue];
   }
 
   generateChartData(): void {
