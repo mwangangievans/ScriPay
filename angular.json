@@ -89,11 +89,15 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css",
-              "node_modules/swiper/swiper-bundle.min.css"
-
+              "node_modules/swiper/swiper.min.css",
+              "node_modules/swiper/modules/pagination/pagination.min.css",
+              "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/flowbite/dist/flowbite.min.js"
+
+               
+            ]
           }
         }
       }
