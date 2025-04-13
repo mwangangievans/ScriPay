@@ -3,6 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 import { curveCardinal } from 'd3-shape';
+import { WindowService } from '../../Service/window.service';
 
 
 
@@ -38,7 +39,12 @@ export class ActivityComponent {
 
 
 
-  constructor(private sanitizer: DomSanitizer) { }
+  constructor(private sanitizer: DomSanitizer ,private windowService: WindowService) {
+    const win = this.windowService.nativeWindow;
+  if (win) {
+    console.log(win.innerHeight);
+  }
+  }
 
   ngOnInit(): void {
     this.generateChartData();
