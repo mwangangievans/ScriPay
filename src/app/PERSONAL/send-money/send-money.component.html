@@ -212,45 +212,7 @@
                 </div>
             </div>
 
-            <!--------------------------------- Contact list----------------------------- -->
-
-            <div class="bg-white p-6 rounded-lg shadow-sm border-2 border-white hover:border-purple-500">
-                <div class="flex items-center gap-4">
-                    <div class="flex justify-center items-center w-12 h-12 text-white rounded-pentagon">
-                        <svg width="72" height="68" viewBox="0 0 72 68" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M36 0L71.1891 25.9119L57.7481 67.8381H14.2519L0.810909 25.9119L36 0Z" fill="#6A2CE5" />
-                            <path
-                                d="M36 45.5C34.8333 45.5 33.7188 45.6825 32.6562 46.0475C31.5937 46.4117 30.625 46.9583 29.75 47.6875V48H42.25V47.6875C41.375 46.9583 40.4062 46.4117 39.3438 46.0475C38.2812 45.6825 37.1667 45.5 36 45.5ZM27.25 46.5625C28.375 45.4583 29.6825 44.5883 31.1725 43.9525C32.6617 43.3175 34.2708 43 36 43C37.7292 43 39.3387 43.3175 40.8288 43.9525C42.3179 44.5883 43.625 45.4583 44.75 46.5625V30.5H27.25V46.5625ZM36 40.5C34.7917 40.5 33.7604 40.0729 32.9062 39.2188C32.0521 38.3646 31.625 37.3333 31.625 36.125C31.625 34.9167 32.0521 33.8854 32.9062 33.0312C33.7604 32.1771 34.7917 31.75 36 31.75C37.2083 31.75 38.2396 32.1771 39.0938 33.0312C39.9479 33.8854 40.375 34.9167 40.375 36.125C40.375 37.3333 39.9479 38.3646 39.0938 39.2188C38.2396 40.0729 37.2083 40.5 36 40.5ZM36 38C36.5208 38 36.9633 37.8175 37.3275 37.4525C37.6925 37.0883 37.875 36.6458 37.875 36.125C37.875 35.6042 37.6925 35.1617 37.3275 34.7975C36.9633 34.4325 36.5208 34.25 36 34.25C35.4792 34.25 35.0367 34.4325 34.6725 34.7975C34.3075 35.1617 34.125 35.6042 34.125 36.125C34.125 36.6458 34.3075 37.0883 34.6725 37.4525C35.0367 37.8175 35.4792 38 36 38ZM24.75 50.5V28H28.5V25.5H31V28H41V25.5H43.5V28H47.25V50.5H24.75ZM36 48H42.25H29.75H36Z"
-                                fill="white"
-                            />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="font-medium text-gray-800">Contact List</h3>
-                        <p class="text-sm text-gray-500 mt-4">Send to your phone book</p>
-                    </div>
-                </div>
-            </div>
-
-            <!--------------------------------- Bank Account----------------------------- -->
-
-            <div class="bg-white p-6 rounded-lg shadow-sm border-2 border-white hover:border-purple-500">
-                <div class="flex items-center gap-4">
-                    <div class="flex justify-center items-center w-12 h-12 text-white rounded-pentagon">
-                        <svg width="72" height="67" viewBox="0 0 72 67" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M1.63381 25.8337L36 0.865247L70.3662 25.8337L57.2395 66.2336H14.7605L1.63381 25.8337Z" stroke="#6A2CE5" stroke-width="1.4" />
-                            <path
-                                d="M29.125 35.5H26.625V44.25H29.125V35.5ZM36.625 35.5H34.125V44.25H36.625V35.5ZM47.25 46.75H23.5V49.25H47.25V46.75ZM44.125 35.5H41.625V44.25H44.125V35.5ZM35.375 27.075L41.8875 30.5H28.8625L35.375 27.075ZM35.375 24.25L23.5 30.5V33H47.25V30.5L35.375 24.25Z"
-                                fill="#6A2CE5"
-                            />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="font-medium text-gray-800">Bank account</h3>
-                        <p class="text-sm text-gray-500 mt-4">Send to recipient bank account</p>
-                    </div>
-                </div>
-            </div>
+         
         </div>
     </div>
 
@@ -810,7 +772,7 @@
         <div class="bg-light-blue flex items-center justify-center">
             <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-8 relative">
               <!-- Close Button -->
-              <button class="absolute top-6 right-6 text-gray-500 hover:text-gray-700">
+              <button (click)="updateActiveTab(1)" class="absolute top-6 right-6 text-gray-500 hover:text-gray-700">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
                 </svg>

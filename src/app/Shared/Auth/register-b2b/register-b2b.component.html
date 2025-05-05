@@ -1,0 +1,183 @@
+<div
+  class="min-h-screen flex items-center justify-center md:bg-[url('/assets/images/image_4.png')] bg-cover bg-center relative">
+
+
+  <div class="absolute inset-0 bg-gradient-to-br from-purple-600 to-purple-800 opacity-70 hidden lg:block"></div>
+
+  <div class="relative z-10 w-4/5  md:mx-auto">
+    <div class="bg-white rounded-lg shadow-xl  w-full p-20">
+      <h1 class="text-3xl font-bold text-purple_dark mb-10">Create your ScriPay Account</h1>
+      <p class="text-gray-700 mb-6">Please login to access your account.</p>
+
+      <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 ">
+          <!-- Username -->
+          <div>
+            <div class="flex justify-between mb-1">
+              <label for="username" class="text-gray-700">Username</label>
+              <button type="button" class="text-gray-400">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0_2600_4257)">
+                    <path
+                      d="M8.00004 3.99992V5.33325M8.00004 14.6666C11.682 14.6666 14.6667 11.6819 14.6667 7.99992C14.6667 4.31792 11.682 1.33325 8.00004 1.33325C4.31804 1.33325 1.33337 4.31792 1.33337 7.99992C1.33337 11.6819 4.31804 14.6666 8.00004 14.6666ZM8.00004 6.66658V11.9999V6.66658Z"
+                      stroke="#455360" stroke-width="1.33333" />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_2600_4257">
+                      <rect width="16" height="16" fill="white" />
+                    </clipPath>
+                  </defs>
+                </svg>
+              </button>
+            </div>
+            <input type="text" id="username" formControlName="username" placeholder="Your Username"
+              class="w-full p-3 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+          </div>
+
+
+
+          <!-- <app-text-input label="Username "
+            tooltip="An SMS will be sent to your phone number to confirm the authentication." type="text"
+            placeholder="Username " [errorMessages]="{ required: 'Username is required' }" [showIcon]="true"
+            [showLabel]="true">
+          </app-text-input> -->
+
+          <!-- Business Name -->
+          <div>
+            <div class="flex justify-between mb-1">
+              <label for="businessName" class="text-gray-700">Registered Business Name</label>
+              <button type="button" class="text-gray-400">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0_2600_4257)">
+                    <path
+                      d="M8.00004 3.99992V5.33325M8.00004 14.6666C11.682 14.6666 14.6667 11.6819 14.6667 7.99992C14.6667 4.31792 11.682 1.33325 8.00004 1.33325C4.31804 1.33325 1.33337 4.31792 1.33337 7.99992C1.33337 11.6819 4.31804 14.6666 8.00004 14.6666ZM8.00004 6.66658V11.9999V6.66658Z"
+                      stroke="#455360" stroke-width="1.33333" />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_2600_4257">
+                      <rect width="16" height="16" fill="white" />
+                    </clipPath>
+                  </defs>
+                </svg> </button>
+            </div>
+            <input type="text" id="businessName" formControlName="businessName" placeholder="Business name"
+              class="w-full p-3 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+          </div>
+
+          <!-- Business Email -->
+          <div>
+            <div class="flex justify-between mb-1">
+              <label for="businessEmail" class="text-gray-700">Business Email</label>
+              <button type="button" class="text-gray-400">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0_2600_4257)">
+                    <path
+                      d="M8.00004 3.99992V5.33325M8.00004 14.6666C11.682 14.6666 14.6667 11.6819 14.6667 7.99992C14.6667 4.31792 11.682 1.33325 8.00004 1.33325C4.31804 1.33325 1.33337 4.31792 1.33337 7.99992C1.33337 11.6819 4.31804 14.6666 8.00004 14.6666ZM8.00004 6.66658V11.9999V6.66658Z"
+                      stroke="#455360" stroke-width="1.33333" />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_2600_4257">
+                      <rect width="16" height="16" fill="white" />
+                    </clipPath>
+                  </defs>
+                </svg> </button>
+            </div>
+            <input type="email" id="businessEmail" formControlName="businessEmail" placeholder="Business email"
+              class="w-full p-3 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+          </div>
+
+          <!-- Phone Number -->
+          <div>
+            <div class="flex justify-between mb-1">
+              <label for="phoneNumber" class="text-gray-700">Phone number</label>
+              <button type="button" class="text-gray-400">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0_2600_4257)">
+                    <path
+                      d="M8.00004 3.99992V5.33325M8.00004 14.6666C11.682 14.6666 14.6667 11.6819 14.6667 7.99992C14.6667 4.31792 11.682 1.33325 8.00004 1.33325C4.31804 1.33325 1.33337 4.31792 1.33337 7.99992C1.33337 11.6819 4.31804 14.6666 8.00004 14.6666ZM8.00004 6.66658V11.9999V6.66658Z"
+                      stroke="#455360" stroke-width="1.33333" />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_2600_4257">
+                      <rect width="16" height="16" fill="white" />
+                    </clipPath>
+                  </defs>
+                </svg> </button>
+            </div>
+            <input type="tel" id="phoneNumber" formControlName="phoneNumber" placeholder="Phone number"
+              class="w-full p-3 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+          </div>
+
+          <!-- Country -->
+          <div>
+            <div class="flex justify-between mb-1">
+              <label for="country" class="text-gray-700">Country</label>
+            </div>
+            <div class="relative">
+              <select id="country" formControlName="country"
+                class="w-full p-3 bg-gray-100 rounded-md appearance-none focus:outline-none focus:ring-2 focus:ring-purple-500">
+                <option value="" disabled selected>Choose Country</option>
+                <option *ngFor="let country of countries" [value]="country.code">{{ country.name }}</option>
+              </select>
+              <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div>
+            <div class="flex justify-between mb-1">
+              <label for="password" class="text-gray-700">Password</label>
+            </div>
+            <div class="relative">
+              <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password"
+                placeholder="Your Password"
+                class="w-full p-3 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+              <button type="button" (click)="togglePasswordVisibility('password')"
+                class="absolute inset-y-0 right-0 flex items-center px-3">
+                <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div>
+            <div class="flex justify-between mb-1">
+              <label for="confirmPassword" class="text-gray-700">Confirm Password</label>
+            </div>
+            <div class="relative">
+              <input [type]="showConfirmPassword ? 'text' : 'password'" id="confirmPassword"
+                formControlName="confirmPassword" placeholder="Confirm your password"
+                class="w-full p-3 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+              <button type="button" (click)="togglePasswordVisibility('confirm')"
+                class="absolute inset-y-0 right-0 flex items-center px-3">
+                <i class="fas" [ngClass]="showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Register Button -->
+        <div [routerLink]="'/b2b/dashboard'" class="my-8">
+          <button
+            class="w-[25%] mx-auto bg-purple_dark hover:bg-purple_dark text-white font-bold py-3 px-4 rounded-md transition duration-300 block">
+            Register
+          </button>
+        </div>
+
+
+        <!-- Sign In Link -->
+        <div class="mt-6 text-center">
+          <p class="text-gray-600">
+            Already have an account?
+            <a routerLink="/login" class="text-purple_dark font-medium hover:underline">Sign In</a>
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
