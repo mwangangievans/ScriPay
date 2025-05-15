@@ -17,6 +17,7 @@ import { PaymentsComponent } from './B2B/payments/payments.component';
 import { RegisterB2bComponent } from './Shared/Auth/register-b2b/register-b2b.component';
 import { IndexB2bComponent } from './B2B/index-b2b/index-b2b.component';
 import { DashboardB2bComponent } from './B2B/dashboard-b2b/dashboard-b2b.component';
+import { LoginComponent } from './Shared/Auth/login/login.component';
 
 
 export const routes: Routes = [
@@ -27,6 +28,8 @@ export const routes: Routes = [
   { path: 'register-form', component: RegisterFormComponent },
   { path: 'verification', component: VerificationComponent },
   { path: 'register-b2b', component: RegisterB2bComponent },
+  { path: 'login', component: LoginComponent },
+
 
 
   {
