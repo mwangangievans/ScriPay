@@ -1,293 +1,284 @@
 <div class="grid grid-cols-4 gap-6 px-10">
-    <!-- Sidebar / Card Section -->
-    <div class="col-span-1 mr-4">
-        <h1 class="text-2xl my-2 font-bold text-gray-900">My Card</h1>
+  <!-- Sidebar / Card Section -->
+  <div class="col-span-1 mr-4">
+    <h1 class="text-2xl my-2 font-bold text-gray-900">My Card</h1>
 
-        <img src="assets/images/visa_bg.png" alt="Profile picture" />
+    <img src="assets/images/visa_bg.png" alt="Profile picture" />
 
-        <div class="bg-white rounded-xl shadow-md p-6 my-6">
-            <!-- Balance Section -->
-            <div class="mb-6">
-                <h2 class="text-sm font-medium text-gray-500 mb-2">Your Balance</h2>
-                <div class="grid grid-cols-2 items-baseline gap-3">
-                    <span class="text-2xl text-nowrap font-bold col-span-1">KES 128,320</span>
-                    <div class="flex items-center gap-1 text-[#E74A51] col-span-1 justify-end">
-                        <span class="text-base">↑</span>
-                        <span class="text-base font-medium">23.12%</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Currency Status Section -->
-            <div class="border-t pt-4 grid grid-cols-2 gap-4">
-                <div>
-                    <p class="text-sm text-gray-500 mb-1">Currency</p>
-                    <p class="text-base font-medium">KES</p>
-                </div>
-                <div>
-                    <p class="text-sm text-gray-500 mb-1">Status</p>
-                    <p class="text-base font-medium text-black">Active</p>
-                </div>
-            </div>
-        </div>
-
-        <div  class="flex items-center justify-center bg-gray-100 rounded-full">
-            <button [routerLink]="['/personal/add-card']"  class="flex items-center justify-center gap-2 w-full px-4 py-4 bg-gray-50 rounded-md shadow-sm hover:bg-gray-100 transition-colors">
-                <div class="flex items-center justify-center w-6 h-6 bg-violet-600 rounded-full text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 5v14M5 12h14" />
-                    </svg>
-                </div>
-                <span  class="text-gray-800 font-medium">Add card</span>
-            </button>
-        </div>
-    </div>
-
-    <!-- Main Content Section -->
-    <div class="col-span-3">
-        <!-- Top Summary Cards -->
-        <div class="grid grid-cols-3 gap-4 w-full">
-            <!-- My Balance -->
-            <div class="bg-white rounded-lg shadow-md p-4 text-center border-l-4 border-purple-500">
-                <div class="flex items-center justify-center mt-2">
-                    <h3 class="text-gray-500 text-sm font-medium">My Balance</h3>
-                    <span class="ml-2 text-green-500 text-sm font-semibold flex items-center">
-                        <img src="assets/icons/eye.jpeg" alt="eye" class="h-4 w-4" />
-                    </span>
-                </div>
-                <p class="text-2xl font-bold text-gray-800 mt-2">KES 128,320</p>
-            </div>
-
-            <!-- Income -->
-            <div class="bg-white rounded-lg shadow-md p-4 text-center border-l-4 border-green-500">
-                <div class="flex items-center justify-center mt-2">
-                    <h3 class="text-gray-500 text-sm font-medium">Income</h3>
-                    <span class="ml-2 text-green-500 text-sm font-semibold flex items-center">
-                        <img src="assets/icons/eye.jpeg" alt="eye" class="h-4 w-4" />
-                    </span>
-                </div>
-                <div class="flex items-center justify-center mt-2">
-                    <p class="text-2xl font-bold text-gray-800">KES 128,320</p>
-                    <span class="ml-2 text-green-500 text-sm font-semibold flex items-center bg-[#D8FFEC] px-2 py-1 rounded-sm">
-                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
-                        </svg>
-                        11.09%
-                    </span>
-                </div>
-            </div>
-
-            <!-- Expense -->
-            <div class="bg-white rounded-lg shadow-md p-4 text-center border-l-4 border-orange-500">
-                <div class="flex items-center justify-center mt-2">
-                    <h3 class="text-gray-500 text-sm font-medium">Expense</h3>
-                    <span class="ml-2 text-green-500 text-sm font-semibold flex items-center">
-                        <img src="assets/icons/eye.jpeg" alt="eye" class="h-4 w-4" />
-                    </span>
-                </div>
-                <p class="text-2xl font-bold text-gray-800 mt-2">KES 128,320</p>
-            </div>
-        </div>
-
-        <!-- Chart -->
-        <div class="my-4 w-full">
-            <div class="  bg-white rounded-xl shadow-sm p-4 " #chartContainer>
-              <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-800">Money Flow</h2>
-                <div class="flex gap-3">
-                  <button class="px-4 py-2 border border-gray-200 rounded-md text-gray-600">
-                    Money Flow
-                  </button>
-                  <div class="relative">
-                    <button class="px-4 py-2 border border-gray-200 rounded-md text-gray-600 flex items-center gap-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                      6 Month
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="h-80">
-                <ngx-charts-area-chart
-                  [view]="view"
-                  [scheme]="colorScheme1"
-                  [results]="moneyFlowData"
-                  [gradient]="gradient"
-                  [xAxis]="showXAxis"
-                  [yAxis]="showYAxis"
-                  [showXAxisLabel]="showXAxisLabel"
-                  [showYAxisLabel]="showYAxisLabel"
-                  [xAxisLabel]="xAxisLabel"
-                  [yAxisLabel]="yAxisLabel"
-                  [curve]="curve"
-                  [tooltipDisabled]="false"
-                  [showGridLines]="true"
-                  [roundDomains]="false"
-                  [animations]="true"
-                >
-                  <ng-template #tooltipTemplate let-model="model">
-                    <div class="bg-white p-2 rounded shadow-md">
-                      <span class="text-gray-500">KES {{ model.value }}K</span>
-                    </div>
-                  </ng-template>
-                </ngx-charts-area-chart>
-              </div>
-            </div>
+    <div class="bg-white rounded-xl shadow-md p-6 my-6">
+      <!-- Balance Section -->
+      <div class="mb-6">
+        <h2 class="text-sm font-medium text-gray-500 mb-2">Your Balance</h2>
+        <div class="grid grid-cols-2 items-baseline gap-3">
+          <span class="text-2xl text-nowrap font-bold col-span-1">KES 128,320</span>
+          <div class="flex items-center gap-1 text-[#E74A51] col-span-1 justify-end">
+            <span class="text-base">↑</span>
+            <span class="text-base font-medium">23.12%</span>
           </div>
+        </div>
+      </div>
+
+      <!-- Currency Status Section -->
+      <div class="border-t pt-4 grid grid-cols-2 gap-4">
+        <div>
+          <p class="text-sm text-gray-500 mb-1">Currency</p>
+          <p class="text-base font-medium">KES</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500 mb-1">Status</p>
+          <p class="text-base font-medium text-black">Active</p>
+        </div>
+      </div>
     </div>
-</div>
-<div class="grid grid-cols-2 gap-6 px-10 mt-4">
-    <!-- ---------------------EXPENSES SECTION-------------------- -->
-    <div class="bg-white rounded-xl p-6 shadow-sm w-full">
+
+    <div class="flex items-center justify-center bg-gray-100 rounded-full">
+      <button [routerLink]="['/personal/add-card']"
+        class="flex items-center justify-center gap-2 w-full px-4 py-4 bg-gray-50 rounded-md shadow-sm hover:bg-gray-100 transition-colors">
+        <div class="flex items-center justify-center w-6 h-6 bg-violet-600 rounded-full text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+        </div>
+        <span class="text-gray-800 font-medium">Add Payment Method</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content Section -->
+  <div class="col-span-3">
+    <!-- Top Summary Cards -->
+    <div class="grid grid-cols-3 gap-4 w-full">
+      <!-- My Balance -->
+      <div class="bg-white rounded-lg shadow-md p-4 text-center border-l-4 border-purple-500">
+        <div class="flex items-center justify-center mt-2">
+          <h3 class="text-gray-500 text-sm font-medium">My Balance</h3>
+          <span class="ml-2 text-green-500 text-sm font-semibold flex items-center">
+            <img src="assets/icons/eye.jpeg" alt="eye" class="h-4 w-4" />
+          </span>
+        </div>
+        <p class="text-2xl font-bold text-gray-800 mt-2">KES 128,320</p>
+      </div>
+
+      <!-- Income -->
+      <div class="bg-white rounded-lg shadow-md p-4 text-center border-l-4 border-green-500">
+        <div class="flex items-center justify-center mt-2">
+          <h3 class="text-gray-500 text-sm font-medium">Income</h3>
+          <span class="ml-2 text-green-500 text-sm font-semibold flex items-center">
+            <img src="assets/icons/eye.jpeg" alt="eye" class="h-4 w-4" />
+          </span>
+        </div>
+        <div class="flex items-center justify-center mt-2">
+          <p class="text-2xl font-bold text-gray-800">KES 128,320</p>
+          <span class="ml-2 text-green-500 text-sm font-semibold flex items-center bg-[#D8FFEC] px-2 py-1 rounded-sm">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18">
+              </path>
+            </svg>
+            11.09%
+          </span>
+        </div>
+      </div>
+
+      <!-- Expense -->
+      <div class="bg-white rounded-lg shadow-md p-4 text-center border-l-4 border-orange-500">
+        <div class="flex items-center justify-center mt-2">
+          <h3 class="text-gray-500 text-sm font-medium">Expense</h3>
+          <span class="ml-2 text-green-500 text-sm font-semibold flex items-center">
+            <img src="assets/icons/eye.jpeg" alt="eye" class="h-4 w-4" />
+          </span>
+        </div>
+        <p class="text-2xl font-bold text-gray-800 mt-2">KES 128,320</p>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="my-4 w-full">
+      <div class="  bg-white rounded-xl shadow-sm p-4 " #chartContainer>
         <div class="flex justify-between items-center mb-6">
-            <h2 class="text-xl font-bold text-gray-900">All Expenses</h2>
-            <div class="flex items-center border border-gray-200 rounded-lg px-3 py-2 text-gray-500 text-sm">
-                <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          <h2 class="text-2xl font-bold text-gray-800">Money Flow</h2>
+          <div class="flex gap-3">
+            <button class="px-4 py-2 border border-gray-200 rounded-md text-gray-600">
+              Money Flow
+            </button>
+            <div class="relative">
+              <button class="px-4 py-2 border border-gray-200 rounded-md text-gray-600 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
                 6 Month
-                <svg class="h-5 w-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-3 gap-4 mb-8">
-            <div>
-                <p class="text-gray-400 text-sm mb-1">Daily</p>
-                <p class="font-bold text-gray-900">KES 475</p>
-            </div>
-            <div>
-                <p class="text-gray-400 text-sm mb-1">Weekly</p>
-                <p class="font-bold text-gray-900">KES 3,327</p>
-            </div>
-            <div>
-                <p class="text-gray-400 text-sm mb-1">Monthly</p>
-                <p class="font-bold text-gray-900">KES 12,131</p>
-            </div>
-        </div>
-
-        <div class="chart-section">
-            <ngx-charts-pie-chart
-            [view]="view1"
-            [scheme]="colorScheme"
-            [results]="single"
-            [gradient]="gradient1"
-            [doughnut]="isDoughnut"
-            [labels]="showLabels"
-          >
-          </ngx-charts-pie-chart>
-        
-            <div class="legend">
-              <div class="legend-item" *ngFor="let item of single; let i = index">
-                <span class="dot" [ngStyle]="{'background-color': colorScheme.domain[i]}"></span>
-                {{ item.name }}
-              </div>
+              </button>
             </div>
           </div>
-    </div>
-
-    <!-- -------------------------TRANSACTION  SECTION--------------------- -->
-
-    <div class="bg-white rounded-xl p-6 shadow-sm w-full">
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="text-xl font-bold text-gray-900">History Transactions</h2>
-            <a href="#" class="text-purple-600 text-sm font-medium">View all</a>
         </div>
 
-        <div class="space-y-4">
-            <!-- Repeat this block for each transaction -->
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <div class="rounded-lg p-2 mr-4">
-                        <svg width="54" height="54" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="54" height="54" rx="13" fill="#6A2CE5" fill-opacity="0.08" />
-                            <g clip-path="url(#clip0_596_14078)">
-                                <circle cx="27.7756" cy="27" r="16" fill="#6A2CE5" />
-                                <path d="M28.6417 32C28.2568 32.6667 27.2945 32.6667 26.9096 32L24.3115 27.5C23.9266 26.8333 24.4078 26 25.1776 26L30.3737 26C31.1435 26 31.6246 26.8333 31.2397 27.5L28.6417 32Z" fill="white" />
-                                <path d="M27.7756 26L27.7756 17" stroke="white" stroke-width="2" stroke-linecap="round" />
-                                <path opacity="0.5" d="M33.7756 35H21.7756" stroke="white" stroke-width="2" stroke-linecap="round" />
-                            </g>
-                            <defs>
-                                <clipPath id="clip0_596_14078">
-                                    <rect width="30.2444" height="32" fill="white" transform="translate(11.7756 11)" />
-                                </clipPath>
-                            </defs>
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="font-medium text-gray-900">Order Revenue</p>
-                        <p class="text-gray-500 text-sm">Apr 27, 22</p>
-                    </div>
-                </div>
-                <span class="text-green-500 font-medium">+ $874</span>
-            </div>
-
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <div class="rounded-lg p-2 mr-4">
-                        <svg width="54" height="54" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="54" height="54" rx="13" fill="#6A2CE5" fill-opacity="0.08" />
-                            <g clip-path="url(#clip0_596_14106)">
-                                <circle cx="27.5911" cy="27" r="16" fill="#6A2CE5" />
-                                <path
-                                    d="M35.5911 21.134C36.2577 21.5189 36.2577 22.4811 35.5911 22.866L31.0911 25.4641C30.4244 25.849 29.5911 25.3679 29.5911 24.5981L29.5911 19.4019C29.5911 18.6321 30.4244 18.151 31.0911 18.5359L35.5911 21.134Z"
-                                    fill="white"
-                                />
-                                <path d="M29.5911 22L20.5911 22" stroke="white" stroke-width="2" stroke-linecap="round" />
-                                <g opacity="0.5">
-                                    <path
-                                        d="M20.0911 32.866C19.4244 32.4811 19.4244 31.5189 20.0911 31.134L24.5911 28.5359C25.2577 28.151 26.0911 28.6321 26.0911 29.4019L26.0911 34.5981C26.0911 35.3679 25.2577 35.849 24.5911 35.4641L20.0911 32.866Z"
-                                        fill="white"
-                                    />
-                                    <path d="M26.0911 32L35.0911 32" stroke="white" stroke-width="2" stroke-linecap="round" />
-                                </g>
-                            </g>
-                            <defs>
-                                <clipPath id="clip0_596_14106">
-                                    <rect width="30.2444" height="32" fill="white" transform="translate(11.5911 11)" />
-                                </clipPath>
-                            </defs>
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="font-medium text-gray-900">Withdrawal Initiated</p>
-                        <p class="text-gray-500 text-sm">Apr 25, 22</p>
-                    </div>
-                </div>
-                <span class="text-red-500 font-medium">- $2490</span>
-            </div>
-
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <div class="rounded-lg p-2 mr-4">
-                        <svg width="54" height="54" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="54" height="54" rx="13" fill="#6A2CE5" fill-opacity="0.08" />
-                            <g clip-path="url(#clip0_596_14078)">
-                                <circle cx="27.7756" cy="27" r="16" fill="#6A2CE5" />
-                                <path d="M28.6417 32C28.2568 32.6667 27.2945 32.6667 26.9096 32L24.3115 27.5C23.9266 26.8333 24.4078 26 25.1776 26L30.3737 26C31.1435 26 31.6246 26.8333 31.2397 27.5L28.6417 32Z" fill="white" />
-                                <path d="M27.7756 26L27.7756 17" stroke="white" stroke-width="2" stroke-linecap="round" />
-                                <path opacity="0.5" d="M33.7756 35H21.7756" stroke="white" stroke-width="2" stroke-linecap="round" />
-                            </g>
-                            <defs>
-                                <clipPath id="clip0_596_14078">
-                                    <rect width="30.2444" height="32" fill="white" transform="translate(11.7756 11)" />
-                                </clipPath>
-                            </defs>
-                        </svg>
-                    </div>
-                    <div>
-                        <p class="font-medium text-gray-900">Order Revenue</p>
-                        <p class="text-gray-500 text-sm">Mar 1, 22</p>
-                    </div>
-                </div>
-                <span class="text-green-500 font-medium">+ $126</span>
-            </div>
+        <div class="h-80">
+          <ngx-charts-area-chart [view]="view" [scheme]="colorScheme1" [results]="moneyFlowData" [gradient]="gradient"
+            [xAxis]="showXAxis" [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
+            [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [curve]="curve" [tooltipDisabled]="false"
+            [showGridLines]="true" [roundDomains]="false" [animations]="true">
+            <ng-template #tooltipTemplate let-model="model">
+              <div class="bg-white p-2 rounded shadow-md">
+                <span class="text-gray-500">KES {{ model.value }}K</span>
+              </div>
+            </ng-template>
+          </ngx-charts-area-chart>
         </div>
+      </div>
     </div>
+  </div>
+</div>
+<div class="grid grid-cols-2 gap-6 px-10 mt-4">
+  <!-- ---------------------EXPENSES SECTION-------------------- -->
+  <div class="bg-white rounded-xl p-6 shadow-sm w-full">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-xl font-bold text-gray-900">All Expenses</h2>
+      <div class="flex items-center border border-gray-200 rounded-lg px-3 py-2 text-gray-500 text-sm">
+        <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        6 Month
+        <svg class="h-5 w-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-3 gap-4 mb-8">
+      <div>
+        <p class="text-gray-400 text-sm mb-1">Daily</p>
+        <p class="font-bold text-gray-900">KES 475</p>
+      </div>
+      <div>
+        <p class="text-gray-400 text-sm mb-1">Weekly</p>
+        <p class="font-bold text-gray-900">KES 3,327</p>
+      </div>
+      <div>
+        <p class="text-gray-400 text-sm mb-1">Monthly</p>
+        <p class="font-bold text-gray-900">KES 12,131</p>
+      </div>
+    </div>
+
+    <div class="chart-section">
+      <ngx-charts-pie-chart [view]="view1" [scheme]="colorScheme" [results]="single" [gradient]="gradient1"
+        [doughnut]="isDoughnut" [labels]="showLabels">
+      </ngx-charts-pie-chart>
+
+      <div class="legend">
+        <div class="legend-item" *ngFor="let item of single; let i = index">
+          <span class="dot" [ngStyle]="{'background-color': colorScheme.domain[i]}"></span>
+          {{ item.name }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- -------------------------TRANSACTION  SECTION--------------------- -->
+
+  <div class="bg-white rounded-xl p-6 shadow-sm w-full">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-xl font-bold text-gray-900">History Transactions</h2>
+      <a href="#" class="text-purple-600 text-sm font-medium">View all</a>
+    </div>
+
+    <div class="space-y-4">
+      <!-- Repeat this block for each transaction -->
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <div class="rounded-lg p-2 mr-4">
+            <svg width="54" height="54" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="54" height="54" rx="13" fill="#6A2CE5" fill-opacity="0.08" />
+              <g clip-path="url(#clip0_596_14078)">
+                <circle cx="27.7756" cy="27" r="16" fill="#6A2CE5" />
+                <path
+                  d="M28.6417 32C28.2568 32.6667 27.2945 32.6667 26.9096 32L24.3115 27.5C23.9266 26.8333 24.4078 26 25.1776 26L30.3737 26C31.1435 26 31.6246 26.8333 31.2397 27.5L28.6417 32Z"
+                  fill="white" />
+                <path d="M27.7756 26L27.7756 17" stroke="white" stroke-width="2" stroke-linecap="round" />
+                <path opacity="0.5" d="M33.7756 35H21.7756" stroke="white" stroke-width="2" stroke-linecap="round" />
+              </g>
+              <defs>
+                <clipPath id="clip0_596_14078">
+                  <rect width="30.2444" height="32" fill="white" transform="translate(11.7756 11)" />
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+          <div>
+            <p class="font-medium text-gray-900">Order Revenue</p>
+            <p class="text-gray-500 text-sm">Apr 27, 22</p>
+          </div>
+        </div>
+        <span class="text-green-500 font-medium">+ $874</span>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <div class="rounded-lg p-2 mr-4">
+            <svg width="54" height="54" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="54" height="54" rx="13" fill="#6A2CE5" fill-opacity="0.08" />
+              <g clip-path="url(#clip0_596_14106)">
+                <circle cx="27.5911" cy="27" r="16" fill="#6A2CE5" />
+                <path
+                  d="M35.5911 21.134C36.2577 21.5189 36.2577 22.4811 35.5911 22.866L31.0911 25.4641C30.4244 25.849 29.5911 25.3679 29.5911 24.5981L29.5911 19.4019C29.5911 18.6321 30.4244 18.151 31.0911 18.5359L35.5911 21.134Z"
+                  fill="white" />
+                <path d="M29.5911 22L20.5911 22" stroke="white" stroke-width="2" stroke-linecap="round" />
+                <g opacity="0.5">
+                  <path
+                    d="M20.0911 32.866C19.4244 32.4811 19.4244 31.5189 20.0911 31.134L24.5911 28.5359C25.2577 28.151 26.0911 28.6321 26.0911 29.4019L26.0911 34.5981C26.0911 35.3679 25.2577 35.849 24.5911 35.4641L20.0911 32.866Z"
+                    fill="white" />
+                  <path d="M26.0911 32L35.0911 32" stroke="white" stroke-width="2" stroke-linecap="round" />
+                </g>
+              </g>
+              <defs>
+                <clipPath id="clip0_596_14106">
+                  <rect width="30.2444" height="32" fill="white" transform="translate(11.5911 11)" />
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+          <div>
+            <p class="font-medium text-gray-900">Withdrawal Initiated</p>
+            <p class="text-gray-500 text-sm">Apr 25, 22</p>
+          </div>
+        </div>
+        <span class="text-red-500 font-medium">- $2490</span>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <div class="rounded-lg p-2 mr-4">
+            <svg width="54" height="54" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="54" height="54" rx="13" fill="#6A2CE5" fill-opacity="0.08" />
+              <g clip-path="url(#clip0_596_14078)">
+                <circle cx="27.7756" cy="27" r="16" fill="#6A2CE5" />
+                <path
+                  d="M28.6417 32C28.2568 32.6667 27.2945 32.6667 26.9096 32L24.3115 27.5C23.9266 26.8333 24.4078 26 25.1776 26L30.3737 26C31.1435 26 31.6246 26.8333 31.2397 27.5L28.6417 32Z"
+                  fill="white" />
+                <path d="M27.7756 26L27.7756 17" stroke="white" stroke-width="2" stroke-linecap="round" />
+                <path opacity="0.5" d="M33.7756 35H21.7756" stroke="white" stroke-width="2" stroke-linecap="round" />
+              </g>
+              <defs>
+                <clipPath id="clip0_596_14078">
+                  <rect width="30.2444" height="32" fill="white" transform="translate(11.7756 11)" />
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+          <div>
+            <p class="font-medium text-gray-900">Order Revenue</p>
+            <p class="text-gray-500 text-sm">Mar 1, 22</p>
+          </div>
+        </div>
+        <span class="text-green-500 font-medium">+ $126</span>
+      </div>
+    </div>
+  </div>
 </div>

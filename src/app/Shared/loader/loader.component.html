@@ -1,0 +1,29 @@
+<!-- Loader Component -->
+<div id="app-loader" class="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
+  <!-- Optional backdrop (remove bg-white/50 for full non-blocking) -->
+  <div class="absolute inset-0 bg-white/50 backdrop-blur-sm"></div>
+
+  <!-- Loader content -->
+  <div class="relative z-10 flex flex-col items-center space-y-4">
+    <!-- Logo -->
+    <div class="w-32 h-auto">
+      <!-- Your logo SVG -->
+      <svg width="151" height="56" viewBox="0 0 151 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="151" height="56" fill="url(#pattern0_452_12033)" />
+        <defs>
+          <pattern id="pattern0_452_12033" patternContentUnits="objectBoundingBox" width="1" height="1">
+            <use xlink:href="#image0_452_12033" transform="matrix(0.00662252 0 0 0.0178571 -0.410596 -1.75)" />
+          </pattern>
+          <image id="image0_452_12033" width="255" height="255" preserveAspectRatio="none"
+            xlink:href="data:image/png;base64,...YOUR_LOGO_DATA..." />
+        </defs>
+      </svg>
+    </div>
+
+    <!-- Spinner -->
+    <div class="w-10 h-10 border-4 border-[#6A2CE5] border-t-transparent rounded-full animate-spin"></div>
+
+    <!-- Optional loading text -->
+    <p class="text-sm text-gray-600">Loading, please wait...</p>
+  </div>
+</div>

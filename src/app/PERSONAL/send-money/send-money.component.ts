@@ -5,12 +5,12 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angul
 @Component({
   selector: 'app-send-money',
   standalone: true,
-  imports: [CommonModule ,ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './send-money.component.html',
   styleUrl: './send-money.component.css'
 })
 export class SendMoneyComponent {
-  activeTab: 1 | 2 | 3 | 4 | 5| 6 = 1
+  activeTab: 1 | 2 | 3 | 4 | 5 | 6 = 1
 
   pinForm!: FormGroup;
 
@@ -29,7 +29,7 @@ export class SendMoneyComponent {
     });
   }
 
-  handleTransfer(position:1 | 2 | 3 | 4 | 5| 6) {
+  handleTransfer(position: 1 | 2 | 3 | 4 | 5 | 6) {
     this.activeTab = position
     this.isProcessing = true;
 
@@ -42,7 +42,7 @@ export class SendMoneyComponent {
   }
 
 
-  updateActiveTab(position: 1 | 2 | 3 | 4 | 5| 6){
+  updateActiveTab(position: 1 | 2 | 3 | 4 | 5 | 6) {
     this.activeTab = position
   }
 
