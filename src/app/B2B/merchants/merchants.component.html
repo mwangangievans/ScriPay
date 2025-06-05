@@ -1,0 +1,360 @@
+<div class="w-full max-w-1/2 mx-auto p-8 bg-white rounded-lg shadow-sm">
+  <!-- Header -->
+  <div class="text-center mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">Merchant Onboarding</h1>
+  </div>
+
+  <!-- Stepper -->
+  <div class="relative flex items-center justify-between mb-8">
+    <div class="absolute left-0 top-2/4 h-0.5 w-full -translate-y-2/4 bg-gray-200"></div>
+    <div class="absolute left-0 top-2/4 h-0.5 w-full -translate-y-2/4 bg-purple_dark transition-all duration-500"
+      [style.width]="(activeStep / 2) * 100 + '%'">
+    </div>
+
+    <!-- Step 1 -->
+    <div class="relative z-10 grid w-10 h-10 font-bold transition-all duration-300 rounded-full place-items-center"
+      [class.text-white]="activeStep >= 0" [class.bg-purple_dark]="activeStep >= 0"
+      [class.text-gray-600]="activeStep < 0" [class.bg-gray-200]="activeStep < 0">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        aria-hidden="true" class="w-5 h-5">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25">
+        </path>
+      </svg>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="relative z-10 grid w-10 h-10 font-bold transition-all duration-300 rounded-full place-items-center"
+      [class.text-white]="activeStep >= 1" [class.bg-purple_dark]="activeStep >= 1"
+      [class.text-gray-600]="activeStep < 1" [class.bg-gray-200]="activeStep < 1">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        aria-hidden="true" class="w-5 h-5">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z">
+        </path>
+      </svg>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="relative z-10 grid w-10 h-10 font-transition-all duration-300 rounded-full place-items-center"
+      [class.text-white]="activeStep >= 2" [class.bg-purple_dark]="activeStep >= 2"
+      [class.text-gray-600]="activeStep < 2" [class.bg-gray-200]="activeStep < 2">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        aria-hidden="true" class="w-5 h-5">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077l1.41-.513m14.095-5.13l1.41-.513M5.106 17.785l1.15-.964m11.49-9.642l1.149-.964M7.501 19.795l.75-1.3m7.5-12.99l.75-1.3m-6.063 16.658l.26-1.477m2.605-14.772l.26-1.477m0 17.726l-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.5 4.205L12 12m6.894 5.785l-1.149-.964M6.256 7.178l-1.15-.964m15.352 8.864l-1.41-.513M4.954 9.435l-1.41-.514M12.002 12l-3.75 6.495">
+        </path>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Form Content -->
+  <div class="mt-6">
+    <!-- Business Information Form -->
+    <form *ngIf="activeStep === 0" [formGroup]="businessInfoForm" class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Business Name -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Name*</label>
+          <input type="text" formControlName="name"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple_medium focus:ring-purple_medium py-3 px-4 border"
+            [class.border-red-500]="businessInfoForm.get('name')?.invalid && (isBusinessInfoSubmitted || businessInfoForm.get('name')?.touched)"
+            [readonly]="isBusinessInfoReadOnly">
+          <div
+            *ngIf="businessInfoForm.get('name')?.invalid && (isBusinessInfoSubmitted || businessInfoForm.get('name')?.touched)"
+            class="text-red-500 text-xs mt-1">
+            Business name is required
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Email*</label>
+          <input type="email" formControlName="email"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple_medium focus:ring-purple_medium py-3 px-4 border"
+            [class.border-red-500]="businessInfoForm.get('email')?.invalid && (isBusinessInfoSubmitted || businessInfoForm.get('email')?.touched)"
+            [readonly]="isBusinessInfoReadOnly">
+          <div
+            *ngIf="businessInfoForm.get('email')?.invalid && (isBusinessInfoSubmitted || businessInfoForm.get('email')?.touched)"
+            class="text-red-500 text-xs mt-1">
+            <span *ngIf="businessInfoForm.get('email')?.errors?.['required']">Email is required</span>
+            <span *ngIf="businessInfoForm.get('email')?.errors?.['email']">Please enter a valid email address</span>
+          </div>
+        </div>
+
+        <!-- Address -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Address*</label>
+          <input type="text" formControlName="address"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple_medium focus:ring-purple_medium py-3 px-4 border"
+            [class.border-red-500]="businessInfoForm.get('address')?.invalid && (isBusinessInfoSubmitted || businessInfoForm.get('address')?.touched)"
+            [readonly]="isBusinessInfoReadOnly">
+          <div
+            *ngIf="businessInfoForm.get('address')?.invalid && (isBusinessInfoSubmitted || businessInfoForm.get('address')?.touched)"
+            class="text-red-500 text-xs mt-1">
+            Address is required
+          </div>
+        </div>
+
+        <!-- Location -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Location*</label>
+          <input type="text" formControlName="location"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple_medium focus:ring-purple_medium py-3 px-4 border"
+            [class.border-red-500]="businessInfoForm.get('location')?.invalid && (isBusinessInfoSubmitted || businessInfoForm.get('location')?.touched)"
+            [readonly]="isBusinessInfoReadOnly">
+          <div
+            *ngIf="businessInfoForm.get('location')?.invalid && (isBusinessInfoSubmitted || businessInfoForm.get('location')?.touched)"
+            class="text-red-500 text-xs mt-1">
+            Location is required
+          </div>
+        </div>
+
+        <!-- Logo -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Logo</label>
+          <div *ngIf="!merchants.length">
+            <input type="file" (change)="onFileSelected($event)" accept="image/*"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple_medium focus:ring-purple_medium py-3 px-4 border"
+              [disabled]="isBusinessInfoReadOnly">
+          </div>
+
+          <div *ngIf="businessInfoForm.get('logo')?.value && isBusinessInfoReadOnly" class="mt-2">
+            <img [src]="businessInfoForm.get('logo')?.value" alt="Merchant Logo" class="h-20 w-auto">
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Buttons for Business Info -->
+      <div class="flex justify-between mt-8">
+        <button
+          class="select-none rounded-lg bg-gray-200 py-3 px-6 text-center align-middle font-sans text-sm font-medium text-gray-700 transition-all hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          type="button" (click)="prevStep()" [disabled]="activeStep === 0 || isLoading">
+          Back
+        </button>
+        <button
+          class="select-none rounded-lg bg-purple_dark py-3 px-6 text-center align-middle font-sans text-sm font-medium text-white shadow-sm transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-purple_medium focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          type="button" (click)="submitBusinessInfo()" [disabled]="isLoading">
+          <span *ngIf="!isLoading">Continue</span>
+          <span *ngIf="isLoading">Processing...</span>
+        </button>
+      </div>
+    </form>
+
+    <!-- Owner Information Form -->
+    <form *ngIf="activeStep === 1" [formGroup]="ownerInfoForm" class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Country*</label>
+          <select formControlName="country"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple_medium focus:ring-purple_medium py-3 px-4 border bg-white"
+            [class.border-red-500]="ownerInfoForm.get('country')?.invalid && (isOwnerInfoSubmitted || ownerInfoForm.get('country')?.touched)"
+            (change)="getRequirementsByCountry(+($event.target.value))">
+
+            <option value="" disabled>Select a country</option>
+            <option *ngFor="let country of countries" [value]="country.id">
+              {{ country.name }}
+            </option>
+          </select>
+
+          <div
+            *ngIf="ownerInfoForm.get('country')?.invalid && (isOwnerInfoSubmitted || ownerInfoForm.get('country')?.touched)"
+            class="text-red-500 text-xs mt-1">
+            Country is required
+          </div>
+        </div> -->
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Last Name*</label>
+          <input type="text" formControlName="lastName"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple_medium focus:ring-purple_medium py-3 px-4 border"
+            [class.border-red-500]="ownerInfoForm.get('lastName')?.invalid && (isOwnerInfoSubmitted || ownerInfoForm.get('lastName')?.touched)">
+          <div
+            *ngIf="ownerInfoForm.get('lastName')?.invalid && (isOwnerInfoSubmitted || ownerInfoForm.get('lastName')?.touched)"
+            class="text-red-500 text-xs mt-1">
+            Last name is required
+          </div>
+        </div>
+
+
+
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Last Name*</label>
+          <input type="text" formControlName="lastName"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple_medium focus:ring-purple_medium py-3 px-4 border"
+            [class.border-red-500]="ownerInfoForm.get('lastName')?.invalid && (isOwnerInfoSubmitted || ownerInfoForm.get('lastName')?.touched)">
+          <div
+            *ngIf="ownerInfoForm.get('lastName')?.invalid && (isOwnerInfoSubmitted || ownerInfoForm.get('lastName')?.touched)"
+            class="text-red-500 text-xs mt-1">
+            Last name is required
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth*</label>
+          <input type="date" formControlName="dob"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple_medium focus:ring-purple_medium py-3 px-4 border"
+            [class.border-red-500]="ownerInfoForm.get('dob')?.invalid && (isOwnerInfoSubmitted || ownerInfoForm.get('dob')?.touched)">
+          <div *ngIf="ownerInfoForm.get('dob')?.invalid && (isOwnerInfoSubmitted || ownerInfoForm.get('dob')?.touched)"
+            class="text-red-500 text-xs mt-1">
+            Date of birth is required
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">National ID*</label>
+          <input type="text" formControlName="nationalId"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple_medium focus:ring-purple_medium py-3 px-4 border"
+            [class.border-red-500]="ownerInfoForm.get('nationalId')?.invalid && (isOwnerInfoSubmitted || ownerInfoForm.get('nationalId')?.touched)">
+          <div
+            *ngIf="ownerInfoForm.get('nationalId')?.invalid && (isOwnerInfoSubmitted || ownerInfoForm.get('nationalId')?.touched)"
+            class="text-red-500 text-xs mt-1">
+            National ID is required
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Personal Email*</label>
+          <input type="email" formControlName="personalEmail"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple_medium focus:ring-purple_medium py-3 px-4 border"
+            [class.border-red-500]="ownerInfoForm.get('personalEmail')?.invalid && (isOwnerInfoSubmitted || ownerInfoForm.get('personalEmail')?.touched)">
+          <div
+            *ngIf="ownerInfoForm.get('personalEmail')?.invalid && (isOwnerInfoSubmitted || ownerInfoForm.get('personalEmail')?.touched)"
+            class="text-red-500 text-xs mt-1">
+            <span *ngIf="ownerInfoForm.get('personalEmail')?.errors?.['required']">Email is required</span>
+            <span *ngIf="ownerInfoForm.get('personalEmail')?.errors?.['email']">Please enter a valid email
+              address</span>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Personal Phone*</label>
+          <input type="tel" formControlName="personalPhone"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple_medium focus:ring-purple_medium py-3 px-4 border"
+            [class.border-red-500]="ownerInfoForm.get('personalPhone')?.invalid && (isOwnerInfoSubmitted || ownerInfoForm.get('personalPhone')?.touched)">
+          <div
+            *ngIf="ownerInfoForm.get('personalPhone')?.invalid && (isOwnerInfoSubmitted || ownerInfoForm.get('personalPhone')?.touched)"
+            class="text-red-500 text-xs mt-1">
+            <span *ngIf="ownerInfoForm.get('personalPhone')?.errors?.['required']">Phone number is required</span>
+            <span *ngIf="ownerInfoForm.get('personalPhone')?.errors?.['pattern']">Please enter a valid phone number
+              (10-15 digits)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Buttons for Owner Info -->
+      <div class="flex justify-between mt-8">
+        <button
+          class="select-none rounded-lg bg-gray-200 py-3 px-6 text-center align-middle font-sans text-sm font-medium text-gray-700 transition-all hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          type="button" (click)="prevStep()" [disabled]="isLoading">
+          Back
+        </button>
+        <button
+          class="select-none rounded-lg bg-purple_dark py-3 px-6 text-center align-middle font-sans text-sm font-medium text-white shadow-sm transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-purple_medium focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          type="button" (click)="submitOwnerInfo()" [disabled]="isLoading">
+          <span *ngIf="!isLoading">Continue</span>
+          <span *ngIf="isLoading">Processing...</span>
+        </button>
+      </div>
+    </form>
+
+    <!-- Bank Information Form -->
+    <form *ngIf="activeStep === 2" [formGroup]="bankInfoForm" class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Bank Name -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Bank Name*</label>
+          <input type="text" formControlName="bankName"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple_medium focus:ring-purple_medium py-3 px-4 border"
+            [class.border-red-500]="bankInfoForm.get('bankName')?.invalid && (isBankInfoSubmitted || bankInfoForm.get('bankName')?.touched)">
+          <div
+            *ngIf="bankInfoForm.get('bankName')?.invalid && (isBankInfoSubmitted || bankInfoForm.get('bankName')?.touched)"
+            class="text-red-500 text-xs mt-1">
+            Bank name is required
+          </div>
+        </div>
+
+        <!-- Account Number -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Account Number*</label>
+          <input type="text" formControlName="accountNumber"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple_medium focus:ring-purple_medium py-3 px-4 border"
+            [class.border-red-500]="bankInfoForm.get('accountNumber')?.invalid && (isBankInfoSubmitted || bankInfoForm.get('accountNumber')?.touched)">
+          <div
+            *ngIf="bankInfoForm.get('accountNumber')?.invalid && (isBankInfoSubmitted || bankInfoForm.get('accountNumber')?.touched)"
+            class="text-red-500 text-xs mt-1">
+            Account number is required
+          </div>
+        </div>
+
+        <!-- Account Name -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Account Name*</label>
+          <input type="text" formControlName="accountName"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple_medium focus:ring-purple_medium py-3 px-4 border"
+            [class.border-red-500]="bankInfoForm.get('accountName')?.invalid && (isBankInfoSubmitted || bankInfoForm.get('accountName')?.touched)">
+          <div
+            *ngIf="bankInfoForm.get('accountName')?.invalid && (isBankInfoSubmitted || bankInfoForm.get('accountName')?.touched)"
+            class="text-red-500 text-xs mt-1">
+            Account name is required
+          </div>
+        </div>
+
+        <!-- Branch Code -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Branch Code*</label>
+          <input type="text" formControlName="branchCode"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple_medium focus:ring-purple_medium py-3 px-4 border"
+            [class.border-red-500]="bankInfoForm.get('branchCode')?.invalid && (isBankInfoSubmitted || bankInfoForm.get('branchCode')?.touched)">
+          <div
+            *ngIf="bankInfoForm.get('branchCode')?.invalid && (isBankInfoSubmitted || bankInfoForm.get('branchCode')?.touched)"
+            class="text-red-500 text-xs mt-1">
+            Branch code is required
+          </div>
+        </div>
+
+        <!-- Currency -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Currency*</label>
+          <select formControlName="currency"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple_medium focus:ring-purple_medium py-3 px-4 border"
+            [class.border-red-500]="bankInfoForm.get('currency')?.invalid && (isBankInfoSubmitted || bankInfoForm.get('currency')?.touched)">
+            <option value="">Select currency</option>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+          </select>
+          <div
+            *ngIf="bankInfoForm.get('currency')?.invalid && (isBankInfoSubmitted || bankInfoForm.get('currency')?.touched)"
+            class="text-red-500 text-xs mt-1">
+            Please select a currency
+          </div>
+        </div>
+
+        <!-- Swift Code -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Swift Code</label>
+          <input type="text" formControlName="swiftCode"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple_medium focus:ring-purple_medium py-3 px-4 border">
+        </div>
+      </div>
+
+      <!-- Navigation Buttons for Bank Info -->
+      <div class="flex justify-between mt-8">
+        <button
+          class="select-none rounded-lg bg-gray-200 py-3 px-6 text-center align-middle font-sans text-sm font-medium text-gray-700 transition-all hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          type="button" (click)="prevStep()" [disabled]="isLoading">
+          Back
+        </button>
+        <button
+          class="select-none rounded-lg bg-purple_dark py-3 px-6 text-center align-middle font-sans text-sm font-medium text-white shadow-sm transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-purple_medium focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          type="button" (click)="submitBankInfo()" [disabled]="isLoading">
+          <span *ngIf="!isLoading">Complete</span>
+          <span *ngIf="isLoading">Processing...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

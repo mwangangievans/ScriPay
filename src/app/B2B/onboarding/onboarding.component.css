@@ -1,0 +1,202 @@
+/* ::ng-deep mat-vertical-stepper {
+  background-color: #f7f9fc;
+  padding: 16px;
+  border-radius: 12px;
+}
+
+::ng-deep mat-step-header {
+  background: transparent;
+  padding: 8px;
+  border-left: 4px solid #2196f3;
+  margin-bottom: 8px;
+  transition: background 0.3s ease;
+}
+
+::ng-deep mat-step-header.mat-active {
+  background: #e3f2fd;
+  border-left-color: #1976d2;
+}
+
+::ng-deep mat-step-header .mat-step-label {
+  font-weight: 600;
+  color: #333;
+}
+
+::ng-deep mat-stepper-horizontal,
+::ng-deep mat-stepper-vertical {
+  gap: 12px;
+}
+
+
+.onboarding-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
+}
+
+.step-icon {
+  transition: all 0.3s ease;
+
+  &.active {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  &.completed {
+    background: #10b981 !important;
+    border-color: #10b981 !important;
+  }
+}
+
+.progress-bar {
+  transition: width 0.5s ease-in-out;
+}
+
+.form-card {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.gradient-button {
+  background: linear-gradient(135deg, #10b981, #059669);
+  border: none;
+  color: white;
+
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    transform: none;
+  }
+}
+
+.file-upload-area {
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+  transition: border-color 0.3s ease;
+
+  &:hover {
+    border-color: #10b981;
+  }
+}
+
+.mat-form-field {
+  width: 100%;
+
+  .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+}
+
+.otp-input {
+  text-align: center;
+  letter-spacing: 0.5em;
+  font-size: 1.125rem;
+}
+
+.step-1-gradient {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.step-2-gradient {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.step-3-gradient {
+  background: linear-gradient(135deg, #f97316, #ea580c);
+}
+
+.step-4-gradient {
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease-in-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .step-description {
+    display: none;
+  }
+
+  .grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+} */
+
+/* Custom select arrow */
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 1.5em 1.5em;
+}
+
+/* Input focus and disabled styles */
+input:focus, select:focus {
+  outline: none;
+}
+
+/* File input hover effect */
+input[type="file"]::file-selector-button:hover {
+  background-color: #dbeafe;
+}
+
+/* Disabled button styles */
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Smooth transitions for form fields */
+input, select {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Animation for step indicator */
+.step-indicator {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Loading spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  border: 2px solid white;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}

@@ -17,41 +17,48 @@ import { PaymentsComponent } from './B2B/payments/payments.component';
 import { RegisterB2bComponent } from './Shared/Auth/register-b2b/register-b2b.component';
 import { IndexB2bComponent } from './B2B/index-b2b/index-b2b.component';
 import { DashboardB2bComponent } from './B2B/dashboard-b2b/dashboard-b2b.component';
-
+import { LoginComponent } from './Shared/Auth/login/login.component';
+import { MerchantsComponent } from './B2B/merchants/merchants.component';
+import { OnboardingComponent } from './B2B/onboarding/onboarding.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 
-  { path: 'home', component: HomeComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'register-form', component: RegisterFormComponent },
-  { path: 'verification', component: VerificationComponent },
-  { path: 'register-b2b', component: RegisterB2bComponent },
+  { path: 'home', component: HomeComponent, data: { title: 'Home' } },
+  { path: 'register', component: RegisterComponent, data: { title: 'Register' } },
+  { path: 'register-form', component: RegisterFormComponent, data: { title: 'Register Form' } },
+  { path: 'verification', component: VerificationComponent, data: { title: 'Verification' } },
+  { path: 'register-b2b', component: RegisterB2bComponent, data: { title: 'B2B Registration' } },
+  { path: 'Onboarding', component: OnboardingComponent, data: { title: 'Onboarding' } },
+  { path: 'login', component: LoginComponent, data: { title: 'Login' } },
 
 
   {
     path: 'personal',
     component: DashboardComponent,
+    data: { title: 'Personal Dashboard' },
     children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Default child route
-      { path: 'dashboard', component: IndexComponent },
-      { path: 'my-cards', component: MyCardsComponent },
-      { path: 'add-card', component: AddCardComponent }, // Example child route
-      { path: 'activity', component: ActivityComponent },
-      { path: 'notifications', component: NotificationsComponent },
-      { path: 'settings', component: SettingsComponent },
-      { path: 'send-money', component: SendMoneyComponent },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: IndexComponent, data: { title: 'Dashboard' } },
+      { path: 'my-cards', component: MyCardsComponent, data: { title: 'My Cards' } },
+      { path: 'add-card', component: AddCardComponent, data: { title: 'Add Card' } },
+      { path: 'activity', component: ActivityComponent, data: { title: 'Activity' } },
+      { path: 'notifications', component: NotificationsComponent, data: { title: 'Notifications' } },
+      { path: 'settings', component: SettingsComponent, data: { title: 'Settings' } },
+      { path: 'send-money', component: SendMoneyComponent, data: { title: 'Send Money' } },
     ]
   },
   {
     path: 'b2b',
     component: DashboardB2bComponent,
+    data: { title: 'Dashboard' },
     children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Default child route
-      { path: 'dashboard', component: IndexB2bComponent },
-      { path: 'analytics', component: AnalitycsComponent },
-      { path: 'wallet', component: WalletComponent }, // Example child route
-      { path: 'payments', component: PaymentsComponent },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: IndexB2bComponent, data: { title: 'Dashboard' } },
+      { path: 'analytics', component: AnalitycsComponent, data: { title: 'Analytics' } },
+      { path: 'wallet', component: WalletComponent, data: { title: 'Wallet' } },
+      { path: 'payments', component: PaymentsComponent, data: { title: 'Payments' } },
+      { path: 'merchants', component: MerchantsComponent, data: { title: 'Merchants' } },
 
     ]
   }

@@ -1,0 +1,150 @@
+<div class="country-selector relative" (clickOutside)="onClickOutside($event)">
+  <!-- Label -->
+  <label class="block text-sm font-medium text-font_color mb-2">
+    {{ label }}
+    <span *ngIf="required" class="text-red-500 ml-1">*</span>
+  </label>
+
+  <!-- Main Selector Button -->
+  <div class="relative">
+    <button type="button" (click)="toggleDropdown()" (keydown)="onKeyDown($event)" [disabled]="disabled"
+      class="w-full px-4 py-3 border rounded-lg text-left focus:ring-2 focus:ring-purple_dark focus:border-purring-purple_dark transition-all duration-200 h-12 bg-white flex items-center justify-between"
+      [ngClass]="{
+        'border-gray_secondary hover:border-gray-400': !hasError() && !disabled,
+        'border-red-500': hasError(),
+        'border-gray_secondary bg-purple_light/20 cursor-not-allowed': disabled,
+        'ring-2 ring-purple_dark border-purring-purple_dark': isOpen
+      }" [attr.aria-expanded]="isOpen" [attr.aria-haspopup]="true" aria-label="Select country">
+      <div class="flex items-center space-x-3 flex-1 min-w-0">
+        <!-- Selected Country Flag -->
+        <div *ngIf="selectedCountry" class="flex-shrink-0">
+          <img [src]="selectedCountry.logo" [alt]="selectedCountry.name + ' flag'"
+            class="w-6 h-4 object-cover rounded-sm shadow-sm" (error)="handleImageError($event)">
+        </div>
+
+        <!-- Placeholder Icon -->
+        <div *ngIf="!selectedCountry" class="flex-shrink-0">
+          <svg class="w-6 h-4 text-gray_secondary" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+          </svg>
+        </div>
+
+        <!-- Country Name and Details -->
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center space-x-2">
+            <span class="block truncate font-medium" [ngClass]="{
+                'text-font_color': selectedCountry,
+                'text-gray_secondary': !selectedCountry
+              }">
+              {{ getDisplayText() }}
+            </span>
+            <span *ngIf="selectedCountry" class="text-sm text-gray_secondary font-mono">
+              +{{ selectedCountry.code }}
+            </span>
+          </div>
+          <div *ngIf="selectedCountry" class="text-xs text-gray_secondary truncate">
+            {{ selectedCountry.currency }} • {{ selectedCountry.timezone }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Dropdown Arrow -->
+      <div class="flex-shrink-0 ml-2">
+        <svg class="w-5 h-5 text-gray_secondary transition-transform duration-200" [ngClass]="{ 'rotate-180': isOpen }"
+          fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+    </button>
+
+    <!-- Dropdown Menu -->
+    <div *ngIf="isOpen"
+      class="absolute z-50 w-full mt-1 bg-white border border-gray_secondary rounded-lg shadow-lg max-h-80 overflow-hidden"
+      [@slideDown]>
+
+      <!-- Search Input -->
+      <div class="p-3 border-b border-purple_light/50 bg-purple_light/20">
+        <div class="relative">
+          <svg class="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray_secondary" fill="none"
+            stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input id="country-search" type="text" [(ngModel)]="searchTerm" (input)="onSearchChange($event)"
+            (keydown)="onKeyDown($event)"
+            class="w-full pl-10 pr-4 py-2 text-sm border border-gray_secondary rounded-md  bg-white text-font_color">
+        </div>
+      </div>
+
+      <!-- Countries List -->
+      <div class="overflow-y-auto max-h-64">
+        <div *ngIf="filteredCountries.length === 0" class="p-4 text-center text-gray_secondary text-sm">
+          No countries found
+        </div>
+
+        <button *ngFor="let country of filteredCountries; let i = index" type="button" (click)="selectCountry(country)"
+          class="country-option w-full px-4 py-3 text-left hover:bg-purple_light/20 focus:bg-purple_light/20 focus:outline-none transition-colors duration-150 border-b border-purple_light/50 last:border-b-0"
+          [ngClass]="{
+            'highlighted bg-purple_medium/30': i === highlightedIndex,
+            'bg-purple_medium/20': selectedCountry?.id === country.id
+          }">
+          <div class="flex items-center space-x-3">
+            <!-- Country Flag -->
+            <div class="flex-shrink-0">
+              <img [src]="country.logo" [alt]="country.name + ' flag'"
+                class="w-8 h-5 object-cover rounded-sm shadow-sm border border-gray_secondary"
+                (error)="handleImageError($event)">
+            </div>
+
+            <!-- Country Info -->
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between">
+                <span class="font-medium text-font_color truncate">{{ country.name }}</span>
+                <span class="text-sm text-gray_secondary font-mono ml-2">+{{ country.code }}</span>
+              </div>
+              <div class="text-xs text-gray_secondary mt-0.5">
+                {{ country.currency }} • {{ country.timezone.split('/')[1] }}
+              </div>
+            </div>
+
+            <!-- Selected Indicator -->
+            <div *ngIf="selectedCountry?.id === country.id" class="flex-shrink-0">
+              <svg class="w-5 h-5 text-purring-purple_dark" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+        </button>
+      </div>
+
+      <!-- Popular Countries Section (Optional) -->
+      <div *ngIf="!searchTerm && filteredCountries.length > 10"
+        class="border-t border-purple_light/50 bg-purple_light/20 p-2">
+        <div class="text-xs text-gray_secondary px-2 py-1 font-medium">Popular Countries</div>
+        <div class="grid grid-cols-4 gap-1">
+          <button *ngFor="let country of filteredCountries.slice(0, 8)" type="button" (click)="selectCountry(country)"
+            class="p-2 rounded hover:bg-white transition-colors duration-150 flex flex-col items-center space-y-1"
+            [title]="country.name">
+            <img [src]="country.logo" [alt]="country.name + ' flag'" class="w-6 h-4 object-cover rounded-sm shadow-sm"
+              (error)="handleImageError($event)">
+            <span class="text-xs text-gray_secondary truncate w-full text-center">{{ country.name.split(' ')[0]
+              }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="hasError()" class="text-red-500 text-xs mt-1 flex items-center space-x-1">
+    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+      <path fill-rule="evenodd"
+        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+        clip-rule="evenodd" />
+    </svg>
+    <span>{{ error }}</span>
+  </div>
+</div>

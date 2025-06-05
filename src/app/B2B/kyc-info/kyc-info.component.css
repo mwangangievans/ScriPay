@@ -1,0 +1,43 @@
+.text-_red {
+  color: #dc2626;
+}
+
+.text-_green {
+  color: #16a34a;
+}
+
+.bg-highlight_primary {
+  background-color: #3b82f6;
+}
+
+.text-highlight_primary {
+  color: #3b82f6;
+}
+
+.bg-input_bg {
+  background-color: #f9fafb;
+}
+
+.text-font_color {
+  color: #1f2937;
+}
+
+.placeholder-inputPlaceholderColor::placeholder {
+  color: #9ca3af;
+}
+
+.text-gray_secondary {
+  color: #6b7280;
+}
+
+.border-_red {
+  border-color: #dc2626;
+}
+
+.focus\:ring-highlight_primary:focus {
+  --tw-ring-color: #3b82f6;
+}
+
+.focus\:border-highlight_primary:focus {
+  border-color: #3b82f6;
+}

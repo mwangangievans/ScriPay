@@ -6,7 +6,7 @@ module.exports = {
     "./src/**/*.{html, ts}",
     "./node_modules/flowbite/**/*.js"
   ],
- 
+
   theme: {
     screens: {
       'sm': '640px',
@@ -25,8 +25,8 @@ module.exports = {
       // => @media (min-width: 1536px) { ... }
     },
     extend: {
-      
-      colors: { 
+
+      colors: {
         'purple_dark': '#6A2CE5',
         'purple_medium': '#A9A3F5',
         'purple_light': '#D4D1FA',
@@ -35,10 +35,10 @@ module.exports = {
         'gray_secondary': '#696f8c',
         'highlight_primary': '#0085FF',
         '_red': '#FF3363',
-        '_green': '#6CBC6E'
-
-
-
+        '_green': '#6CBC6E',
+        'input_bg': '#ECF2F7',
+        'inputPlaceholderColor': '#7B8389',
+        'inputLabelColor': '#455360',
       },
       fontFamily: {
         sans: ['Poppins', ...fontFamily.sans],

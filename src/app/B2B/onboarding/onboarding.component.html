@@ -1,0 +1,110 @@
+<div class="min-h-screen py-12 px-4 bg-purple_light/20">
+  <div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-bold text-font_color mb-4">Welcome to Our Platform</h1>
+      <p class="text-xl text-gray_secondary">Let's get your account set up in just a few steps</p>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="mb-12">
+      <div class="flex items-center justify-between mb-4">
+        <ng-container *ngFor="let step of steps; let i = index">
+          <div class="flex items-center">
+            <div class="flex flex-col items-center">
+              <div
+                class="step-indicator w-12 h-12 rounded-full flex items-center justify-center  transition-all duration-300"
+                [ngClass]="getStepClasses(step)">
+                <ng-container *ngIf="completedSteps.includes(step.id); else stepIcon">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                </ng-container>
+                <ng-template #stepIcon>
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    *ngIf="step.icon === 'Building2'">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m-2 0h18M9 7h1m0 4h1m4-4h1m0 4h1"></path>
+                  </svg>
+                </ng-template>
+              </div>
+              <div class="mt-2 text-center">
+                <p class="text-sm font-medium"
+                  [ngClass]="{'text-font_color': currentStep === step.id, 'text-gray_secondary': currentStep !== step.id}">
+                  {{ step.title }}
+                </p>
+                <p class="text-xs text-gray_secondary hidden sm:block">{{ step.description }}</p>
+              </div>
+            </div>
+            <div *ngIf="i < steps.length - 1" class="flex-1 h-0.5 mx-4 transition-all duration-300 rounded-full"
+              [ngClass]="{'bg-highlight_primary': completedSteps.includes(step.id), 'bg-gray_secondary': !completedSteps.includes(step.id)}">
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- Progress percentage -->
+      <div class="w-full bg-purple_medium/20 rounded-full h-2">
+        <div class="bg-gradient-to-r from-purple_dark to-bright_sky_blue h-2 rounded-full transition-all duration-500"
+          [ngStyle]="{'width': progressPercentage + '%'}"></div>
+      </div>
+      <div class="text-right mt-2">
+        <span class="text-sm text-gray_secondary">{{ completedSteps.length }} of {{ steps.length }} completed</span>
+      </div>
+    </div>
+
+    <!-- Step Content -->
+    <div class="shadow-xl border-0 bg-white/80 backdrop-blur-sm rounded-lg">
+      <div class="p-8">
+        <app-merchants-info *ngIf="currentStep === 1" [form]="MerchantInfoForm" [selectedLogo]="selectedLogo"
+          (onSubmit)="submitStep(1)" (onFileUpload)="handleFileUpload($event)"></app-merchants-info>
+      </div>
+      <div class="p-8">
+
+        <app-kyc-info *ngIf="currentStep === 2" [form]="kycInfoForm" (onSubmit)="submitStep(2)"></app-kyc-info>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="flex justify-between items-center mt-8">
+    <button type="button" (click)="goToPreviousStep()" [disabled]="currentStep === 1"
+      class="h-12 px-6 border border-gray_secondary rounded-md text-font_color hover:bg-purple_medium/20 transition-all duration-300 flex items-center">
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+      </svg>
+      Previous
+    </button>
+
+    <div class="flex items-center space-x-2">
+      <button *ngIf="currentStep < steps.length" type="button" (click)="submitStep(currentStep)"
+        [disabled]="!isStepValid() || isLoading"
+        class="h-12 px-8 bg-gradient-to-r text-white hover:opacity-90 transition-all duration-300 rounded-md flex items-center"
+        [ngClass]="steps[currentStep - 1].color">
+        <div *ngIf="isLoading" class="w-5 h-5 spinner mr-2"></div>
+        <span *ngIf="!isLoading">Next Step</span>
+        <svg *ngIf="!isLoading" class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+      </button>
+
+      <button *ngIf="currentStep === steps.length" type="button" (click)="submitStep(currentStep)"
+        [disabled]="!isStepValid() || isLoading"
+        class="h-12 px-8 bg-gradient-to-r from-purple_dark to-bright_sky_blue text-white hover:opacity-90 transition-all duration-300 rounded-md flex items-center">
+        <div *ngIf="isLoading" class="w-5 h-5 spinner mr-2"></div>
+        <span *ngIf="!isLoading">Complete Setup</span>
+        <svg *ngIf="!isLoading" class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Help Text -->
+  <div class="text-center mt-8">
+    <p class="text-sm text-gray_secondary">
+      Need help? <a href="#" class="text-highlight_primary hover:underline">Contact our support team</a>
+    </p>
+  </div>
+</div>

@@ -1,6 +1,23 @@
+/* @import 'swiper/css'; */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+/* In styles.css */
+/* @import 'swiper/css'; */
+/* @import 'swiper/css/navigation'; */
+/* @import 'swiper/css/pagination'; */
+/* @import 'swiper/css/autoplay'; */
+
+
+@layer base {
+  html, body {
+    @apply font-sans;
+  }
+}
 
 /* custom styles below */
 app-text-input {
@@ -14,4 +31,33 @@ app-text-input {
 
 input {
   padding-left: 14px !important;
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+:root {
+  --sp-primary: #6C2BD9;
+  --sp-accent: #8D36FE;
+  --sp-sidebar-bg: #25014A;
+  --sp-light-bg: #F6F7FB;
+  --sp-success: #00C851;
+  --sp-error: #FF4444;
+  --sp-grey-text: #9E9E9E;
+}
+
+body {
+  background-color: var(--sp-light-bg);
+  font-family: 'Inter', sans-serif;
+  margin: 0;
 }
