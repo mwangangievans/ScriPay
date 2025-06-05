@@ -344,9 +344,10 @@
   <div class="flex flex-col justify-center items-start md:w-1/2 p-8 md:p-16 bg-[#FFFFFF] relative">
     <div class="w-full ">
       <!-- Moved this element to be absolute positioned at top right -->
-      <p class="text-[#6B7280] text-sm mb-6  text-right absolute top-8 right-8 md:top-16 md:right-16">
+      <p [routerLink]="'/login'"
+        class="text-[#6B7280] text-sm mb-6  text-right absolute top-8 right-8 md:top-16 md:right-16">
         Already have an account?
-        <a class="text-[#5B3AFF] font-semibold hover:underline" href="#">
+        <a class="text-[#5B3AFF] font-semibold hover:underline cursor-pointer">
           Sign In
         </a>
       </p>

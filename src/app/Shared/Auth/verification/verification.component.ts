@@ -10,7 +10,6 @@ import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { otpVerificationData, UserRegistration } from '../../../interface';
 import { LocalstorageService } from '../../../service/localstorage.service';
-import { VerificationService } from '../../../service/verification.service';
 import { OtpInputComponent } from "../../Custom/otp-input/otp-input.component";
 import { HttpService } from '../../../service/http.service';
 import { LoaderService } from '../../../service/loader.service';
@@ -38,7 +37,6 @@ export class VerificationComponent implements OnInit {
   constructor(
     private router: Router,
     private localStorageService: LocalstorageService,
-    private verificationService: VerificationService,
     private httpService: HttpService,
     private loaderService: LoaderService,
 
@@ -91,7 +89,8 @@ export class VerificationComponent implements OnInit {
 
     this.subscription = this.httpService
       .post<any>('authentication/verify-code', verificationData, {
-        showSuccessNotification: true
+        showSuccessNotification: true,
+        skipAuth: true
       })
       .subscribe({
         next: (res: any) => {
@@ -157,7 +156,8 @@ export class VerificationComponent implements OnInit {
 
     this.subscription = this.httpService
       .post<any>('authentication/request-code', verificationData, {
-        showSuccessNotification: true
+        showSuccessNotification: true,
+        skipAuth: false
       })
       .subscribe({
         next: (res: any) => {

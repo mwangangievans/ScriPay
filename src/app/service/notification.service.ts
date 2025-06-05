@@ -10,15 +10,17 @@ export class NotificationService {
     width: '420px',
     position: 'right-top',
     distance: '20px',
-    opacity: 1,
-    borderRadius: '8px',
+    opacity: 0.95,
+    borderRadius: '10px',
     timeout: 5000,
     fontSize: '16px',
-    fontFamily: 'Segoe UI, Roboto, Helvetica, Arial, sans-serif',
+    fontFamily: '"Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
     cssAnimationStyle: 'fade',
+    cssAnimationDuration: 400,
     clickToClose: true,
     pauseOnHover: true,
     showOnlyTheLastOne: true,
+    useIcon: true,
   };
 
   constructor() { }
@@ -27,52 +29,67 @@ export class NotificationService {
     return message ?? fallback ?? '';
   }
 
-  private initStyle(type: 'success' | 'failure' | 'info' | 'warning'): void {
+  private initStyle(type: 'success' | 'failure' | 'info' | 'warning'): INotifyOptions {
     let styleOptions: Partial<INotifyOptions> = {};
 
     switch (type) {
       case 'success':
         styleOptions = {
+          cssAnimationStyle: 'zoom', // Sweet zoom animation for success
+          cssAnimationDuration: 600,
           success: {
-            background: '#e6f4ea',
-            textColor: '#237804',
-            notiflixIconColor: '#237804',
+            background: 'linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)',
+            textColor: '#1a3c34',
+            notiflixIconColor: '#1a3c34',
+            fontAwesomeIconColor: '#1a3c34',
+            backOverlayColor: 'rgba(0, 128, 0, 0.1)',
           },
         };
         break;
       case 'failure':
         styleOptions = {
+          timeout: 7000, // Extended timeout for user to clear
           failure: {
-            background: '#fff1f0',
-            textColor: '#a8071a',
-            notiflixIconColor: '#a8071a',
+            background: 'linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%)',
+            textColor: '#3c1014',
+            notiflixIconColor: '#3c1014',
+            fontAwesomeIconColor: '#3c1014',
+            backOverlayColor: 'rgba(255, 0, 0, 0.1)',
           },
         };
         break;
       case 'info':
         styleOptions = {
           info: {
-            background: '#e6f7ff',
-            textColor: '#096dd9',
-            notiflixIconColor: '#096dd9',
+            background: 'linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)',
+            textColor: '#1e3a8a',
+            notiflixIconColor: '#1e3a8a',
+            fontAwesomeIconColor: '#1e3a8a',
+            backOverlayColor: 'rgba(0, 0, 255, 0.1)',
           },
         };
         break;
       case 'warning':
         styleOptions = {
+          timeout: 7000, // Extended timeout for user to clear
           warning: {
-            background: '#fffbe6',
-            textColor: '#ad8b00',
-            notiflixIconColor: '#ad8b00',
+            background: 'linear-gradient(135deg, #ffec99 0%, #ffdb4d 100%)',
+            textColor: '#4a2c00',
+            notiflixIconColor: '#4a2c00',
+            fontAwesomeIconColor: '#4a2c00',
+            backOverlayColor: 'rgba(255, 165, 0, 0.1)',
           },
         };
         break;
     }
 
-    Notify.init({
+    const options = {
       ...this.baseOptions,
       ...styleOptions,
-    });
+    };
+
+    Notify.init(options);
+    return options;
   }
 
   showSuccess(message?: string, title?: string): void {
@@ -94,5 +111,4 @@ export class NotificationService {
     this.initStyle('warning');
     Notify.warning(this.getMessage(message, title));
   }
-
 }

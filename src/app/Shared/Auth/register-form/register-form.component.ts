@@ -71,9 +71,6 @@ export class RegisterFormComponent implements OnDestroy {
       this.scrollToFirstError();
       return;
     }
-
-
-
     const otpVerificationData = {
       code: "0000",
       password: this.registerForm.value.password,
@@ -86,7 +83,8 @@ export class RegisterFormComponent implements OnDestroy {
 
     this.subscription = this.httpService
       .post<any>('authentication/register', this.registerForm.value, {
-        showSuccessNotification: true
+        showSuccessNotification: true,
+        skipAuth: true
       })
       .subscribe({
         next: (res: any) => {

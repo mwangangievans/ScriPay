@@ -3,15 +3,15 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 import { curveCardinal } from 'd3-shape';
-import { WindowService } from '../../Service/window.service';
 import { RouterModule } from '@angular/router';
+import { WindowService } from '../../service/window.service';
 
 
 
 @Component({
   selector: 'app-activity',
   standalone: true,
-  imports: [NgxChartsModule , RouterModule],
+  imports: [NgxChartsModule, RouterModule],
   templateUrl: './activity.component.html',
   styleUrl: './activity.component.css'
 })
@@ -40,11 +40,11 @@ export class ActivityComponent {
 
 
 
-  constructor(private sanitizer: DomSanitizer ,private windowService: WindowService) {
+  constructor(private sanitizer: DomSanitizer, private windowService: WindowService) {
     const win = this.windowService.nativeWindow;
-  if (win) {
-    console.log(win.innerHeight);
-  }
+    if (win) {
+      console.log(win.innerHeight);
+    }
   }
 
   ngOnInit(): void {
