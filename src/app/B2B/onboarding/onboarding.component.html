@@ -1,9 +1,9 @@
-<div class="min-h-screen py-12 px-4 bg-gray-100">
+<div class="min-h-screen py-12 px-4 bg-purple_light/20">
   <div class="max-w-4xl mx-auto">
     <!-- Header -->
     <div class="text-center mb-12">
-      <h1 class="text-4xl font-bold text-gray-900 mb-4">Welcome to Our Platform</h1>
-      <p class="text-xl text-gray-600">Let's get your account set up in just a few steps</p>
+      <h1 class="text-4xl font-bold text-font_color mb-4">Welcome to Our Platform</h1>
+      <p class="text-xl text-gray_secondary">Let's get your account set up in just a few steps</p>
     </div>
 
     <!-- Progress Bar -->
@@ -13,8 +13,8 @@
           <div class="flex items-center">
             <div class="flex flex-col items-center">
               <div
-                class="step-indicator w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-300"
-                [ngClass]="getStepClass(step)">
+                class="step-indicator w-12 h-12 rounded-full flex items-center justify-center  transition-all duration-300"
+                [ngClass]="getStepClasses(step)">
                 <ng-container *ngIf="completedSteps.includes(step.id); else stepIcon">
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -26,426 +26,85 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m-2 0h18M9 7h1m0 4h1m4-4h1m0 4h1"></path>
                   </svg>
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    *ngIf="step.icon === 'User'">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zm-4 7a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                  </svg>
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    *ngIf="step.icon === 'CreditCard'">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
-                  </svg>
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    *ngIf="step.icon === 'Shield'">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 0 01-8.618 3.04.12 02 0 003 9c0 5.591 3.824 10.29.2 9 0 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
-                    </path>
-                  </svg>
                 </ng-template>
               </div>
               <div class="mt-2 text-center">
                 <p class="text-sm font-medium"
-                  [ngClass]="{'text-gray-900': currentStep === step.id, 'text-gray-500': currentStep !== step.id}">
+                  [ngClass]="{'text-font_color': currentStep === step.id, 'text-gray_secondary': currentStep !== step.id}">
                   {{ step.title }}
                 </p>
-                <p class="text-xs text-gray-400 hidden sm:block">{{ step.description }}</p>
+                <p class="text-xs text-gray_secondary hidden sm:block">{{ step.description }}</p>
               </div>
             </div>
             <div *ngIf="i < steps.length - 1" class="flex-1 h-0.5 mx-4 transition-all duration-300 rounded-full"
-              [ngClass]="{'bg-green-500': completedSteps.includes(step.id), 'bg-gray-600': !completedSteps.includes(step.id)}">
+              [ngClass]="{'bg-highlight_primary': completedSteps.includes(step.id), 'bg-gray_secondary': !completedSteps.includes(step.id)}">
             </div>
           </div>
         </ng-container>
-
       </div>
 
       <!-- Progress percentage -->
-      <div class="w-full bg-gray-200 rounded-full h-2">
-        <div class="bg-gradient-to-r from-emerald-500 to-teal-600 h-2 rounded-full transition-all duration-500"
-          [ngStyle]="{'width': (completedSteps.length / steps.length * 100) + '%'}"></div>
+      <div class="w-full bg-purple_medium/20 rounded-full h-2">
+        <div class="bg-gradient-to-r from-purple_dark to-bright_sky_blue h-2 rounded-full transition-all duration-500"
+          [ngStyle]="{'width': progressPercentage + '%'}"></div>
       </div>
       <div class="text-right mt-2">
-        <span class="text-sm text-gray-600">{{ completedSteps.length }} of {{ steps.length }} completed</span>
+        <span class="text-sm text-gray_secondary">{{ completedSteps.length }} of {{ steps.length }} completed</span>
       </div>
     </div>
 
     <!-- Step Content -->
     <div class="shadow-xl border-0 bg-white/80 backdrop-blur-sm rounded-lg">
       <div class="p-8">
-        <div *ngIf="currentStep === 1" [@fadeSlide]>
-          <form [formGroup]="businessInfoForm" (ngSubmit)="submitStep(1)" class="space-y-6">
-            <div class="text-center mb-8">
-              <div
-                class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 flex items-center justify-center mb-4 shadow-lg">
-                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m-2 0h18M9 7h1m0 4h1m4-4h1m0 4h1"></path>
-                </svg>
-              </div>
-              <h2 class="text-2xl font-bold text-gray-900 mb-2">Business Information</h2>
-              <p class="text-gray-600">Let's start with your business details</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div class="space-y-2">
-                <label for="businessName" class="block text-sm font-medium text-gray-700">Business Name *</label>
-                <input id="businessName" formControlName="businessName"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 h-12"
-                  [ngClass]="{'border-red-500': businessInfoForm.get('businessName')?.hasError('required') && businessInfoForm.get('businessName')?.touched}"
-                  placeholder="Enter your business name">
-                <div
-                  *ngIf="businessInfoForm.get('businessName')?.hasError('required') && businessInfoForm.get('businessName')?.touched"
-                  class="text-red-500 text-xs mt-1">Business name is required</div>
-              </div>
-
-              <div class="space-y-2">
-                <label for="businessEmail" class="block text-sm font-medium text-gray-700">Business Email *</label>
-                <input id="businessEmail" formControlName="businessEmail" type="email"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 h-12"
-                  [ngClass]="{'border-red-500': (businessInfoForm.get('businessEmail')?.hasError('required') || businessInfoForm.get('businessEmail')?.hasError('email')) && businessInfoForm.get('businessEmail')?.touched}"
-                  placeholder="business@example.com">
-                <div
-                  *ngIf="businessInfoForm.get('businessEmail')?.hasError('required') && businessInfoForm.get('businessEmail')?.touched"
-                  class="text-red-500 text-xs mt-1">Email is required</div>
-                <div
-                  *ngIf="businessInfoForm.get('businessEmail')?.hasError('email') && businessInfoForm.get('businessEmail')?.touched"
-                  class="text-red-500 text-xs mt-1">Invalid email format</div>
-              </div>
-
-              <div class="space-y-2">
-                <label for="businessAddress" class="block text-sm font-medium text-gray-700">Business Address *</label>
-                <input id="businessAddress" formControlName="businessAddress"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 h-12"
-                  [ngClass]="{'border-red-500': businessInfoForm.get('businessAddress')?.hasError('required') && businessInfoForm.get('businessAddress')?.touched}"
-                  placeholder="Enter your business address">
-                <div
-                  *ngIf="businessInfoForm.get('businessAddress')?.hasError('required') && businessInfoForm.get('businessAddress')?.touched"
-                  class="text-red-500 text-xs mt-1">Address is required</div>
-              </div>
-
-              <div class="space-y-2">
-                <label for="businessLocation" class="block text-sm font-medium text-gray-700">Location *</label>
-                <input id="businessLocation" formControlName="businessLocation"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 h-12"
-                  [ngClass]="{'border-red-500': businessInfoForm.get('businessLocation')?.hasError('required') && businessInfoForm.get('businessLocation')?.touched}"
-                  placeholder="City, State/Province">
-                <div
-                  *ngIf="businessInfoForm.get('businessLocation')?.hasError('required') && businessInfoForm.get('businessLocation')?.touched"
-                  class="text-red-500 text-xs mt-1">Location is required</div>
-              </div>
-            </div>
-
-            <div class="space-y-2">
-              <label for="logo-upload" class="block text-sm font-medium text-gray-700">Business Logo (Optional)</label>
-              <div
-                class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-emerald-400 transition-colors">
-                <svg class="w-8 h-8 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M7 16V8m0 0l-4 4m4-4l4 4m8 4v6m-6-3h12"></path>
-                </svg>
-                <p class="text-sm text-gray-600 mb-2">Click to upload or drag and drop</p>
-                <p class="text-xs text-gray-500">PNG, JPG up to 5MB</p>
-                <input #fileInput type="file" accept="image/*" (change)="handleFileUpload($event)" class="hidden"
-                  id="logo-upload">
-                <button type="button"
-                  class="mt-2 px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
-                  (click)="triggerFileInput()">
-                  Choose File
-                </button>
-                <p *ngIf="selectedLogo" class="text-sm text-emerald-600 mt-2">✓ {{ selectedLogo.name }}</p>
-              </div>
-            </div>
-          </form>
-        </div>
-
-        <div *ngIf="currentStep === 2" [@fadeSlide]>
-          <form [formGroup]="ownerInfoForm" (ngSubmit)="submitStep(2)" class="space-y-6">
-            <div class="text-center mb-8">
-              <div
-                class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-r from-violet-500 to-purple-600 flex items-center justify-center mb-4 shadow-lg">
-                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zm-4 7a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                </svg>
-              </div>
-              <h2 class="text-2xl font-bold text-gray-900 mb-2">Owner Details</h2>
-              <p class="text-gray-600">Personal information for verification</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div class="space-y-2">
-                <label for="country" class="block text-sm font-medium text-gray-700">Country *</label>
-                <select id="country" formControlName="country"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 h-12 appearance-none bg-white"
-                  [ngClass]="{'border-red-500': ownerInfoForm.get('country')?.hasError('required') && ownerInfoForm.get('country')?.touched}">
-                  <option value="" disabled selected>Select your country</option>
-                  <option *ngFor="let country of countries" [value]="country.value">{{ country.label }}</option>
-                </select>
-                <div *ngIf="ownerInfoForm.get('country')?.hasError('required') && ownerInfoForm.get('country')?.touched"
-                  class="text-red-500 text-xs mt-1">Country is required</div>
-              </div>
-
-              <div class="space-y-2">
-                <label for="firstName" class="block text-sm font-medium text-gray-700">First Name *</label>
-                <input id="firstName" formControlName="firstName"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 h-12"
-                  [ngClass]="{'border-red-500': ownerInfoForm.get('firstName')?.hasError('required') && ownerInfoForm.get('firstName')?.touched}"
-                  placeholder="Enter your first name">
-                <div
-                  *ngIf="ownerInfoForm.get('firstName')?.hasError('required') && ownerInfoForm.get('firstName')?.touched"
-                  class="text-red-500 text-xs mt-1">First name is required</div>
-              </div>
-
-              <div class="space-y-2">
-                <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name *</label>
-                <input id="lastName" formControlName="lastName"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 h-12"
-                  [ngClass]="{'border-red-500': ownerInfoForm.get('lastName')?.hasError('required') && ownerInfoForm.get('lastName')?.touched}"
-                  placeholder="Enter your last name">
-                <div
-                  *ngIf="ownerInfoForm.get('lastName')?.hasError('required') && ownerInfoForm.get('lastName')?.touched"
-                  class="text-red-500 text-xs mt-1">Last name is required</div>
-              </div>
-
-              <div class="space-y-2">
-                <label for="dob" class="block text-sm font-medium text-gray-700">Date of Birth *</label>
-                <input id="dob" formControlName="dob" type="date"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 h-12"
-                  [ngClass]="{'border-red-500': ownerInfoForm.get('dob')?.hasError('required') && ownerInfoForm.get('dob')?.touched}">
-                <div *ngIf="ownerInfoForm.get('dob')?.hasError('required') && ownerInfoForm.get('dob')?.touched"
-                  class="text-red-500 text-xs mt-1">Date of birth is required</div>
-              </div>
-
-              <div class="space-y-2">
-                <label for="nationalId" class="block text-sm font-medium text-gray-700">National ID *</label>
-                <input id="nationalId" formControlName="nationalId"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 h-12"
-                  [ngClass]="{'border-red-500': ownerInfoForm.get('nationalId')?.hasError('required') && ownerInfoForm.get('nationalId')?.touched}"
-                  placeholder="Enter your national ID">
-                <div
-                  *ngIf="ownerInfoForm.get('nationalId')?.hasError('required') && ownerInfoForm.get('nationalId')?.touched"
-                  class="text-red-500 text-xs mt-1">National ID is required</div>
-              </div>
-
-              <div class="space-y-2">
-                <label for="personalEmail" class="block text-sm font-medium text-gray-700">Personal Email *</label>
-                <input id="personalEmail" formControlName="personalEmail" type="email"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 h-12"
-                  [ngClass]="{'border-red-500': (ownerInfoForm.get('personalEmail')?.hasError('required') || ownerInfoForm.get('personalEmail')?.hasError('email')) && ownerInfoForm.get('personalEmail')?.touched}"
-                  placeholder="personal@example.com">
-                <div
-                  *ngIf="ownerInfoForm.get('personalEmail')?.hasError('required') && ownerInfoForm.get('personalEmail')?.touched"
-                  class="text-red-500 text-xs mt-1">Email is required</div>
-                <div
-                  *ngIf="ownerInfoForm.get('personalEmail')?.hasError('email') && ownerInfoForm.get('personalEmail')?.touched"
-                  class="text-red-500 text-xs mt-1">Invalid email format</div>
-              </div>
-
-              <div class="space-y-2 md:col-span-2">
-                <label for="personalPhone" class="block text-sm font-medium text-gray-700">Phone Number *</label>
-                <input id="personalPhone" formControlName="personalPhone" type="tel"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 h-12"
-                  [ngClass]="{'border-red-500': (ownerInfoForm.get('personalPhone')?.hasError('required') || ownerInfoForm.get('personalPhone')?.hasError('pattern')) && ownerInfoForm.get('personalPhone')?.touched}"
-                  placeholder="+1 (555) 123-4567">
-                <div
-                  *ngIf="ownerInfoForm.get('personalPhone')?.hasError('required') && ownerInfoForm.get('personalPhone')?.touched"
-                  class="text-red-500 text-xs mt-1">Phone number is required</div>
-                <div
-                  *ngIf="ownerInfoForm.get('personalPhone')?.hasError('pattern') && ownerInfoForm.get('personalPhone')?.touched"
-                  class="text-red-500 text-xs mt-1">Invalid phone number format</div>
-              </div>
-            </div>
-          </form>
-        </div>
-
-        <div *ngIf="currentStep === 3" [@fadeSlide]>
-          <form [formGroup]="bankInfoForm" (ngSubmit)="submitStep(3)" class="space-y-6">
-            <div class="text-center mb-8">
-              <div
-                class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-r from-orange-500 to-red-500 flex items-center justify-center mb-4 shadow-lg">
-                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
-                </svg>
-              </div>
-              <h2 class="text-2xl font-bold text-gray-900 mb-2">Banking Information</h2>
-              <p class="text-gray-600">Setup your payment and banking details</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div class="space-y-2">
-                <label for="bankName" class="block text-sm font-medium text-gray-700">Bank Name *</label>
-                <input id="bankName" formControlName="bankName"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 h-12"
-                  [ngClass]="{'border-red-500': bankInfoForm.get('bankName')?.hasError('required') && bankInfoForm.get('bankName')?.touched}"
-                  placeholder="Enter your bank name">
-                <div *ngIf="bankInfoForm.get('bankName')?.hasError('required') && bankInfoForm.get('bankName')?.touched"
-                  class="text-red-500 text-xs mt-1">Bank name is required</div>
-              </div>
-
-              <div class="space-y-2">
-                <label for="accountNumber" class="block text-sm font-medium text-gray-700">Account Number *</label>
-                <input id="accountNumber" formControlName="accountNumber"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 h-12"
-                  [ngClass]="{'border-red-500': bankInfoForm.get('accountNumber')?.hasError('required') && bankInfoForm.get('accountNumber')?.touched}"
-                  placeholder="Enter account number">
-                <div
-                  *ngIf="bankInfoForm.get('accountNumber')?.hasError('required') && bankInfoForm.get('accountNumber')?.touched"
-                  class="text-red-500 text-xs mt-1">Account number is required</div>
-              </div>
-
-              <div class="space-y-2">
-                <label for="accountName" class="block text-sm font-medium text-gray-700">Account Name *</label>
-                <input id="accountName" formControlName="accountName"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 h-12"
-                  [ngClass]="{'border-red-500': bankInfoForm.get('accountName')?.hasError('required') && bankInfoForm.get('accountName')?.touched}"
-                  placeholder="Enter account holder name">
-                <div
-                  *ngIf="bankInfoForm.get('accountName')?.hasError('required') && bankInfoForm.get('accountName')?.touched"
-                  class="text-red-500 text-xs mt-1">Account name is required</div>
-              </div>
-
-              <div class="space-y-2">
-                <label for="branchCode" class="block text-sm font-medium text-gray-700">Branch Code *</label>
-                <input id="branchCode" formControlName="branchCode"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 h-12"
-                  [ngClass]="{'border-red-500': bankInfoForm.get('branchCode')?.hasError('required') && bankInfoForm.get('branchCode')?.touched}"
-                  placeholder="Enter branch code">
-                <div
-                  *ngIf="bankInfoForm.get('branchCode')?.hasError('required') && bankInfoForm.get('branchCode')?.touched"
-                  class="text-red-500 text-xs mt-1">Branch code is required</div>
-              </div>
-
-              <div class="space-y-2">
-                <label for="currency" class="block text-sm font-medium text-gray-700">Currency *</label>
-                <select id="currency" formControlName="currency"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 h-12 appearance-none bg-white"
-                  [ngClass]="{'border-red-500': bankInfoForm.get('currency')?.hasError('required') && bankInfoForm.get('currency')?.touched}">
-                  <option value="" disabled selected>Select currency</option>
-                  <option *ngFor="let currency of currencies" [value]="currency.value">{{ currency.label }}</option>
-                </select>
-                <div *ngIf="bankInfoForm.get('currency')?.hasError('required') && bankInfoForm.get('currency')?.touched"
-                  class="text-red-500 text-xs mt-1">Currency is required</div>
-              </div>
-
-              <div class="space-y-2">
-                <label for="swiftCode" class="block text-sm font-medium text-gray-700">SWIFT Code (Optional)</label>
-                <input id="swiftCode" formControlName="swiftCode"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 h-12"
-                  placeholder="Enter SWIFT code">
-              </div>
-            </div>
-
-            <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
-              <p class="text-sm text-amber-800">
-                <strong>Note:</strong> Your banking information is encrypted and securely stored. We use bank-level
-                security to protect your data.
-              </p>
-            </div>
-          </form>
-        </div>
-
-        <div *ngIf="currentStep === 4" [@fadeSlide]>
-          <form [formGroup]="authForm" (ngSubmit)="submitStep(4)" class="space-y-6">
-            <div class="text-center mb-8">
-              <div
-                class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 flex items-center justify-center mb-4 shadow-lg">
-                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
-                  </path>
-                </svg>
-              </div>
-              <h2 class="text-2xl font-bold text-gray-900 mb-2">Verification</h2>
-              <p class="text-gray-600">Enter the verification code sent to your email</p>
-            </div>
-
-            <div class="max-w-md mx-auto space-y-6">
-              <div class="text-center">
-                <p class="text-sm text-gray-600 mb-4">
-                  We've sent a 6-digit verification code to
-                  <br />
-                  <strong>{{ email }}</strong>
-                </p>
-              </div>
-
-              <div class="space-y-2">
-                <label for="otp" class="block text-sm font-medium text-gray-700">Verification Code *</label>
-                <input id="otp" formControlName="otp"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 h-12 text-center text-lg tracking-widest"
-                  [ngClass]="{'border-red-500': (authForm.get('otp')?.hasError('required') || authForm.get('otp')?.hasError('pattern')) && authForm.get('otp')?.touched}"
-                  placeholder="Enter 6-digit code" maxlength="6" (input)="sanitizeOtpInput($event)">
-
-                <div *ngIf="authForm.get('otp')?.hasError('required') && authForm.get('otp')?.touched"
-                  class="text-red-500 text-xs mt-1">OTP is required</div>
-                <div *ngIf="authForm.get('otp')?.hasError('pattern') && authForm.get('otp')?.touched"
-                  class="text-red-500 text-xs mt-1">OTP must be a 6-digit number</div>
-              </div>
-
-              <div class="text-center">
-                <button type="button" class="text-sm text-gray-600 hover:underline">Didn't receive the code?
-                  Resend</button>
-              </div>
-
-              <div class="bg-green-50 border border-green-200 rounded-lg p-4">
-                <p class="text-sm text-green-800">
-                  <strong>Almost done!</strong> Once verified, your account will be ready to use.
-                </p>
-              </div>
-            </div>
-          </form>
-        </div>
+        <app-merchants-info *ngIf="currentStep === 1" [form]="MerchantInfoForm" [selectedLogo]="selectedLogo"
+          (onSubmit)="submitStep(1)" (onFileUpload)="handleFileUpload($event)"></app-merchants-info>
       </div>
-    </div>
+      <div class="p-8">
 
-    <!-- Navigation -->
-    <div class="flex justify-between items-center mt-8">
-      <button type="button" (click)="handlePrevious()" [disabled]="currentStep === 1"
-        class="h-12 px-6 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-all duration-300 flex items-center">
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        <app-kyc-info *ngIf="currentStep === 2" [form]="kycInfoForm" (onSubmit)="submitStep(2)"></app-kyc-info>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="flex justify-between items-center mt-8">
+    <button type="button" (click)="goToPreviousStep()" [disabled]="currentStep === 1"
+      class="h-12 px-6 border border-gray_secondary rounded-md text-font_color hover:bg-purple_medium/20 transition-all duration-300 flex items-center">
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+      </svg>
+      Previous
+    </button>
+
+    <div class="flex items-center space-x-2">
+      <button *ngIf="currentStep < steps.length" type="button" (click)="submitStep(currentStep)"
+        [disabled]="!isStepValid() || isLoading"
+        class="h-12 px-8 bg-gradient-to-r text-white hover:opacity-90 transition-all duration-300 rounded-md flex items-center"
+        [ngClass]="steps[currentStep - 1].color">
+        <div *ngIf="isLoading" class="w-5 h-5 spinner mr-2"></div>
+        <span *ngIf="!isLoading">Next Step</span>
+        <svg *ngIf="!isLoading" class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
         </svg>
-        Previous
       </button>
 
-      <div class="flex items-center space-x-2">
-        <button *ngIf="currentStep < steps.length" type="button" (click)="submitStep(currentStep)"
-          [disabled]="!isStepValid() || isLoading"
-          class="h-12 px-8 bg-gradient-to-r text-white hover:opacity-90 transition-all duration-300 rounded-md flex items-center"
-          [ngClass]="steps[currentStep - 1].color">
-          <div *ngIf="isLoading" class="w-5 h-5 spinner mr-2"></div>
-          <span *ngIf="!isLoading">Next Step</span>
-          <svg *ngIf="!isLoading" class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-          </svg>
-          <button *ngIf="currentStep === steps.length" type="button" (click)="submitStep(currentStep)"
-            class="mt-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-50 hover:bg-blue-700 transition-bg-blue-200 rounded-md"
-            (click)="onClick('completeSetup')">
-            Choose File
-          </button>
-          <p *ngIf="completedSteps" class="text-sm text-blue-600 mt-2">✓ {{ completedSteps.length }}</p>
-          <p *ngIf="completedSteps.length" class="text-sm text-emerald-600 mt-2">Completed Steps {{
-            completedSteps.length }}</p>
-        </button>
-
-        <button *ngIf="currentStep === steps.length" type="button" (click)="submitStep(currentStep)"
-          [disabled]="!isStepValid() || isLoading"
-          class="h-12 px-8 bg-gradient-to-r from-green-500 to-emerald600 text-white hover:opacity-90 transition-all duration-300 rounded-md flex items-center">
-          <div *ngIf="isLoading" class="w-5 h-5 spinner mr-2"></div>
-          <span *ngIf="!isLoading">Complete Setup</span>
-          <svg *ngIf="!isLoading" class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-          </svg>
-        </button>
-      </div>
+      <button *ngIf="currentStep === steps.length" type="button" (click)="submitStep(currentStep)"
+        [disabled]="!isStepValid() || isLoading"
+        class="h-12 px-8 bg-gradient-to-r from-purple_dark to-bright_sky_blue text-white hover:opacity-90 transition-all duration-300 rounded-md flex items-center">
+        <div *ngIf="isLoading" class="w-5 h-5 spinner mr-2"></div>
+        <span *ngIf="!isLoading">Complete Setup</span>
+        <svg *ngIf="!isLoading" class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+      </button>
     </div>
+  </div>
 
-    <!-- Help Text -->
-    <div class="text-center mt-8">
-      <p class="text-sm text-gray-500">
-        Need help? <a href="#" class="text-emerald-600 hover:underline">Contact our support team</a>
-      </p>
-    </div>
+  <!-- Help Text -->
+  <div class="text-center mt-8">
+    <p class="text-sm text-gray_secondary">
+      Need help? <a href="#" class="text-highlight_primary hover:underline">Contact our support team</a>
+    </p>
   </div>
 </div>

@@ -7,8 +7,8 @@ import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { HttpService } from '../../service/http.service';
 import { Countries, Merchant, onbordingRequiremnetByCountry, Pagination } from '../B2B.interface';
-import { LocalstorageService } from '../../service/localstorage.service';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { LocalstorageService } from '../../service/localstorage.service';
 
 
 

@@ -1,33 +1,25 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { LocalstorageService } from '../../service/localstorage.service';
 import { CommonModule } from '@angular/common';
+import { FormService } from '../../service/form.service';
+import { Country, Currency, Step } from './onboarding.interface';
+import { MerchantsInfoComponent } from "../merchants-info/merchants-info.component";
+import { KycInfoComponent } from "../kyc-info/kyc-info.component";
+import { LocalstorageService } from '../../service/localstorage.service';
 
-interface StepData {
-  id: number;
-  title: string;
-  description: string;
-  icon: string;
-  color: string;
-}
 
-interface Country {
-  value: string;
-  label: string;
-}
-
-interface Currency {
-  value: string;
-  label: string;
-}
 
 @Component({
   selector: 'app-onboarding',
   templateUrl: './onboarding.component.html',
   styleUrls: ['./onboarding.component.css'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [
+    CommonModule,
+    MerchantsInfoComponent,
+    KycInfoComponent
+  ],
   animations: [
     trigger('fadeSlide', [
       transition(':enter', [
@@ -41,57 +33,45 @@ interface Currency {
   ],
 })
 export class OnboardingComponent implements OnboardingComponent {
-  onClick(arg0: string) {
-    console.log(`Button clicked: ${arg0}`);
-  }
-  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
-
-  steps: StepData[] = [
+  steps: Step[] = [
     {
       id: 1,
-      title: 'Business Information',
+      title: 'Merchant Information',
       description: 'Tell us about your business',
       icon: 'Building2',
-      color: 'from-emerald-500 to-teal-600',
+      color: 'from-purple_dark to-purple_light'
     },
     {
       id: 2,
-      title: 'Owner Details',
-      description: 'Personal information required',
+      title: 'Kyc Details',
+      description: 'Submit kyc documents',
       icon: 'User',
-      color: 'from-violet-500 to-purple-600',
+      color: 'from-violet-500 to-purple-600'
     },
     {
       id: 3,
       title: 'Banking Information',
       description: 'Setup your payment details',
       icon: 'CreditCard',
-      color: 'from-orange-500 to-red-500',
+      color: 'from-orange-500 to-red-500'
     },
     {
       id: 4,
       title: 'Verification',
       description: 'Secure your verification details',
       icon: 'Shield',
-      color: 'from-cyan-500 to-blue-600',
-    },
+      color: 'from-cyan-500 to-blue-600'
+    }
   ];
 
   countries: Country[] = [
     { value: 'us', label: 'United States' },
-    { value: 'uk', label: 'United Kingdom' },
-    { value: 'ca', label: 'Canada' },
-    { value: 'au', label: 'Australia' },
-    { value: 'de', label: 'Germany' },
-    { value: 'fr', label: 'France' },
+    // Other countries...
   ];
 
   currencies: Currency[] = [
     { value: 'usd', label: 'USD - US Dollar' },
-    { value: 'eur', label: 'EUR - Euro' },
-    { value: 'gbp', label: 'GBP - British Pound' },
-    { value: 'cad', label: 'CAD - Canadian Dollar' },
-    { value: 'aud', label: 'AUD - Australian Dollar' },
+    // Other currencies...
   ];
 
   currentStep: number = 1;
@@ -99,58 +79,44 @@ export class OnboardingComponent implements OnboardingComponent {
   isLoading: boolean = false;
   selectedLogo: File | null = null;
   email: string | null = null;
-  businessInfoForm!: FormGroup;
-  ownerInfoForm!: FormGroup;
-  bankInfoForm!: FormGroup;
-  authForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private localStorageService: LocalstorageService) {
-    this.initializeForms();
-  }
+  MerchantInfoForm: FormGroup;
+  kycInfoForm: FormGroup;
+  bankInfoForm: FormGroup;
+  authForm: FormGroup;
 
-  private initializeForms() {
-    this.businessInfoForm = this.fb.group({
-      businessName: ['', Validators.required],
-      businessEmail: ['', [Validators.required, Validators.email]],
-      businessAddress: ['', Validators.required],
-      businessLocation: ['', Validators.required],
-    });
-    this.ownerInfoForm = this.fb.group({
-      country: ['', Validators.required],
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      dob: ['', Validators.required],
-      nationalId: ['', Validators.required],
-      personalEmail: ['', [Validators.required, Validators.email]],
-      personalPhone: ['', [Validators.required, Validators.pattern(/^\d{10,15}$/)]],
-    });
-    this.bankInfoForm = this.fb.group({
-      bankName: ['', Validators.required],
-      accountNumber: ['', Validators.required],
-      accountName: ['', Validators.required],
-      branchCode: ['', Validators.required],
-      currency: ['', Validators.required],
-      swiftCode: [''],
-    });
-    this.authForm = this.fb.group({
-      otp: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
-    });
+  constructor(
+    private formService: FormService,
+    private localStorageService: LocalstorageService
+  ) {
+    this.MerchantInfoForm = this.formService.createMerchantInfoForm();
+    this.kycInfoForm = this.formService.createkycInfoForm();
+    this.bankInfoForm = this.formService.createBankInfoForm();
+    this.authForm = this.formService.createAuthForm();
   }
 
   ngOnInit() {
+    this.loadSavedState();
+  }
+
+  get progressPercentage(): number {
+    return (this.completedSteps.length / this.steps.length) * 100;
+  }
+
+  private loadSavedState() {
     const savedStep = this.localStorageService.get('step');
     if (savedStep) {
       this.currentStep = parseInt(savedStep);
     }
-    this.loadFormData('businessInfoFormData', this.businessInfoForm);
-    this.loadFormData('ownerInfoFormData', this.ownerInfoForm);
+    this.loadFormData('merchantInfoFormData', this.MerchantInfoForm);
+    this.loadFormData('kycInfoFormData', this.kycInfoForm);
     this.loadFormData('bankInfoFormData', this.bankInfoForm);
     this.loadFormData('authFormData', this.authForm);
   }
 
-  private loadFormData(formKey: string, form: FormGroup | undefined) {
+  private loadFormData(formKey: string, form: FormGroup) {
     const savedData = this.localStorageService.get(formKey);
-    if (savedData && form) {
+    if (savedData) {
       try {
         form.setValue(JSON.parse(savedData));
         if (formKey === 'businessInfoFormData' && form.get('businessEmail')?.value) {
@@ -162,25 +128,28 @@ export class OnboardingComponent implements OnboardingComponent {
     }
   }
 
-  saveCurrentState() {
-    this.localStorageService.set('step', this.currentStep.toString());
-    if (this.businessInfoForm) {
-      this.localStorageService.set('businessInfoFormData', JSON.stringify(this.businessInfoForm.value));
-      this.email = this.businessInfoForm.get('businessEmail')?.value || null;
+  async submitStep(step: number) {
+    const form = this.getFormForStep(step);
+    if (form?.invalid) {
+      form.markAllAsTouched();
+      return;
     }
-    if (this.ownerInfoForm) {
-      this.localStorageService.set('ownerInfoForm', JSON.stringify(this.ownerInfoForm.value));
+
+    this.isLoading = true;
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    this.completedSteps = [...this.completedSteps, step];
+    if (this.currentStep < this.steps.length) {
+      this.currentStep++;
     }
-    if (this.bankInfoForm) {
-      this.localStorageService.set('bankInfoForm', JSON.stringify(this.bankInfoForm.value));
-    }
-    if (this.authForm) {
-      this.localStorageService.set('authForm', JSON.stringify(this.authForm.value));
-    }
+    this.saveCurrentState();
+    this.isLoading = false;
   }
 
-  triggerFileInput() {
-    this.fileInput?.nativeElement?.click();
+  goToPreviousStep() {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+      this.saveCurrentState();
+    }
   }
 
   handleFileUpload(event: Event) {
@@ -192,78 +161,49 @@ export class OnboardingComponent implements OnboardingComponent {
     }
   }
 
-  async submitStep(step: number) {
-    let form: FormGroup | undefined;
-    switch (step) {
-      case 1:
-        form = this.businessInfoForm;
-        break;
-      case 2:
-        form = this.ownerInfoForm;
-        break;
-      case 3:
-        form = this.bankInfoForm;
-        break;
-      case 4:
-        form = this.authForm;
-        break;
-    }
-
-    if (form && form?.invalid) {
-      form?.markAllAsTouched();
-      return;
-    }
-
-    this.isLoading = true;
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    this.completedSteps = [...this.completedSteps, step];
-    if (this.currentStep < this.steps.length) {
-      this.currentStep++;
-    }
-    this.saveCurrent();
-    this.isLoading = false;
-  }
-  saveCurrent() {
-    throw new Error('Method not implemented.');
+  resendVerificationCode() {
+    // Implement resend logic
   }
 
-  handlePrevious() {
-    if (this.currentStep > 1) {
-      this.currentStep--;
-      this.saveCurrentState();
+  private saveCurrentState() {
+    this.localStorageService.set('step', this.currentStep.toString());
+    this.saveFormData('merchantInfoFormData', this.MerchantInfoForm);
+    this.saveFormData('kycInfoFormData', this.kycInfoForm);
+    this.saveFormData('bankInfoFormData', this.bankInfoForm);
+    this.saveFormData('authFormData', this.authForm);
+  }
+
+  private saveFormData(formKey: string, form: FormGroup) {
+    if (form) {
+      this.localStorageService.set(formKey, JSON.stringify(form.value));
+      if (formKey === 'businessInfoFormData') {
+        this.email = form.get('businessEmail')?.value || null;
+      }
     }
   }
 
   isStepValid(): boolean {
-    switch (this.currentStep) {
-      case 1:
-        return this.businessInfoForm?.valid || false;
-      case 2:
-        return this.ownerInfoForm?.valid || false;
-      case 3:
-        return this.bankInfoForm?.valid || false;
-      case 4:
-        return this.authForm?.valid || false;
-      default:
-        return false;
+    return this.getFormForStep(this.currentStep)?.valid || false;
+  }
+
+  private getFormForStep(step: number): FormGroup | undefined {
+    switch (step) {
+      case 1: return this.MerchantInfoForm;
+      case 2: return this.kycInfoForm;
+      case 3: return this.bankInfoForm;
+      case 4: return this.authForm;
+      default: return undefined;
     }
   }
 
-  getStepClass(step: any): { [klass: string]: boolean } {
+  getStepClasses(step: Step): { [key: string]: boolean } {
     return {
       'bg-green-500 border-green-500 text-white': this.completedSteps.includes(step.id),
       'bg-gradient-to-r text-white shadow-lg': this.currentStep === step.id,
       'border-transparent': this.currentStep === step.id,
       'bg-white border-gray-300 text-gray-400': !this.completedSteps.includes(step.id) && this.currentStep !== step.id,
-      [step.color]: this.currentStep === step.id // Now valid!
+      [step.color]: this.currentStep === step.id
     };
-  }
-
-  sanitizeOtpInput(event: Event): void {
-    const input = (event.target as HTMLInputElement).value;
-    const sanitized = input.replace(/\D/g, '').slice(0, 6);
-    this.authForm.get('otp')?.setValue(sanitized);
   }
 
 

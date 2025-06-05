@@ -39,12 +39,6 @@ module.exports = {
         'input_bg': '#ECF2F7',
         'inputPlaceholderColor': '#7B8389',
         'inputLabelColor': '#455360',
-
-
-
-
-
-
       },
       fontFamily: {
         sans: ['Poppins', ...fontFamily.sans],

@@ -5,10 +5,10 @@ import { CommonModule } from '@angular/common';
 import { HttpService } from '../../../service/http.service';
 import { Router, RouterModule } from '@angular/router';
 import { LoaderService } from '../../../service/loader.service';
-import { LocalstorageService } from '../../../service/localstorage.service';
 import { Subscription } from 'rxjs';
 import { NotificationService } from '../../../service/notification.service';
 import { AuthService } from '../../../service/auth.service';
+import { LocalstorageService } from '../../../service/localstorage.service';
 
 @Component({
   selector: 'app-login',
@@ -24,10 +24,6 @@ export class LoginComponent {
   isLoading = this.loaderService.loading$;
   private subscription: Subscription | null = null;
   formSubmitted = false;
-
-
-
-
 
   constructor(
     private httpService: HttpService,
