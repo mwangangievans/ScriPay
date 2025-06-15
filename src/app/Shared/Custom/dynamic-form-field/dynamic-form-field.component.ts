@@ -1,18 +1,24 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, forwardRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, Validators } from '@angular/forms';
+import { NG_VALUE_ACCESSOR, ControlValueAccessor, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { DynamicField } from '../../../B2B/kyc-info/kyc-info.component';
 
 @Component({
   selector: 'app-dynamic-form-field',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './dynamic-form-field.component.html',
-  styleUrls: ['./dynamic-form-field.component.css']
+  styleUrls: ['./dynamic-form-field.component.css'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DynamicFormFieldComponent),
+      multi: true
+    }
+  ]
 })
-export class DynamicFormFieldComponent {
+export class DynamicFormFieldComponent implements ControlValueAccessor {
   @Input() field!: DynamicField;
-  @Input() control!: FormControl;
   @Input() error: string = '';
   @Input() disabled: boolean = false;
   @Output() fileSelected = new EventEmitter<File>();
@@ -21,18 +27,23 @@ export class DynamicFormFieldComponent {
   selectedFiles: File[] = [];
   dragOver: boolean = false;
 
-  private onChange = (value: any) => { };
-  public onTouched = () => { };
+  private onChange: (value: any) => void = () => { };
+  public onTouched: () => void = () => { };
 
   writeValue(value: any): void {
     this.value = value;
+    if (this.field.field_type === 'File' && value instanceof File) {
+      this.selectedFiles = [value];
+    } else {
+      this.selectedFiles = [];
+    }
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (value: any) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
@@ -40,22 +51,20 @@ export class DynamicFormFieldComponent {
     this.disabled = isDisabled;
   }
 
-  onInputChange(event: any): void {
-    const value = event.target.value;
-    this.value = value;
-    this.onChange(value);
+  onInputChange(value: string | number | boolean | File): void {
+    // console.log('Input value:', value);
+    let newValue = value;
+    if (this.field.field_type === 'Checkbox') {
+      newValue = value as boolean;
+    }
+    this.value = newValue;
+    this.onChange(newValue);
     this.onTouched();
   }
 
-  onCheckboxChange(event: any): void {
-    const value = event.target.checked;
-    this.value = value;
-    this.onChange(value);
-    this.onTouched();
-  }
-
-  onFileChange(event: any): void {
-    const files = Array.from(event.target.files) as File[];
+  onFileChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const files = Array.from(input.files || []) as File[];
     const maxSize = 10 * 1024 * 1024; // 10MB
     const validFiles = files.filter(file => {
       if (file.size > maxSize) {
@@ -69,7 +78,9 @@ export class DynamicFormFieldComponent {
       return true;
     });
     this.selectedFiles = validFiles;
-    this.onChange(validFiles.length === 1 ? validFiles[0] : validFiles);
+    const value = validFiles.length === 1 ? validFiles[0] : null;
+    this.value = value;
+    this.onChange(value);
     if (validFiles.length > 0) {
       this.fileSelected.emit(validFiles[0]);
     }
@@ -102,17 +113,21 @@ export class DynamicFormFieldComponent {
       }
       return true;
     });
+    this.selectedFiles = validFiles;
+    const value = validFiles.length === 1 ? validFiles[0] : null;
+    this.value = value;
+    this.onChange(value);
     if (validFiles.length > 0) {
-      this.selectedFiles = validFiles;
-      this.onChange(validFiles.length === 1 ? validFiles[0] : validFiles);
       this.fileSelected.emit(validFiles[0]);
-      this.onTouched();
     }
+    this.onTouched();
   }
 
   removeFile(index: number): void {
     this.selectedFiles.splice(index, 1);
-    this.onChange(this.selectedFiles.length === 1 ? this.selectedFiles[0] : this.selectedFiles);
+    const value = this.selectedFiles.length === 1 ? this.selectedFiles[0] : null;
+    this.value = value;
+    this.onChange(value);
   }
 
   getFieldId(): string {
@@ -124,21 +139,10 @@ export class DynamicFormFieldComponent {
   }
 
   hasError(): boolean {
-    return this.control?.invalid && this.control?.touched;
+    return !!this.error;
   }
 
   getErrorMessage(): string {
-    if (!this.control?.errors) return this.error;
-
-    const errors = this.control.errors;
-    if (errors['required']) return `${this.field.field_name} is required`;
-    if (errors['email']) return 'Please enter a valid email address';
-    if (errors['pattern']) return `Invalid ${this.field.field_name.toLowerCase()} format`;
-    if (errors['minlength']) return `Minimum ${errors['minlength'].requiredLength} characters required`;
-    if (errors['maxlength']) return `Maximum ${errors['maxlength'].requiredLength} characters allowed`;
-    if (errors['min']) return `Minimum value is ${errors['min'].min}`;
-    if (errors['max']) return `Maximum value is ${errors['max'].max}`;
-
     return this.error;
   }
 

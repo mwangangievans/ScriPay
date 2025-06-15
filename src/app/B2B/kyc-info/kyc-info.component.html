@@ -23,21 +23,41 @@
           'md:col-span-2': field.field_type === 'Textarea' || field.field_type === 'File',
           'md:col-span-1': field.field_type !== 'Textarea' && field.field_type !== 'File'
         }" class="dynamic-field-wrapper">
-
-        <!-- <app-dynamic-form-field [field]="field" [control]="getFormControl(field)" [error]="getFieldError(field)"
-          [formControlName]="field.field_name.toLowerCase().replace(/\s+/g, '_')">
-        </app-dynamic-form-field> -->
-        <app-dynamic-form-field [field]="field" [control]="getFormControl(field)" [error]="getFieldError(field)"
-          [formControlName]="convertToSnakeCase(field.field_name)">
-        </app-dynamic-form-field>
+        <div class="flex items-end gap-4">
+          <div class="flex-1">
+            <app-dynamic-form-field [field]="field" [formControlName]="convertToSnakeCase(field.field_name)"
+              [error]="getFieldError(field)">
+            </app-dynamic-form-field>
+          </div>
+          <button type="button" (click)="onFieldSubmit(field)" [disabled]="!getFormControl(field).valid || isLoading"
+            class="h-10 px-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:opacity-90 transition-all duration-300 rounded-md flex items-center">
+            <div *ngIf="isLoading" class="w-4 h-4 spinner mr-2"></div>
+            <span>Submit</span>
+          </button>
+        </div>
       </div>
     </div>
 
-    <div class="text-center">
-      <button type="submit"
-        class="px-6 py-3 bg-highlight_primary text-white rounded-xl hover:bg-blue-700 transition-all duration-300">
-        Submit KYC
+    <!-- Navigation -->
+    <div class="flex justify-between items-center mt-8">
+      <button type="button" (click)="goToPreviousStep()" [disabled]="currentStep === 1"
+        class="h-12 px-6 border border-gray_secondary rounded-md text-font_color hover:bg-purple_medium/20 transition-all duration-300 flex items-center">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        Previous
       </button>
+
+      <div class="flex items-center space-x-2">
+        <button type="submit" [disabled]="!form.valid || isLoading"
+          class="h-12 px-8 bg-gradient-to-r from-violet-500 to-purple-600 text-white hover:opacity-90 transition-all duration-300 rounded-md flex items-center">
+          <div *ngIf="isLoading" class="w-5 h-5 spinner mr-2"></div>
+          <span *ngIf="!isLoading">Next Step</span>
+          <svg *ngIf="!isLoading" class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </button>
+      </div>
     </div>
   </form>
 </div>

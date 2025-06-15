@@ -1,7 +1,20 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, forwardRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+
+export interface Countries {
+  id: number;
+  created_at: string;
+  modified_at: string;
+  name: string;
+  code: number;
+  currency: string;
+  logo: string;
+  timezone: string;
+  active: boolean;
+}
 
 @Component({
   selector: 'app-country-selector',
@@ -20,8 +33,15 @@ import { animate, style, transition, trigger } from '@angular/animations';
       ]),
     ]),
   ],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => CountrySelectorComponent),
+      multi: true
+    }
+  ]
 })
-export class CountrySelectorComponent {
+export class CountrySelectorComponent implements ControlValueAccessor, OnChanges {
   @Input() countries: Countries[] = [];
   @Input() placeholder = 'Select your country';
   @Input() label = 'Country';
@@ -37,20 +57,25 @@ export class CountrySelectorComponent {
   filteredCountries: Countries[] = [];
   highlightedIndex = -1;
 
-  private onChange = (value: any) => { };
-  private onTouched = () => { };
+  private onChange: (value: any) => void = () => { };
+  private onTouched: () => void = () => { };
 
-  ngOnInit() {
-    this.filteredCountries = this.countries.filter(country => country.active);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['countries'] && this.countries) {
+      this.filteredCountries = this.countries.filter(country => country.active);
+      if (this.selectedCountry) {
+        this.selectedCountry = this.countries.find(country => country.id === this.selectedCountry?.id) || null;
+      }
+    }
   }
 
-  // ControlValueAccessor implementation
   writeValue(value: any): void {
     if (value) {
       this.selectedCountry = this.countries.find(country => country.id === value) || null;
     } else {
       this.selectedCountry = null;
     }
+    this.onChange(value);
   }
 
   registerOnChange(fn: any): void {
@@ -89,6 +114,7 @@ export class CountrySelectorComponent {
     this.searchTerm = '';
     this.onChange(country.id);
     this.countrySelected.emit(country);
+    this.onTouched();
   }
 
   onSearchChange(event: Event) {
@@ -173,16 +199,4 @@ export class CountrySelectorComponent {
     const target = event.target as HTMLElement;
     target.style.display = 'none';
   }
-}
-
-export interface Countries {
-  id: number;
-  created_at: string;
-  modified_at: string;
-  name: string;
-  code: number;
-  currency: string;
-  logo: string;
-  timezone: string;
-  active: boolean;
 }

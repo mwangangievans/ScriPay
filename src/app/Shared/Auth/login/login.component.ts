@@ -104,7 +104,6 @@ export class LoginComponent {
         },
         error: (err: any) => {
 
-          console.log(err);
 
           this.handleLoginError(err);
         }
@@ -141,7 +140,7 @@ export class LoginComponent {
       //     "is_merchant": false
       // }
 
-      if (res.body.is_merchant) {
+      if (res.body.is_merchant && res.body.merchant.active) {
         this.localStorageService.set('isMerchant', true);
         this.router.navigate(['/b2b/dashboard']);
 

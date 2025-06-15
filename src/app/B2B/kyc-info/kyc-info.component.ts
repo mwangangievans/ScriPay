@@ -1,13 +1,14 @@
-import { Component, EventEmitter, Input, Output, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Subscription } from 'rxjs';
-import { HttpService } from '../../service/http.service';
+import { LocalstorageService } from '../../service/localstorage.service';
+import { OnboardingService } from '../../service/onboarding.service';
 import { CountrySelectorComponent } from '../../Shared/Custom/country-selector/country-selector.component';
-import { Pagination } from '../B2B.interface';
 import { DynamicFormFieldComponent } from '../../Shared/Custom/dynamic-form-field/dynamic-form-field.component';
+import { HttpService } from '../../service/http.service';
+import { UserObject } from '../../Shared/Auth/user.interface';
 
 export interface Countries {
   id: number;
@@ -32,11 +33,15 @@ export interface DynamicField {
   placeholder?: string;
 }
 
-// export interface Pagination<T> {
-//   status: number;
-//   body: {
-//     results: T[];
-//     count: number;
+export interface Pagination<T> {
+  status: number;
+  results: T[];
+  count: number;
+}
+
+// export interface UserObject {
+//   merchant: {
+//     id: number;
 //   };
 // }
 
@@ -47,7 +52,7 @@ export interface DynamicField {
     CommonModule,
     ReactiveFormsModule,
     CountrySelectorComponent,
-    DynamicFormFieldComponent // Added DynamicFormFieldComponent to imports
+    DynamicFormFieldComponent
   ],
   animations: [
     trigger('fadeSlide', [
@@ -63,19 +68,69 @@ export interface DynamicField {
   templateUrl: './kyc-info.component.html',
   styleUrls: ['./kyc-info.component.css']
 })
-export class KycInfoComponent implements OnDestroy {
-  @Input() form!: FormGroup;
-  @Output() onSubmit = new EventEmitter<void>();
+export class KycInfoComponent implements OnInit, OnDestroy {
+  form: FormGroup;
   countries: Countries[] = [];
   fields: DynamicField[] = [];
+  currentStep: number = 2;
+  isLoading: boolean = false;
+  userObject!: UserObject; // Add userObject property
   private apiSubscriptions: Subscription[] = [];
+  private subscription: Subscription = new Subscription();
 
-  constructor(private httpService: HttpService) {
+  constructor(
+    private fb: FormBuilder,
+    private localStorageService: LocalstorageService,
+    private onboardingService: OnboardingService,
+    private httpService: HttpService
+  ) {
+    this.userObject = this.localStorageService.get('userObject');
+
+    this.form = this.fb.group({
+      country: ['', Validators.required]
+    });
+  }
+
+  ngOnInit(): void {
+    this.loadFormData();
     this.getCountries();
+    this.subscription.add(
+      this.onboardingService.state$.subscribe(state => {
+        this.currentStep = state.currentStep;
+      })
+    );
+    this.subscription.add(
+      this.onboardingService.isLoading$.subscribe(isLoading => {
+        this.isLoading = isLoading;
+      })
+    );
+    this.form.statusChanges.subscribe(status => {
+      this.localStorageService.set('kycInfoFormData', JSON.stringify(this.form.value));
+      this.onboardingService.setStepValidity(2, status === 'VALID');
+    });
+    this.onboardingService.setStepValidity(2, this.form.valid);
   }
 
   ngOnDestroy(): void {
     this.apiSubscriptions.forEach(sub => sub.unsubscribe());
+    this.subscription.unsubscribe();
+    this.form.reset();
+    this.countries = [];
+  }
+
+  private loadFormData() {
+    const savedData = this.localStorageService.get('kycInfoFormData');
+    if (savedData) {
+      try {
+        const data = JSON.parse(savedData);
+        this.form.patchValue(data);
+        if (data.country) {
+          this.getFieldsByCountry(data.country);
+        }
+      } catch (e) {
+        console.error('Error parsing saved KYC form data', e);
+      }
+    }
   }
 
   getCountries(): void {
@@ -84,68 +139,10 @@ export class KycInfoComponent implements OnDestroy {
       next: (response) => {
         if (response.status === 200 && response.body?.results) {
           this.countries = response.body.results;
-          // this.countries = [
-          //   {
-          //     id: 1,
-          //     created_at: "2025-04-21T12:29:20.268060+03:00",
-          //     modified_at: "2025-04-21T12:29:20.268141+03:00",
-          //     name: "Kenya",
-          //     code: 254,
-          //     currency: "KES",
-          //     logo: "https://d1laayjhtjigw7.cloudfront.net/logos/kenya.png",
-          //     timezone: "Africa/Nairobi",
-          //     active: true
-          //   },
-          //   {
-          //     id: 2,
-          //     created_at: "2025-04-21T12:29:20.268060+03:00",
-          //     modified_at: "2025-04-21T12:29:20.268141+03:00",
-          //     name: "United States",
-          //     code: 1,
-          //     currency: "USD",
-          //     logo: "https://flagcdn.com/w320/us.png",
-          //     timezone: "America/New_York",
-          //     active: true
-          //   },
-          //   {
-          //     id: 3,
-          //     created_at: "2025-04-21T12:29:20.268060+03:00",
-          //     modified_at: "2025-04-21T12:29:20.268141+03:00",
-          //     name: "United Kingdom",
-          //     code: 44,
-          //     currency: "GBP",
-          //     logo: "https://flagcdn.com/w320/gb.png",
-          //     timezone: "Europe/London",
-          //     active: true
-          //   },
-          //   {
-          //     id: 4,
-          //     created_at: "2025-04-21T12:29:20.268060+03:00",
-          //     modified_at: "2025-04-21T12:29:20.268141+03:00",
-          //     name: "Canada",
-          //     code: 1,
-          //     currency: "CAD",
-          //     logo: "https://flagcdn.com/w320/ca.png",
-          //     timezone: "America/Toronto",
-          //     active: true
-          //   },
-          //   {
-          //     id: 5,
-          //     created_at: "2025-04-21T12:29:20.268060+03:00",
-          //     modified_at: "2025-04-21T12:29:20.268141+03:00",
-          //     name: "Australia",
-          //     code: 61,
-          //     currency: "AUD",
-          //     logo: "https://flagcdn.com/w320/au.png",
-          //     timezone: "Australia/Sydney",
-          //     active: true
-          //   }
-          // ]
         }
       },
       error: (error) => {
         console.error('Error fetching countries:', error);
-        // TODO: Display user-friendly error message (e.g., toast notification)
       }
     });
     this.apiSubscriptions.push(subscription);
@@ -162,32 +159,26 @@ export class KycInfoComponent implements OnDestroy {
       },
       error: (error) => {
         console.error('Error fetching fields:', error);
-        // TODO: Display user-friendly error message
       }
     });
     this.apiSubscriptions.push(subscription);
   }
 
   updateFormControls(): void {
-    // Remove existing controls except 'country'
     Object.keys(this.form.controls).forEach(key => {
       if (key !== 'country') {
         this.form.removeControl(key);
       }
     });
 
-    // Add new controls based on fields
     this.fields.forEach(field => {
-      const controlName = field.field_name.toLowerCase().replace(/\s+/g, '_');
+      const controlName = this.convertToSnakeCase(field.field_name);
       const validators = field.required ? [Validators.required] : [];
-
-      // Add specific validators based on field type
       if (field.field_name === 'KRA Number') {
         validators.push(Validators.pattern(/^[A-Z0-9]{10,11}$/));
       } else if (field.field_type === 'Email') {
         validators.push(Validators.email);
       }
-
       this.form.addControl(controlName, new FormControl('', validators));
     });
   }
@@ -210,7 +201,8 @@ export class KycInfoComponent implements OnDestroy {
   }
 
   getFormControl(field: DynamicField): FormControl {
-    return this.form.get(field.field_name.toLowerCase().replace(/\s+/g, '_')) as FormControl;
+    const control = this.form.get(this.convertToSnakeCase(field.field_name));
+    return control as FormControl;
   }
 
   getFieldError(field: DynamicField): string {
@@ -223,12 +215,54 @@ export class KycInfoComponent implements OnDestroy {
     return '';
   }
 
-  onFormSubmit(): void {
+  private prepareFieldData(field: DynamicField, controlValue: any): object {
+    if (!this.userObject?.merchant?.id) {
+      throw new Error('User merchant ID is not available');
+    }
+
+    return {
+      mapper: field.id,
+      merchant: this.userObject.merchant.id,
+      [field.field_type === 'File' ? 'file_value' : 'text_value']: controlValue
+    };
+  }
+
+  async onFieldSubmit(field: DynamicField): Promise<void> {
+    const controlName = this.convertToSnakeCase(field.field_name);
+    const control = this.form.get(controlName);
+
+    if (!control?.valid) {
+      control?.markAsTouched();
+      return;
+    }
+
+    try {
+      const fieldData = this.prepareFieldData(field, control.value);
+      const success = await this.onboardingService.submitStep(2, fieldData, this.userObject, true);
+
+      if (success) {
+        control.markAsUntouched();
+      } else {
+        console.error(`Submission failed for ${field.field_name}`);
+      }
+    } catch (error) {
+      console.error(`Error submitting ${field.field_name}:`, error);
+    }
+  }
+
+  async onFormSubmit(): Promise<void> {
     if (this.form.valid) {
-      this.onSubmit.emit();
+      const success = await this.onboardingService.submitStep(2, this.form.value);
+      if (!success) {
+        console.error('KYC submission failed');
+      }
     } else {
       this.form.markAllAsTouched();
     }
+  }
+
+  goToPreviousStep() {
+    this.onboardingService.goToPreviousStep();
   }
 
   getSelectedCountryLogo(): string {

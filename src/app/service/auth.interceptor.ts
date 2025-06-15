@@ -21,7 +21,6 @@ export class AuthInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    console.log('AuthInterceptor triggered for:', request.url);
 
     if (request.headers.has('skip-auth')) {
       console.log('Skipping auth for:', request.url);
@@ -30,7 +29,6 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     const authToken = this._AuthService.getAccessToken();
-    console.log('Auth token:', authToken);
 
     if (!authToken) {
       console.log('No auth token found, logging out and redirecting to login');
