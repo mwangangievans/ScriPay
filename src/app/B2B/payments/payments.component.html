@@ -1,0 +1,74 @@
+<div class="min-h-screen bg-gray-100 p-4">
+  <!-- Header and Filters -->
+  <div class="bg-white shadow-md p-4 mb-4 rounded-lg flex flex-col md:flex-row justify-between items-center">
+    <div class="flex space-x-4 mb-4 md:mb-0">
+      <button class="bg-purple_dark text-white px-4 py-2 rounded hover:bg-purple_medium transition duration-300">Filter
+        <span class="ml-2">▼</span></button>
+      <button
+        class="bg-bright_sky_blue text-white px-4 py-2 rounded hover:bg-highlight_primary transition duration-300">Export</button>
+      <button class="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition duration-300">Refresh
+        <span class="ml-2">↻</span></button>
+      <button
+        class="bg-purple_light text-font_color px-4 py-2 rounded hover:bg-purple_medium transition duration-300">Customization</button>
+    </div>
+    <div class="flex space-x-4">
+      <button class="bg-_green text-white px-3 py-1 rounded-full text-sm">All</button>
+      <button class="bg-purple_light text-font_color px-3 py-1 rounded-full text-sm">Captured</button>
+      <button class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm">Declined</button>
+      <button class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm">Refunds</button>
+      <button class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm">Chargebacks</button>
+    </div>
+  </div>
+
+  <!-- Date Range -->
+  <div class="bg-white shadow-md p-4 mb-4 rounded-lg">
+    <p class="text-gray_secondary text-sm">Apr 01, 2025 00:00 - Apr 30, 2025 23:59 UTC</p>
+  </div>
+
+  <!-- Transactions Table -->
+  <div class="bg-white shadow-md rounded-lg overflow-hidden">
+    <table class="w-full text-left">
+      <thead class="bg-purple_dark text-white sticky top-0">
+        <tr>
+          <th class="p-3">Payment ID</th>
+          <th class="p-3">Amount <span class="ml-1">CUR</span></th>
+          <th class="p-3">Status</th>
+          <th class="p-3">Type</th>
+          <th class="p-3">Date and time</th>
+          <th class="p-3">Payment method</th>
+          <th class="p-3">Card country</th>
+          <th class="p-3">Site</th>
+          <th class="p-3">Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let transaction of transactions" class="border-b hover:bg-gray-50 transition duration-200"
+          [ngClass]="{'bg-_green/10': transaction.status === 'Captured'}">
+          <td class="p-3">{{ transaction.id }}</td>
+          <td class="p-3">{{ transaction.amount }} {{ transaction.currency }}</td>
+          <td class="p-3">
+            <span *ngIf="transaction.status === 'Captured'" class="text-_green">✓ {{ transaction.status }}</span>
+            <span *ngIf="transaction.status !== 'Captured'" class="text-_red">{{ transaction.status }}</span>
+          </td>
+          <td class="p-3">{{ transaction.type || transaction.purpose }}</td>
+          <td class="p-3">{{ transaction.created_at | date:'MMM d, y H:mm:ss' }}</td>
+          <td class="p-3">{{ getPaymentMethodIcon(transaction.provider_ref) }}</td>
+          <td class="p-3">{{ transaction.card_country || '?' }}</td>
+          <td class="p-3">{{ transaction.site || 'Demo website ' + transaction.currency }}</td>
+          <td class="p-3">{{ transaction.email || 'example@example.com' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="bg-white shadow-md p-4 mt-4 rounded-lg flex justify-between items-center">
+    <button class="text-purple_dark hover:underline">« Back</button>
+    <div class="flex space-x-2">
+      <button *ngFor="let page of [1, 2, 3, 4, 5, 6]"
+        class="px-3 py-1 rounded {{ currentPage === page ? 'bg-purple_dark text-white' : 'bg-gray-200 text-gray-700' }} hover:bg-purple_medium transition duration-300">{{
+        page }}</button>
+    </div>
+    <button class="text-purple_dark hover:underline">Next »</button>
+  </div>
+</div>

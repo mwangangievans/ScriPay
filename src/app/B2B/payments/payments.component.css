@@ -1,0 +1,91 @@
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th {
+  font-weight: amy-extra-bold;
+}
+
+td, th {
+  padding: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+thead th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+tr:hover {
+  background-color: #f9fafb;
+}
+
+@media (max-width: 767px) {
+  table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tbody tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+  }
+
+  tbody td {
+    display: block;
+    text-align: right;
+    padding: 0.5rem;
+  }
+
+  tbody td::before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #455360;
+  }
+
+  tbody td[data-label="Status"]::before {
+    content: "Status: ";
+  }
+
+  tbody td[data-label="Amount CUR"]::before {
+    content: "Amount: ";
+  }
+
+  tbody td[data-label="Payment ID"]::before {
+    content: "ID: ";
+  }
+
+  tbody td[data-label="Type"]::before {
+    content: "Type: ";
+  }
+
+  tbody td[data-label="Date and time"]::before {
+    content: "Date: ";
+  }
+
+  tbody td[data-label="Payment method"]::before {
+    content: "Method: ";
+  }
+
+  tbody td[data-label="Card country"]::before {
+    content: "Country: ";
+  }
+
+  tbody td[data-label="Site"]::before {
+    content: "Site: ";
+  }
+
+  tbody td[data-label="Email"]::before {
+    content: "Email: ";
+  }
+}
