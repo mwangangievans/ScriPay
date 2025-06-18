@@ -1,4 +1,3 @@
-
 import { Component, ElementRef, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
@@ -7,8 +6,8 @@ import { LocalstorageService } from '../../service/localstorage.service';
 import { OnboardingService } from '../../service/onboarding.service';
 import { Subscription } from 'rxjs';
 import { HttpService } from '../../service/http.service';
-import { Merchant, Pagination } from '../B2B.interface';
 import { UserObject } from '../../Shared/Auth/user.interface';
+import { Merchant, Pagination } from '../B2B.interface';
 
 @Component({
   selector: 'app-merchants-info',
@@ -30,24 +29,25 @@ import { UserObject } from '../../Shared/Auth/user.interface';
 })
 export class MerchantsInfoComponent implements OnInit, OnDestroy {
   form: FormGroup;
+  Merchant!: Merchant
   selectedLogo: File | null = null;
   currentStep: number = 1;
   isLoading: boolean = false;
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   private subscription: Subscription = new Subscription();
-  private apiSubscriptions: Subscription[] = [];
-  Merchants: Merchant[] = [];
-  userObject!: UserObject
-
-
+  userObject: UserObject;
 
   constructor(
     private fb: FormBuilder,
     private localStorageService: LocalstorageService,
     private onboardingService: OnboardingService,
     private httpService: HttpService
-
   ) {
+    this.userObject = this.localStorageService.get('userObject');
+    if (this.userObject?.is_merchant) {
+      this.Merchant = this.userObject.merchant
+      this.loadFormData();
+    }
     this.form = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -58,57 +58,13 @@ export class MerchantsInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.loadFormData();
-    // console.log("hello....");
-
-    // this.getMerchants();
-
+    // this.getMerchant();
     this.subscription.add(
-      this.onboardingService.state$.subscribe(state => {
-        this.currentStep = state.currentStep;
-        this.selectedLogo = state.selectedLogo ? new File([], state.selectedLogo.name) : null;
+      this.form.statusChanges.subscribe(status => {
+        this.localStorageService.set('merchantInfoFormData', JSON.stringify(this.form.value));
+        this.onboardingService.setStepValidity(1, status === 'VALID');
       })
     );
-    this.subscription.add(
-      this.onboardingService.isLoading$.subscribe(isLoading => {
-        this.isLoading = isLoading;
-      })
-    );
-    // this.form.statusChanges.subscribe(status => {
-    //   this.localStorageService.set('merchantInfoFormData', JSON.stringify(this.form.value));
-    //   this.onboardingService.setStepValidity(1, status === 'VALID');
-    // });
-    // this.onboardingService.setStepValidity(1, this.form.valid);
-  }
-
-  // getMerchants(): void {
-  //   const url = 'onboarding/merchants';
-  //   const subscription = this.httpService.get<Pagination<Merchant>>(url).subscribe({
-  //     next: (response) => {
-  //       if (response.status === 200 && response.body?.results) {
-  //         this.Merchants = response.body.results;
-  //         this.updatemachartForm()
-
-  //       }
-  //     },
-  //     error: (error) => {
-  //       console.error('Error fetching countries:', error);
-  //     }
-  //   });
-  //   this.apiSubscriptions.push(subscription);
-  // }
-  updatemachartForm(user: UserObject) {
-    if (user.is_merchant && !user.merchant.active) {
-      this.form.patchValue(
-        {
-          name: user.merchant.name,
-          email: user.merchant.email,
-          address: user.merchant.address,
-          location: user.merchant.location,
-          logo: user.merchant.logo,
-        });
-    }
-
   }
 
   ngOnDestroy() {
@@ -117,77 +73,107 @@ export class MerchantsInfoComponent implements OnInit, OnDestroy {
 
   private loadFormData() {
     this.userObject = this.localStorageService.get('userObject');
+    if (this.userObject && this.userObject.is_merchant && !this.userObject.merchant.active) {
+      this.form?.patchValue({
+        name: this.userObject.merchant.name,
+        email: this.userObject.merchant.email,
+        address: this.userObject.merchant.address,
+        location: this.userObject.merchant.location,
+        logo: this.userObject.merchant.logo,
+      });
+    }
+    // this.onboardingService.completeStep(1);
 
-    if (this.userObject) {
+    const savedData = this.localStorageService.get('merchantInfoFormData');
+    if (savedData) {
       try {
-        this.updatemachartForm(this.userObject)
-        // this.form.patchValue(JSON.parse(savedData));
+        this.form?.patchValue(JSON.parse(savedData));
       } catch (e) {
         console.error('Error parsing saved merchant info form data', e);
       }
     }
   }
+  getMerchant() {
+    this.subscription.add(
+      this.httpService.get<Pagination<Merchant>>('onboarding/merchants', { showSuccessNotification: true })
+        .subscribe({
+          next: (response) => {
+            console.log({ response });
 
+            if (response.status === 200 && response.body?.results?.length) {
+              this.Merchant = response.body.results[0]
+              this.userObject.merchant = this.Merchant
+              this.localStorageService.set('userObject', this.userObject);
+              this.loadFormData()
+              this.onboardingService.completeStep(1);
+            } else {
+              console.error('Merchant info submission failed or no results found');
+            }
+          },
+          error: (error) => {
+            console.error('Error submitting merchant info:', error);
+          },
+          complete: () => {
+            this.isLoading = false;
+          }
+        })
+    );
+  }
   onFileUpload(event: Event) {
     const input = event.target as HTMLInputElement;
     const file = input?.files?.[0];
     if (file) {
       this.selectedLogo = file;
       this.form.patchValue({ logo: file });
-      this.onboardingService.handleFileUpload(file);
+      this.onboardingService.setSelectedLogo(file ? { name: file.name } : null);
     }
   }
 
-  async onFormSubmit() {
-    // debugger
-    if (this.form.valid) {
-      this.onboardingService.setStepValidity(1, true);
+  onFormSubmit() {
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
-      // Create FormData object
-      const formData = new FormData();
-      // Append form values to FormData
-      Object.keys(this.form.value).forEach(key => {
-        formData.append(key, this.form.value[key]);
-      });
+    this.isLoading = true;
+    const formData = new FormData();
+    Object.keys(this.form.value).forEach(key => {
+      formData.append(key, this.form.value[key]);
+    });
 
-      // this.subscription = this.httpService
-      //   .post<Merchant>('onboarding/merchants', formData, {
-      //     showSuccessNotification: true,
-      //     skipAuth: false
-      //   })
-      //   .subscribe({
-      //     next: (res: any) => {
-      //     },
-      //     error: (err: any) => {
-      //       console.log(err);
+    if (!this.Merchant) {
+      this.subscription.add(
+        this.httpService.post('onboarding/merchants', formData, { showSuccessNotification: true })
+          .subscribe({
+            next: (response) => {
+              console.log({ response });
 
-
-      //       debugger
-
-      //     }
-      //   });
-
-      // this.form.markAllAsTouched();
-
-
-
-
-      const success = await this.onboardingService.submitStep(1, formData, this.userObject);
-      if (!success) {
-        console.log({ success });
-
-        console.error('Merchant info submission failed');
-      }
-      else {
-        this.form.markAllAsTouched();
-      }
+              debugger
+              if (response.status === 200) {
+                this.getMerchant()
+                this.onboardingService.completeStep(1);
+              } else {
+                console.error('Merchant info submission failed');
+              }
+            },
+            error: (error) => {
+              console.error('Error submitting merchant info:', error);
+            },
+            complete: () => {
+              this.isLoading = false;
+            }
+          })
+      );
 
 
     }
+    this.isLoading = false;
+
+    this.onboardingService.completeStep(1);
+
   }
 
   goToPreviousStep() {
     this.onboardingService.goToPreviousStep();
   }
 }
-

@@ -1,13 +1,9 @@
-
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { OnboardingService } from '../../service/onboarding.service';
 import { MerchantsInfoComponent } from '../merchants-info/merchants-info.component';
 import { KycInfoComponent } from '../kyc-info/kyc-info.component';
-// import { BankInfoComponent } from '../bank-info/bank-info.component';
-// import { VerificationComponent } from '../verification/verification.component';
 
 interface Step {
   id: number;
@@ -15,6 +11,13 @@ interface Step {
   description: string;
   icon: string;
   color: string;
+}
+
+interface OnboardingState {
+  currentStep: number;
+  completedSteps: number[];
+  selectedLogo: { name: string } | null;
+  stepValidity: { [key: number]: boolean };
 }
 
 @Component({
@@ -26,8 +29,6 @@ interface Step {
     CommonModule,
     MerchantsInfoComponent,
     KycInfoComponent,
-    // BankInfoComponent,
-    // VerificationComponent
   ],
   animations: [
     trigger('fadeSlide', [
@@ -42,24 +43,41 @@ interface Step {
   ],
 })
 export class OnboardingComponent implements OnInit, OnDestroy {
-  steps: Step[] = [];
-  state: { currentStep: number; completedSteps: number[]; selectedLogo: { name: string } | null; stepValidity: { [key: number]: boolean } } = {
+  steps: Step[] = [
+    {
+      id: 1,
+      title: 'Merchant Information',
+      description: 'Tell us about your business',
+      icon: 'Building2',
+      color: 'from-purple_dark to-purple_light'
+    },
+    {
+      id: 2,
+      title: 'Kyc Details',
+      description: 'Submit kyc documents',
+      icon: 'User',
+      color: 'from-violet-500 to-purple-600'
+    },
+    {
+      id: 3,
+      title: 'Onboarding Status',
+      description: 'Check your Onboarding Status',
+      icon: 'CreditCard',
+      color: 'from-orange-500 to-red-500'
+    },
+  ];
+
+  state: OnboardingState = {
     currentStep: 1,
     completedSteps: [],
     selectedLogo: null,
     stepValidity: {}
   };
+
   private subscription: Subscription = new Subscription();
 
-  constructor(private onboardingService: OnboardingService) { }
-
   ngOnInit() {
-    this.steps = this.onboardingService.getSteps();
-    this.subscription.add(
-      this.onboardingService.state$.subscribe(state => {
-        this.state = state;
-      })
-    );
+    this.loadSavedState();
   }
 
   ngOnDestroy() {
@@ -67,7 +85,7 @@ export class OnboardingComponent implements OnInit, OnDestroy {
   }
 
   get progressPercentage(): number {
-    return this.onboardingService.getProgressPercentage();
+    return (this.state.completedSteps.length / this.steps.length) * 100;
   }
 
   getStepClasses(step: Step): { [key: string]: boolean } {
@@ -79,5 +97,30 @@ export class OnboardingComponent implements OnInit, OnDestroy {
       [step.color]: this.state.currentStep === step.id
     };
   }
-}
 
+  private loadSavedState() {
+    const savedState = localStorage.getItem('onboardingState');
+    if (savedState) {
+      try {
+        const state = JSON.parse(savedState);
+        this.state = {
+          currentStep: state.currentStep || 1,
+          completedSteps: state.completedSteps || [],
+          selectedLogo: state.selectedLogo || null,
+          stepValidity: state.stepValidity || {}
+        };
+      } catch (e) {
+        console.error('Error parsing saved state', e);
+      }
+    }
+  }
+
+  private saveCurrentState() {
+    localStorage.setItem('onboardingState', JSON.stringify(this.state));
+  }
+
+  updateState(newState: Partial<OnboardingState>) {
+    this.state = { ...this.state, ...newState };
+    this.saveCurrentState();
+  }
+}

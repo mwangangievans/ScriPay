@@ -39,12 +39,6 @@ export interface Pagination<T> {
   count: number;
 }
 
-// export interface UserObject {
-//   merchant: {
-//     id: number;
-//   };
-// }
-
 @Component({
   selector: 'app-kyc-info',
   standalone: true,
@@ -74,7 +68,7 @@ export class KycInfoComponent implements OnInit, OnDestroy {
   fields: DynamicField[] = [];
   currentStep: number = 2;
   isLoading: boolean = false;
-  userObject!: UserObject; // Add userObject property
+  userObject: UserObject;
   private apiSubscriptions: Subscription[] = [];
   private subscription: Subscription = new Subscription();
 
@@ -85,7 +79,6 @@ export class KycInfoComponent implements OnInit, OnDestroy {
     private httpService: HttpService
   ) {
     this.userObject = this.localStorageService.get('userObject');
-
     this.form = this.fb.group({
       country: ['', Validators.required]
     });
@@ -95,20 +88,11 @@ export class KycInfoComponent implements OnInit, OnDestroy {
     this.loadFormData();
     this.getCountries();
     this.subscription.add(
-      this.onboardingService.state$.subscribe(state => {
-        this.currentStep = state.currentStep;
+      this.form.statusChanges.subscribe(status => {
+        this.localStorageService.set('kycInfoFormData', JSON.stringify(this.form.value));
+        this.onboardingService.setStepValidity(2, status === 'VALID');
       })
     );
-    this.subscription.add(
-      this.onboardingService.isLoading$.subscribe(isLoading => {
-        this.isLoading = isLoading;
-      })
-    );
-    this.form.statusChanges.subscribe(status => {
-      this.localStorageService.set('kycInfoFormData', JSON.stringify(this.form.value));
-      this.onboardingService.setStepValidity(2, status === 'VALID');
-    });
-    this.onboardingService.setStepValidity(2, this.form.valid);
   }
 
   ngOnDestroy(): void {
@@ -236,28 +220,40 @@ export class KycInfoComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.isLoading = true;
     try {
       const fieldData = this.prepareFieldData(field, control.value);
-      const success = await this.onboardingService.submitStep(2, fieldData, this.userObject, true);
-
-      if (success) {
+      const response = await this.httpService.post('onboarding/kycs', fieldData).toPromise();
+      if (response?.status === 200) {
         control.markAsUntouched();
       } else {
         console.error(`Submission failed for ${field.field_name}`);
       }
     } catch (error) {
       console.error(`Error submitting ${field.field_name}:`, error);
+    } finally {
+      this.isLoading = false;
     }
   }
 
   async onFormSubmit(): Promise<void> {
-    if (this.form.valid) {
-      const success = await this.onboardingService.submitStep(2, this.form.value);
-      if (!success) {
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    this.isLoading = true;
+    try {
+      const response = await this.httpService.post('onboarding/kycs', this.form.value).toPromise();
+      if (response?.status === 200) {
+        this.onboardingService.completeStep(2);
+      } else {
         console.error('KYC submission failed');
       }
-    } else {
-      this.form.markAllAsTouched();
+    } catch (error) {
+      console.error('Error submitting KYC form:', error);
+    } finally {
+      this.isLoading = false;
     }
   }
 
