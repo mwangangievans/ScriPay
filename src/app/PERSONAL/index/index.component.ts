@@ -10,7 +10,7 @@ import { curveBasis } from 'd3-shape';
 @Component({
   selector: 'app-index',
   standalone: true,
-  imports: [ CommonModule  ,NgxChartsModule ,RouterModule],
+  imports: [CommonModule, NgxChartsModule, RouterModule],
   templateUrl: './index.component.html',
   styleUrl: './index.component.css'
 })
@@ -25,38 +25,38 @@ export class IndexComponent {
   // view: [number, number] = [window.innerWidth - 64, 300];
 
 
-    // Chart options
-    showXAxis = true;
-    showYAxis = true;
-    gradient = true;
-    showXAxisLabel = false;
-    showYAxisLabel = false;
-    xAxisLabel = 'Month';
-    yAxisLabel = 'Amount';
-    curve = curveBasis;
+  // Chart options
+  showXAxis = true;
+  showYAxis = true;
+  gradient = true;
+  showXAxisLabel = false;
+  showYAxisLabel = false;
+  xAxisLabel = 'Month';
+  yAxisLabel = 'Amount';
+  curve = curveBasis;
 
 
-    colorScheme1: Color = {
-      name: 'financialColors',
-      selectable: true,
-      group: ScaleType.Ordinal,
-      domain: ['#7c4dff']
-    };
+  colorScheme1: Color = {
+    name: 'financialColors',
+    selectable: true,
+    group: ScaleType.Ordinal,
+    domain: ['#7c4dff']
+  };
 
-// Chart data
-moneyFlowData = [
-  {
-    "name": "Money Flow",
-    "series": [
-      { "name": "Jan", "value": 30 },
-      { "name": "Feb", "value": 62 },
-      { "name": "Mar", "value": 42 },
-      { "name": "Apr", "value": 55 },
-      { "name": "May", "value": 85 },
-      { "name": "Jun", "value": 72 }
-    ]
-  }
-];
+  // Chart data
+  moneyFlowData = [
+    {
+      "name": "Money Flow",
+      "series": [
+        { "name": "Jan", "value": 30 },
+        { "name": "Feb", "value": 62 },
+        { "name": "Mar", "value": 42 },
+        { "name": "Apr", "value": 55 },
+        { "name": "May", "value": 85 },
+        { "name": "Jun", "value": 72 }
+      ]
+    }
+  ];
 
 
 
@@ -94,11 +94,14 @@ moneyFlowData = [
   ngAfterViewInit(): void {
     this.setChartView();
 
-    this.resizeObserver = new ResizeObserver(() => {
-      this.setChartView();
-    });
+    // Only attach ResizeObserver in the browser
+    if (typeof window !== 'undefined' && typeof ResizeObserver !== 'undefined') {
+      this.resizeObserver = new ResizeObserver(() => {
+        this.setChartView();
+      });
 
-    this.resizeObserver.observe(this.chartContainer.nativeElement);
+      this.resizeObserver.observe(this.chartContainer.nativeElement);
+    }
   }
 
   setChartView(): void {
@@ -109,7 +112,7 @@ moneyFlowData = [
   }
 
   ngOnDestroy(): void {
-    if (this.resizeObserver) {
+    if (this.resizeObserver && typeof window !== 'undefined' && typeof ResizeObserver !== 'undefined') {
       this.resizeObserver.disconnect();
     }
   }

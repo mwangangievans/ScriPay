@@ -52,13 +52,19 @@ export class MerchantsInfoComponent implements OnInit, OnDestroy {
       logo: [null]
     });
 
-    if (this.userObject?.is_merchant && this.userObject.merchant) {
+    // Safely patch form only if merchant object and its properties exist
+    if (
+      this.userObject &&
+      this.userObject.is_merchant &&
+      this.userObject.merchant &&
+      typeof this.userObject.merchant === 'object'
+    ) {
       this.form.patchValue({
-        name: this.userObject.merchant.name,
-        email: this.userObject.merchant.email,
-        address: this.userObject.merchant.address,
-        location: this.userObject.merchant.location,
-        logo: this.userObject.merchant.logo
+        name: this.userObject.merchant.name ?? '',
+        email: this.userObject.merchant.email ?? '',
+        address: this.userObject.merchant.address ?? '',
+        location: this.userObject.merchant.location ?? '',
+        logo: this.userObject.merchant.logo ?? null
       });
     }
   }
@@ -79,13 +85,13 @@ export class MerchantsInfoComponent implements OnInit, OnDestroy {
 
   private loadFormData() {
     this.userObject = this.localStorageService.get('userObject');
-    if (this.userObject && this.userObject.is_merchant && !this.userObject.merchant.active) {
+    if (this.userObject && this.userObject.is_merchant && this.userObject.merchant && !this.userObject.merchant.active) {
       this.form?.patchValue({
-        name: this.userObject.merchant.name,
-        email: this.userObject.merchant.email,
-        address: this.userObject.merchant.address,
-        location: this.userObject.merchant.location,
-        logo: this.userObject.merchant.logo,
+        name: this.userObject.merchant?.name ?? '',
+        email: this.userObject.merchant?.email ?? '',
+        address: this.userObject.merchant?.address ?? '',
+        location: this.userObject.merchant?.location ?? '',
+        logo: this.userObject.merchant?.logo ?? null,
       });
     }
     // this.onboardingService.completeStep(1);
