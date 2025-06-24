@@ -41,3 +41,12 @@
 .focus\:border-highlight_primary:focus {
   border-color: #3b82f6;
 }
+
+.dynamic-field-wrapper input,
+.dynamic-field-wrapper select,
+.dynamic-field-wrapper textarea {
+  border: 1px solid #d1d5db; /* Tailwind's border-gray-300 */
+  background-color: #f9fafb; /* matches .bg-input_bg */
+  border-radius: 0.75rem;    /* matches rounded-xl */
+  transition: border-color 0.2s;
+}

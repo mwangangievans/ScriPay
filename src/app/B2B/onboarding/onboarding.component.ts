@@ -1,9 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { MerchantsInfoComponent } from '../merchants-info/merchants-info.component';
 import { KycInfoComponent } from '../kyc-info/kyc-info.component';
+import { OnboardingService } from '../../service/onboarding.service';
+import { LocalstorageService } from '../../service/localstorage.service';
+import { isPlatformBrowser } from '@angular/common';
 
 interface Step {
   id: number;
@@ -76,8 +79,23 @@ export class OnboardingComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription = new Subscription();
 
+  constructor(
+    private onboardingService: OnboardingService,
+    private localStorageService: LocalstorageService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    // Subscribe immediately to onboarding state for UI reactivity
+    this.subscription.add(
+      this.onboardingService.state$.subscribe(state => {
+        this.state = state;
+        console.log('[OnboardingComponent] State updated:', state); // DEBUG LOG
+      })
+    );
+  }
+
   ngOnInit() {
     this.loadSavedState();
+    console.log('[OnboardingComponent] ngOnInit, state:', this.state); // DEBUG LOG
   }
 
   ngOnDestroy() {
@@ -99,24 +117,29 @@ export class OnboardingComponent implements OnInit, OnDestroy {
   }
 
   private loadSavedState() {
-    const savedState = localStorage.getItem('onboardingState');
-    if (savedState) {
-      try {
-        const state = JSON.parse(savedState);
-        this.state = {
-          currentStep: state.currentStep || 1,
-          completedSteps: state.completedSteps || [],
-          selectedLogo: state.selectedLogo || null,
-          stepValidity: state.stepValidity || {}
-        };
-      } catch (e) {
-        console.error('Error parsing saved state', e);
+    // Use LocalstorageService and check for browser environment
+    if (isPlatformBrowser(this.platformId)) {
+      const savedState = this.localStorageService.get('onboardingState');
+      if (savedState) {
+        try {
+          const state = savedState;
+          this.state = {
+            currentStep: state.currentStep || 1,
+            completedSteps: state.completedSteps || [],
+            selectedLogo: state.selectedLogo || null,
+            stepValidity: state.stepValidity || {}
+          };
+        } catch (e) {
+          console.error('Error parsing saved state', e);
+        }
       }
     }
   }
 
   private saveCurrentState() {
-    localStorage.setItem('onboardingState', JSON.stringify(this.state));
+    if (isPlatformBrowser(this.platformId)) {
+      this.localStorageService.set('onboardingState', this.state);
+    }
   }
 
   updateState(newState: Partial<OnboardingState>) {

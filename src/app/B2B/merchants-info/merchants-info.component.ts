@@ -44,10 +44,6 @@ export class MerchantsInfoComponent implements OnInit, OnDestroy {
     private httpService: HttpService
   ) {
     this.userObject = this.localStorageService.get('userObject');
-    if (this.userObject?.is_merchant) {
-      this.Merchant = this.userObject.merchant
-      this.loadFormData();
-    }
     this.form = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -55,6 +51,16 @@ export class MerchantsInfoComponent implements OnInit, OnDestroy {
       location: ['', Validators.required],
       logo: [null]
     });
+
+    if (this.userObject?.is_merchant && this.userObject.merchant) {
+      this.form.patchValue({
+        name: this.userObject.merchant.name,
+        email: this.userObject.merchant.email,
+        address: this.userObject.merchant.address,
+        location: this.userObject.merchant.location,
+        logo: this.userObject.merchant.logo
+      });
+    }
   }
 
   ngOnInit() {
@@ -135,42 +141,40 @@ export class MerchantsInfoComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // If merchant already exists, skip API call and go to next step
+    if (this.userObject?.is_merchant && this.userObject.merchant) {
+      this.onboardingService.completeStep(1);
+      console.log('[MerchantsInfoComponent] completeStep(1) called (merchant exists)'); // DEBUG LOG
+      // Remove extra subscription to state$ here to avoid memory leaks
+      return;
+    }
+
     this.isLoading = true;
     const formData = new FormData();
     Object.keys(this.form.value).forEach(key => {
       formData.append(key, this.form.value[key]);
     });
 
-    if (!this.Merchant) {
-      this.subscription.add(
-        this.httpService.post('onboarding/merchants', formData, { showSuccessNotification: true })
-          .subscribe({
-            next: (response) => {
-              console.log({ response });
-
-              debugger
-              if (response.status === 200) {
-                this.getMerchant()
-                this.onboardingService.completeStep(1);
-              } else {
-                console.error('Merchant info submission failed');
-              }
-            },
-            error: (error) => {
-              console.error('Error submitting merchant info:', error);
-            },
-            complete: () => {
-              this.isLoading = false;
+    this.subscription.add(
+      this.httpService.post('onboarding/merchants', formData, { showSuccessNotification: true })
+        .subscribe({
+          next: (response) => {
+            if (response.status === 200) {
+              this.getMerchant();
+              this.onboardingService.completeStep(1);
+              console.log('[MerchantsInfoComponent] completeStep(1) called (merchant created)'); // DEBUG LOG
+            } else {
+              console.error('Merchant info submission failed');
             }
-          })
-      );
-
-
-    }
-    this.isLoading = false;
-
-    this.onboardingService.completeStep(1);
-
+          },
+          error: (error) => {
+            console.error('Error submitting merchant info:', error);
+          },
+          complete: () => {
+            this.isLoading = false;
+          }
+        })
+    );
   }
 
   goToPreviousStep() {

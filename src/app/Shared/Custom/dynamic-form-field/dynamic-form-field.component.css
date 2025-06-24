@@ -61,3 +61,12 @@
 .border-gray-300 {
   border-color: #d1d5db;
 }
+
+.dynamic-form-field input,
+.dynamic-form-field select,
+.dynamic-form-field textarea {
+  border: 1px solid #d1d5db; /* Tailwind's border-gray-300 */
+  background-color: #f9fafb;
+  border-radius: 0.75rem;
+  transition: border-color 0.2s;
+}

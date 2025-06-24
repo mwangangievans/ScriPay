@@ -11,6 +11,7 @@
     <p class="text-gray-600">Submit KYC documents for verification</p>
   </div>
 
+
   <form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="space-y-6">
     <!-- Country Selector -->
     <app-country-selector [countries]="countries" [required]="true" [error]="getCountryError()"
@@ -18,22 +19,29 @@
     </app-country-selector>
 
     <!-- Dynamic Fields Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div *ngFor="let field of fields" [ngClass]="{
-          'md:col-span-2': field.field_type === 'Textarea' || field.field_type === 'File',
-          'md:col-span-1': field.field_type !== 'Textarea' && field.field_type !== 'File'
-        }" class="dynamic-field-wrapper">
-        <div class="flex items-end gap-4">
-          <div class="flex-1">
-            <app-dynamic-form-field [field]="field" [formControlName]="convertToSnakeCase(field.field_name)"
-              [error]="getFieldError(field)">
-            </app-dynamic-form-field>
+    <div class="relative min-h-[120px]">
+      <div *ngIf="isLoading"
+        class="absolute inset-0 flex flex-col items-center justify-center bg-white bg-opacity-80 z-10 rounded">
+        <div class="w-8 h-8 border-4 border-purple-400 border-t-transparent rounded-full animate-spin mb-2"></div>
+        <span class="text-gray-600 text-sm">Loading fields...</span>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6" [class.opacity-50]="isLoading">
+        <div *ngFor="let field of fields" [ngClass]="{
+            'md:col-span-2': field.field_type === 'Textarea' || field.field_type === 'File',
+            'md:col-span-1': field.field_type !== 'Textarea' && field.field_type !== 'File'
+          }" class="dynamic-field-wrapper">
+          <div class="flex items-end gap-4">
+            <div class="flex-1">
+              <app-dynamic-form-field [field]="field" [formControlName]="convertToSnakeCase(field.field_name)"
+                [error]="getFieldError(field)">
+              </app-dynamic-form-field>
+            </div>
+            <button type="button" (click)="onFieldSubmit(field)" [disabled]="!getFormControl(field).valid || isLoading"
+              class="h-10 px-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:opacity-90 transition-all duration-300 rounded-md flex items-center">
+              <div *ngIf="isLoading" class="w-4 h-4 spinner mr-2"></div>
+              <span>Submit</span>
+            </button>
           </div>
-          <button type="button" (click)="onFieldSubmit(field)" [disabled]="!getFormControl(field).valid || isLoading"
-            class="h-10 px-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:opacity-90 transition-all duration-300 rounded-md flex items-center">
-            <div *ngIf="isLoading" class="w-4 h-4 spinner mr-2"></div>
-            <span>Submit</span>
-          </button>
         </div>
       </div>
     </div>
@@ -49,7 +57,7 @@
       </button>
 
       <div class="flex items-center space-x-2">
-        <button type="submit" [disabled]="!form.valid || isLoading"
+        <button type="submit" [disabled]="!hasSubmittedAnyField || isLoading"
           class="h-12 px-8 bg-gradient-to-r from-violet-500 to-purple-600 text-white hover:opacity-90 transition-all duration-300 rounded-md flex items-center">
           <div *ngIf="isLoading" class="w-5 h-5 spinner mr-2"></div>
           <span *ngIf="!isLoading">Next Step</span>

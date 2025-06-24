@@ -40,11 +40,12 @@ export class OnboardingService {
       this.state.currentStep++;
     }
     this.updateState();
+    console.log('[OnboardingService] completeStep called, state:', this.state); // DEBUG LOG
+    this.stateSubject.next({ ...this.state }); // Notify subscribers for global UI update
   }
 
   goToPreviousStep() {
     if (this.state.currentStep > 1) {
-      debugger
       this.state.currentStep--;
       this.updateState();
     }
@@ -76,5 +77,6 @@ export class OnboardingService {
   private updateState() {
     this.localStorageService.set('onboardingState', JSON.stringify(this.state));
     this.stateSubject.next({ ...this.state });
+    console.log('[OnboardingService] updateState called, state:', this.state); // DEBUG LOG
   }
 }

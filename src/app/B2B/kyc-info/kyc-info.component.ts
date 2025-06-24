@@ -9,6 +9,8 @@ import { CountrySelectorComponent } from '../../Shared/Custom/country-selector/c
 import { DynamicFormFieldComponent } from '../../Shared/Custom/dynamic-form-field/dynamic-form-field.component';
 import { HttpService } from '../../service/http.service';
 import { UserObject } from '../../Shared/Auth/user.interface';
+import { HttpHeaders } from '@angular/common/http';
+import { submittedKycs } from './kyc.interface';
 
 export interface Countries {
   id: number;
@@ -65,12 +67,14 @@ export interface Pagination<T> {
 export class KycInfoComponent implements OnInit, OnDestroy {
   form: FormGroup;
   countries: Countries[] = [];
+  submittedKycs: submittedKycs[] = [];
   fields: DynamicField[] = [];
   currentStep: number = 2;
   isLoading: boolean = false;
   userObject: UserObject;
   private apiSubscriptions: Subscription[] = [];
   private subscription: Subscription = new Subscription();
+  hasSubmittedAnyField: boolean = false; // Track if any KYC field has been submitted
 
   constructor(
     private fb: FormBuilder,
@@ -87,6 +91,7 @@ export class KycInfoComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadFormData();
     this.getCountries();
+    this.loadSubmitedKyc();
     this.subscription.add(
       this.form.statusChanges.subscribe(status => {
         this.localStorageService.set('kycInfoFormData', JSON.stringify(this.form.value));
@@ -131,8 +136,25 @@ export class KycInfoComponent implements OnInit, OnDestroy {
     });
     this.apiSubscriptions.push(subscription);
   }
+  loadSubmitedKyc() {
+    const url = 'onboarding/kycs';
+    const subscription = this.httpService.get<Pagination<submittedKycs>>(url).subscribe({
+      next: (response) => {
+        if (response.status === 200 && response.body?.results) {
+          this.submittedKycs = response.body.results;
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching countries:', error);
+      }
+    });
+    this.apiSubscriptions.push(subscription);
+
+  }
+
 
   getFieldsByCountry(countryId: number): void {
+    this.isLoading = true; // Show loading spinner
     const url = `onboarding/requirements?country__id=${countryId}`;
     const subscription = this.httpService.get<Pagination<DynamicField>>(url).subscribe({
       next: (response) => {
@@ -140,9 +162,11 @@ export class KycInfoComponent implements OnInit, OnDestroy {
           this.fields = response.body.results;
           this.updateFormControls();
         }
+        this.isLoading = false; // Hide loading spinner
       },
       error: (error) => {
         console.error('Error fetching fields:', error);
+        this.isLoading = false; // Hide loading spinner on error
       }
     });
     this.apiSubscriptions.push(subscription);
@@ -223,9 +247,36 @@ export class KycInfoComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     try {
       const fieldData = this.prepareFieldData(field, control.value);
-      const response = await this.httpService.post('onboarding/kycs', fieldData).toPromise();
+
+      // If file upload, use FormData, else x-www-form-urlencoded
+      let response;
+      if (field.field_type === 'File' && control.value) {
+        const formData = new FormData();
+        Object.entries(fieldData).forEach(([key, value]) => {
+          if (key === 'file_value' && value instanceof File) {
+            formData.append(key, value, value.name);
+          } else {
+            formData.append(key, value as any);
+          }
+        });
+        response = await this.httpService.post('onboarding/kycs', formData).toPromise();
+      } else {
+        const urlSearchParams = new URLSearchParams();
+        Object.entries(fieldData).forEach(([key, value]) => {
+          urlSearchParams.append(key, value as string);
+        });
+        response = await this.httpService.post(
+          'onboarding/kycs',
+          urlSearchParams.toString(),
+          {
+            headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
+          }
+        ).toPromise();
+      }
+
       if (response?.status === 200) {
         control.markAsUntouched();
+        this.hasSubmittedAnyField = true; // Mark that at least one document has been submitted
       } else {
         console.error(`Submission failed for ${field.field_name}`);
       }
@@ -237,24 +288,13 @@ export class KycInfoComponent implements OnInit, OnDestroy {
   }
 
   async onFormSubmit(): Promise<void> {
-    if (!this.form.valid) {
+    // Only allow next step if at least one document has been submitted
+    if (!this.hasSubmittedAnyField) {
       this.form.markAllAsTouched();
       return;
     }
-
-    this.isLoading = true;
-    try {
-      const response = await this.httpService.post('onboarding/kycs', this.form.value).toPromise();
-      if (response?.status === 200) {
-        this.onboardingService.completeStep(2);
-      } else {
-        console.error('KYC submission failed');
-      }
-    } catch (error) {
-      console.error('Error submitting KYC form:', error);
-    } finally {
-      this.isLoading = false;
-    }
+    // Move to next step without API call
+    this.onboardingService.completeStep(2);
   }
 
   goToPreviousStep() {
