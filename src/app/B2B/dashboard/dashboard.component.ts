@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -10,6 +10,9 @@ import { RouterModule } from '@angular/router';
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
+  @HostListener('document:click', ['$event'])
+  isMenuOpen = false;
+
   user = {
     name: 'Sammy Maina',
     email: 'helloworld@gmail.com',
@@ -41,4 +44,14 @@ export class DashboardComponent {
     }
   ];
 
+  toggleMenu(): void {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+  handleClickOutside(event: Event): void {
+    const target = event.target as HTMLElement;
+    const isInside = target.closest('.menu-container');
+    if (!isInside) {
+      this.isMenuOpen = false;
+    }
+  }
 }

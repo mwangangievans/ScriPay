@@ -1,31 +1,53 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalstorageService {
-
-  constructor() { }
+  constructor(@Inject(PLATFORM_ID) private platformId: Object, private notify: NotificationService,
+  ) { }
 
   set(key: string, value: any): void {
-    try {
-      localStorage.setItem(key, JSON.stringify(value));
-    } catch (e) {
-      console.error('Error saving to localStorage', e);
+    if (isPlatformBrowser(this.platformId)) {
+      try {
+        localStorage.setItem(key, JSON.stringify(value));
+      } catch (e) {
+        this.notify.showError('Error saving to localStorage', "error");
+      }
     }
   }
 
   get(key: string): any {
-    try {
-      const item = localStorage.getItem(key);
-      return item ? JSON.parse(item) : null;
-    } catch (e) {
-      console.error('Error getting data from localStorage', e);
-      return null;
+    if (isPlatformBrowser(this.platformId)) {
+      try {
+        const item = localStorage.getItem(key);
+        return item ? JSON.parse(item) : null;
+      } catch (e) {
+        this.notify.showError('Error saving to localStorage', "error");
+        return null;
+      }
     }
+    return null;
   }
 
   remove(key: string): void {
-    localStorage.removeItem(key);
+    if (isPlatformBrowser(this.platformId)) {
+      try {
+        localStorage.removeItem(key);
+      } catch (e) {
+        console.error('Error removing item from localStorage', e);
+      }
+    }
+  }
+  clear(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      try {
+        localStorage.clear();
+      } catch (e) {
+        console.error('Error clearing localStorage', e);
+      }
+    }
   }
 }
