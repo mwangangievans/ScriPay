@@ -64,7 +64,7 @@ export class MerchantsInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // this.getMerchant();
+    this.currentStep = 1    // this.getMerchant();
     this.subscription.add(
       this.form.statusChanges.subscribe(status => {
         this.localStorageService.set('merchantInfoFormData', JSON.stringify(this.form.value));

@@ -1,52 +1,254 @@
-.text-_red {
-  color: #dc2626;
+/* Custom animations and styles */
+.spinner {
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #8b5cf6;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
 }
 
-.text-_green {
-  color: #16a34a;
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-.bg-highlight_primary {
-  background-color: #3b82f6;
+/* Smooth transitions for form elements */
+.form-field-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.text-highlight_primary {
-  color: #3b82f6;
+/* Custom gradient backgrounds */
+.gradient-purple {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-.bg-input_bg {
-  background-color: #f9fafb;
+.gradient-success {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
 }
 
-.text-font_color {
-  color: #1f2937;
+.gradient-warning {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
 }
 
-.placeholder-inputPlaceholderColor::placeholder {
-  color: #9ca3af;
+.gradient-pending {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
 }
 
-.text-gray_secondary {
-  color: #6b7280;
+/* Enhanced shadow effects */
+.shadow-custom {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
-.border-_red {
-  border-color: #dc2626;
+.shadow-custom-hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
-.focus\:ring-highlight_primary:focus {
-  --tw-ring-color: #3b82f6;
+/* Status-specific shadows */
+.shadow-approved {
+  box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.2), 0 10px 10px -5px rgba(16, 185, 129, 0.1);
 }
 
-.focus\:border-highlight_primary:focus {
-  border-color: #3b82f6;
+.shadow-pending {
+  box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.2), 0 10px 10px -5px rgba(245, 158, 11, 0.1);
 }
 
-.dynamic-field-wrapper input,
-.dynamic-field-wrapper select,
-.dynamic-field-wrapper textarea {
-  border: 1px solid #d1d5db; /* Tailwind's border-gray-300 */
-  background-color: #f9fafb; /* matches .bg-input_bg */
-  border-radius: 0.75rem;    /* matches rounded-xl */
-  transition: border-color 0.2s;
+.shadow-rejected {
+  box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.2), 0 10px 10px -5px rgba(239, 68, 68, 0.1);
+}
+
+/* Responsive improvements */
+@media (max-width: 640px) {
+  .mobile-stack {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .mobile-full-width {
+    width: 100%;
+  }
+}
+
+/* Loading overlay improvements */
+.loading-overlay {
+  backdrop-filter: blur(4px);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+/* Success state animations */
+@keyframes checkmark {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.checkmark-animation {
+  animation: checkmark 0.5s ease-in-out;
+}
+
+/* Progress bar animation */
+@keyframes progressFill {
+  from {
+    width: 0%;
+  }
+  to {
+    width: var(--progress-width);
+  }
+}
+
+.progress-animated {
+  animation: progressFill 1s ease-out;
+}
+
+/* Enhanced progress bar */
+@keyframes progressGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(16, 185, 129, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.8);
+  }
+}
+
+.progress-glow {
+  animation: progressGlow 2s ease-in-out infinite;
+}
+
+/* Button hover effects */
+.btn-hover-lift {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-hover-lift:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Card hover effects */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Status-specific card animations */
+@keyframes approvedPulse {
+  0%,
+  100% {
+    border-color: rgb(167, 243, 208);
+    background: linear-gradient(135deg, rgb(236, 253, 245) 0%, rgb(209, 250, 229) 100%);
+  }
+  50% {
+    border-color: rgb(110, 231, 183);
+    background: linear-gradient(135deg, rgb(220, 252, 231) 0%, rgb(187, 247, 208) 100%);
+  }
+}
+
+.approved-pulse {
+  animation: approvedPulse 3s ease-in-out infinite;
+}
+
+@keyframes pendingPulse {
+  0%,
+  100% {
+    border-color: rgb(253, 230, 138);
+    background: linear-gradient(135deg, rgb(255, 251, 235) 0%, rgb(254, 243, 199) 100%);
+  }
+  50% {
+    border-color: rgb(251, 191, 36);
+    background: linear-gradient(135deg, rgb(254, 249, 195) 0%, rgb(253, 230, 138) 100%);
+  }
+}
+
+.pending-pulse {
+  animation: pendingPulse 3s ease-in-out infinite;
+}
+
+/* Document viewer modal animations */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modal-content {
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+/* Custom scrollbar for better UX */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Status ribbon animations */
+@keyframes ribbonShine {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}
+
+.ribbon-shine {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  background-size: 200% 100%;
+  animation: ribbonShine 2s ease-in-out infinite;
+}
+
+/* Enhanced button states */
+.btn-approved {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.btn-pending {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+}
+
+.btn-rejected {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+.btn-rejected:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
 }

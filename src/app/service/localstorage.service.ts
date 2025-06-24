@@ -41,4 +41,13 @@ export class LocalstorageService {
       }
     }
   }
+  clear(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      try {
+        localStorage.clear();
+      } catch (e) {
+        console.error('Error clearing localStorage', e);
+      }
+    }
+  }
 }

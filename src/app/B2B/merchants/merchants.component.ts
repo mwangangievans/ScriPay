@@ -84,8 +84,9 @@ export class MerchantsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    const savedStep = this._LocalstorageService.get('activeStep');
-    this.activeStep = savedStep ? +savedStep : 0;
+    // Reset stepper to 1 and update globally
+    this.activeStep = 0;
+    this._LocalstorageService.set('activeStep', this.activeStep.toString());
 
     this.loadFormData('businessInfoForm', this.businessInfoForm);
     this.loadFormData('ownerInfoForm', this.ownerInfoForm);
