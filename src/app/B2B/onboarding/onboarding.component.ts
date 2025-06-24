@@ -26,10 +26,10 @@ interface OnboardingState {
 }
 
 interface UserInfo {
-  name: string
-  email: string
+  name?: string
+  email?: string
   merchant?: {
-    name: string
+    name?: string
   }
 }
 
@@ -153,11 +153,22 @@ export class OnboardingComponent implements OnInit, OnDestroy {
   }
 
   getCurrentUserName(): string {
-    return this.userInfo?.merchant?.name || this.userInfo?.name || "User"
+    // Safely handle missing userInfo or merchant
+    if (this.userInfo && this.userInfo.merchant && typeof this.userInfo.merchant.name === 'string') {
+      return this.userInfo.merchant.name;
+    }
+    if (this.userInfo && typeof this.userInfo.name === 'string') {
+      return this.userInfo.name;
+    }
+    return "User";
   }
 
   getCurrentUserEmail(): string {
-    return this.userInfo?.email || "user@example.com"
+    // Safely handle missing userInfo
+    if (this.userInfo && typeof this.userInfo.email === 'string') {
+      return this.userInfo.email;
+    }
+    return "user@example.com";
   }
 
   toggleUserMenu(): void {
