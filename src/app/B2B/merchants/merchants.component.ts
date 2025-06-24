@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { HttpService } from '../../service/http.service';
 import { Countries, Merchant, onbordingRequiremnetByCountry, Pagination } from '../B2B.interface';
-import { NgSelectModule } from '@ng-select/ng-select';
+// import { NgSelectModule } from '@ng-select/ng-select';
 import { LocalstorageService } from '../../service/localstorage.service';
 
 
@@ -15,7 +15,7 @@ import { LocalstorageService } from '../../service/localstorage.service';
 @Component({
   selector: 'app-merchants',
   standalone: true,
-  imports: [MatStepperModule, MatIconModule, MatCardModule, ReactiveFormsModule, FormsModule, CommonModule, NgSelectModule],
+  imports: [MatStepperModule, MatIconModule, MatCardModule, ReactiveFormsModule, FormsModule, CommonModule],
   templateUrl: './merchants.component.html',
   styleUrls: ['./merchants.component.css']
 })
