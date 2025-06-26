@@ -1,200 +1,279 @@
-import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { loginResponse, otpVerificationData, UserLoginData, UserRegistration } from '../../../interface';
-import { CommonModule } from '@angular/common';
-import { HttpService } from '../../../service/http.service';
-import { Router, RouterModule } from '@angular/router';
-import { LoaderService } from '../../../service/loader.service';
-import { Subscription } from 'rxjs';
-import { NotificationService } from '../../../service/notification.service';
-import { AuthService } from '../../../service/auth.service';
-import { LocalstorageService } from '../../../service/localstorage.service';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from "@angular/core"
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms"
+import { trigger, state, style, transition, animate } from "@angular/animations"
+import { CommonModule } from "@angular/common"
+import { Router, RouterModule } from "@angular/router"
+import { LocalstorageService } from "../../../service/localstorage.service"
+import { UserLoginData } from "../../../interface"
+import { Subscription } from "rxjs"
+import { HttpService } from "../../../service/http.service"
+import { CarouselSlide, LoginResponse } from "./login.interface"
+import { AuthService } from "../../../service/auth.service"
+import { NotificationService } from "../../../service/notification.service"
+
+
+
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
-})
-export class LoginComponent {
-  loginForm!: FormGroup;
-  passwordVisible: boolean = false;
-  private userData: otpVerificationData | null = null;
-  isLoading = this.loaderService.loading$;
-  private subscription: Subscription | null = null;
-  formSubmitted = false;
-
-  constructor(
-    private httpService: HttpService,
-    private router: Router,
-    private notify: NotificationService,
-    private authService: AuthService,
-    private loaderService: LoaderService,
-    private localStorageService: LocalstorageService) {
-
-    this.loginForm = new FormGroup({
-
-      email: new FormControl('', [
-        Validators.required,
-        Validators.email,
-        Validators.maxLength(255)
+  styleUrl: './login.component.css',
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  animations: [
+    trigger("slideAnimation", [
+      transition(":enter", [
+        style({ transform: "translateX(300px)", opacity: 0, scale: 0.95 }),
+        animate(
+          "800ms cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+          style({ transform: "translateX(0)", opacity: 1, scale: 1 }),
+        ),
       ]),
-      password: new FormControl('', [
-        Validators.required,
-        Validators.minLength(8),
-        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/)
-      ])
-    });
+      transition(":leave", [
+        animate(
+          "800ms cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+          style({ transform: "translateX(-300px)", opacity: 0, scale: 0.95 }),
+        ),
+      ]),
+    ]),
+    trigger("fadeInUp", [
+      transition(":enter", [
+        style({ transform: "translateY(30px)", opacity: 0 }),
+        animate("700ms cubic-bezier(0.25, 0.46, 0.45, 0.94)", style({ transform: "translateY(0)", opacity: 1 })),
+      ]),
+    ]),
+    trigger("scaleIn", [
+      transition(":enter", [
+        style({ transform: "scale(0)", opacity: 0 }),
+        animate("500ms cubic-bezier(0.25, 0.46, 0.45, 0.94)", style({ transform: "scale(1)", opacity: 1 })),
+      ]),
+    ]),
+    trigger("buttonHover", [
+      state("normal", style({ transform: "scale(1)" })),
+      state("hovered", style({ transform: "scale(1.02)" })),
+      transition("normal <=> hovered", animate("200ms ease-out")),
+    ]),
+  ],
+})
+export class LoginComponent implements OnInit, OnDestroy {
+  @ViewChild("constraintsRef", { static: false }) constraintsRef!: ElementRef
 
-    const navigation = this.router.getCurrentNavigation();
-    this.userData = navigation?.extras.state?.['user'] as UserRegistration;
-
-    // Or fallback from localStorage if needed
-    if (!this.userData) {
-      this.userData = this.localStorageService.get('pendingRegistration');
-    }
-
-    if (this.userData) {
-      this.loginForm.patchValue({
-        email: this.userData.username || '',
-        password: this.userData.password || ''
-      });
-    }
+  loginForm: FormGroup
+  currentSlide = 0
+  showPassword = false
+  isLoading = false
+  private intervalId: any
+  private dragStartX = 0
+  private isDragging = false
 
 
+  carouselData: CarouselSlide[] = [
+    {
+      id: 1,
+      title: "Receive payments from any banking system",
+      subtitle: "Connect your bank card, and create accounts in the selected currency.",
+      stats: { users: "2M+", transactions: "$50B+" },
+      imageSrc: "assets/images/carousel-2.png",
+      imageAlt: "Person with credit card and currency symbols",
+      badgeIcon: "shield",
+      badgeColor: "bg-green-500",
+      badgePosition: "-top-2 -right-2",
+    },
+    {
+      id: 2,
+      title: "Send money globally with ease",
+      subtitle: "Transfer funds to any country with competitive exchange rates and low fees.",
+      stats: { countries: "180+", uptime: "99.9%" },
+      imageSrc: "assets/images/carousel-1.png",
+      imageAlt: "Woman interacting with large credit card",
+      badgeIcon: "credit-card",
+      badgeColor: "bg-blue-500",
+      badgePosition: "-bottom-2 -left-2",
+    },
+    {
+      id: 3,
+      title: "Secure mobile transactions",
+      subtitle: "Complete secure transactions on your mobile device with advanced encryption technology.",
+      stats: { security: "256-bit", rating: "4.9★" },
+      imageSrc: "assets/images/carousel-3.png",
+      imageAlt: "Woman with mobile device showing secure transaction",
+      badgeIcon: "lock",
+      badgeColor: "bg-purple-500",
+      badgePosition: "top-4 -right-2",
+    },
+  ]
+
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router
+
+    , private localStorageService: LocalstorageService, private httpService: HttpService, private notify: NotificationService,
+
+  ) {
+    this.loginForm = this.fb.group({
+      email: ["", [Validators.required, Validators.email]],
+      password: ["", [Validators.required, Validators.minLength(6)]],
+    })
   }
 
-  onSubmit(): void {
-    this.formSubmitted = true; // Track that user has attempted to submit
+  ngOnInit() {
+    this.startCarousel()
+  }
 
+  ngOnDestroy() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId)
+    }
+  }
+
+  startCarousel() {
+    this.intervalId = setInterval(() => {
+      this.currentSlide = (this.currentSlide + 1) % this.carouselData.length
+    }, 3000)
+  }
+
+  goToSlide(index: number) {
+    this.currentSlide = index
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword
+  }
+
+  getEmailError(): string {
+    const emailControl = this.loginForm.get("email")
+    if (emailControl?.hasError("required") && emailControl?.touched) {
+      return "Email is required"
+    }
+    if (emailControl?.hasError("email") && emailControl?.touched) {
+      return "Please enter a valid email"
+    }
+    return ""
+  }
+
+  getPasswordError(): string {
+    const passwordControl = this.loginForm.get("password")
+    if (passwordControl?.hasError("required") && passwordControl?.touched) {
+      return "Password is required"
+    }
+    if (passwordControl?.hasError("minlength") && passwordControl?.touched) {
+      return "Password must be at least 6 characters"
+    }
+    return ""
+  }
+
+  isEmailValid(): boolean {
+    const emailControl = this.loginForm.get("email")
+    return (emailControl?.valid && emailControl?.value && emailControl?.touched) || false
+  }
+
+  isPasswordValid(): boolean {
+    const passwordControl = this.loginForm.get("password")
+    return (passwordControl?.valid && passwordControl?.value && passwordControl?.touched) || false
+  }
+
+  // async onSubmit() {
+  //   console.log("Form submitted:", this.loginForm.value);
+
+  //   if (this.loginForm.valid) {
+  //     this.isLoading = true
+
+  //     // Simulate API call
+  //     await new Promise((resolve) => setTimeout(resolve, 2000))
+
+  //     this.isLoading = false
+  //     console.log("Login attempt:", this.loginForm.value)
+  //   } else {
+  //     // Mark all fields as touched to show validation errors
+  //     Object.keys(this.loginForm.controls).forEach((key) => {
+  //       this.loginForm.get(key)?.markAsTouched()
+  //     })
+  //   }
+  // }
+
+  onSubmit(): void {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
-      this.scrollToFirstError();
       return;
     }
 
     const { email, password } = this.loginForm.value;
 
-    // Prepare OTP verification data
+    // Store data for later OTP use
     const otpVerificationData = {
-      code: "0000",
-      password: password,
+      code: '0000',
+      password,
       username: email,
-      context: "Verification"
+      context: 'Verification',
     };
 
-    // Securely store in local storage (encrypted in production)
     this.localStorageService.set('pendingRegistration', otpVerificationData);
 
-    // Prepare login data
     const formData: UserLoginData = {
       username: email,
       password: password,
     };
 
-    this.subscription = this.httpService
-      .post<loginResponse>('authentication/login', formData, {
+    this.isLoading = true;
+    this.httpService
+      .post<LoginResponse>('authentication/login', formData, {
         showSuccessNotification: true,
-        skipAuth: true
+        skipAuth: true,
       })
       .subscribe({
-        next: (res: any) => {
-          this.handleLoginSuccess(res);
+        next: (response) => {
+          this.isLoading = false;
+
+          const loginData = response.body;
+          if (loginData) {
+            console.log('Login successful:', loginData);
+            this.notify.showSuccess("Login successful", 'Success');
+            this.localStorageService.set('userObject', loginData);
+            this.authService.saveTokens(response.body.tokens.access_token, response.body.tokens.refresh_token);
+            // if (response.body.is_merchant && response.body.merchant?.active) {
+            //   debugger
+
+            //   this.router.navigate(['/b2b/dashboard']);
+
+            // } else {
+            //   this.router.navigate(['/Onboarding']);
+            // }
+            this.router.navigate(['/b2b/dashboard']);
+
+
+          }
         },
-        error: (err: any) => {
+        error: (err) => {
+          this.isLoading = false;
 
+          console.log("err", err.error);
 
-          this.handleLoginError(err);
-        }
-      });
-  }
+          if (err?.error) {
+            const errors = err.error;
+            let emailNotVerifiedFound = false;
 
-  private handleLoginSuccess(res: any): void {
-    if (res.status === 200) {
-      this.notify.showSuccess("Login successful", 'Success');
+            for (const key in errors) {
+              if (Array.isArray(errors[key])) {
+                for (const message of errors[key]) {
 
-      // Set user object and navigate based on user type
-      res.body.is_machant = true; // Note: Typo in 'is_machant'? Should it be 'is_merchant'?
-      this.localStorageService.set('userObject', res.body);
-      res.body
-      this.authService.saveTokens(res.body.tokens.access_token, res.body.tokens.refresh_token);
-
-      //       {
-      //     "tokens": {
-      //         "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUxNTQxNDg1LCJpYXQiOjE3NDg5NDk0ODUsImp0aSI6IjAxYWU5N2NjODZhOTQzMDhhYmVhNzliZDc1NDIyMzJhIiwidXNlcl9pZCI6NDF9.LtmpusLovnKv70vX1sFQ2z1fxa_hK1EYnN29YiRQTa4",
-      //         "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1MTU0MTQ4NSwiaWF0IjoxNzQ4OTQ5NDg1LCJqdGkiOiIyYTYwMzhjOWQ0NzM0NGQ0ODJlNDAxMWI2ODRkMWNjMiIsInVzZXJfaWQiOjQxfQ.chzAQd-1hXzaNgOBw5qeIH-O3WrOV1OoBejQorbEUoM"
-      //     },
-      //     "user": {
-      //         "id": 41,
-      //         "username": "emwangangi@jambopay.com",
-      //         "email": "emwangangi@jambopay.com",
-      //         "email_verified": true,
-      //         "phone_number": "254798288410",
-      //         "phone_number_verified": false,
-      //         "is_verified": true,
-      //         "fullname": "Muinde Mwangangi",
-      //         "is_active": true,
-      //         "is_staff": false
-      //     },
-      //     "is_merchant": false
-      // }
-
-      if (res.body.is_merchant && res.body.merchant.active) {
-        this.localStorageService.set('isMerchant', true);
-        this.router.navigate(['/b2b/dashboard']);
-
-      } else {
-        this.router.navigate(['/Onboarding']);
-      }
-
-
-
-    }
-  }
-
-  private handleLoginError(err: any): void {
-    console.log("err", err.error);
-
-    if (err?.error) {
-      const errors = err.error;
-      let emailNotVerifiedFound = false;
-
-      for (const key in errors) {
-        if (Array.isArray(errors[key])) {
-          for (const message of errors[key]) {
-
-            if (message === 'Email is not verified') {
-              this.notify.showWarning(`${key}: ${message}`, 'Warning');
-              emailNotVerifiedFound = true;
-              this.resendCode();
-            } else {
-              // this.notify.showError('Login failed. Please try again.', 'Error');
+                  if (message === 'Email is not verified') {
+                    this.notify.showWarning(`${key}: ${message}`, 'Warning');
+                    emailNotVerifiedFound = true;
+                    this.resendCode();
+                  } else {
+                    // this.notify.showError('Login failed. Please try again.', 'Error');
+                  }
+                }
+              }
             }
+
+            // If no specific errors were processed
+            if (!emailNotVerifiedFound && Object.keys(errors).length === 0) {
+              this.notify.showError('Login failed. Please try again.', 'Error');
+            }
+          } else {
+            this.notify.showError('An unexpected error occurred', 'Error');
           }
         }
-      }
-
-      // If no specific errors were processed
-      if (!emailNotVerifiedFound && Object.keys(errors).length === 0) {
-        this.notify.showError('Login failed. Please try again.', 'Error');
-      }
-    } else {
-      this.notify.showError('An unexpected error occurred', 'Error');
-    }
-  }
-
-
-  private scrollToFirstError(): void {
-    setTimeout(() => {
-      const errorElement = document.querySelector('.error-message');
-      if (errorElement) {
-        errorElement.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center'
-        });
-      }
-    });
+      });
   }
 
 
@@ -208,7 +287,7 @@ export class LoginComponent {
 
 
 
-    this.subscription = this.httpService
+    this.httpService
       .post<any>('authentication/request-code', verificationData, {
         showSuccessNotification: true
       })
@@ -235,30 +314,46 @@ export class LoginComponent {
   }
 
 
-  get passwordValue(): string {
-    return this.loginForm.get('password')?.value || '';
+
+  onDragStart(event: MouseEvent | TouchEvent) {
+    this.isDragging = true
+    this.dragStartX = this.getEventX(event)
   }
 
-  get isMinLength(): boolean {
-    return this.passwordValue.length >= 8;
+  onDragEnd(event: MouseEvent | TouchEvent) {
+    if (!this.isDragging) return
+
+    const dragEndX = this.getEventX(event)
+    const dragDistance = dragEndX - this.dragStartX
+    const threshold = 30
+
+    if (dragDistance > threshold) {
+      this.currentSlide = (this.currentSlide - 1 + this.carouselData.length) % this.carouselData.length
+    } else if (dragDistance < -threshold) {
+      this.currentSlide = (this.currentSlide + 1) % this.carouselData.length
+    }
+
+    this.isDragging = false
   }
 
-  get hasUpperCase(): boolean {
-    return /[A-Z]/.test(this.passwordValue);
+  private getEventX(event: MouseEvent | TouchEvent): number {
+    if (event instanceof MouseEvent) {
+      return event.clientX
+    } else {
+      return event.touches[0]?.clientX || 0
+    }
   }
 
-  get hasLowerCase(): boolean {
-    return /[a-z]/.test(this.passwordValue);
+  getStatsEntries(stats: { [key: string]: string }): Array<[string, string]> {
+    return Object.entries(stats)
   }
 
-  get hasNumber(): boolean {
-    return /\d/.test(this.passwordValue);
-  }
-
-  get hasSpecialChar(): boolean {
-    return /[@$!%*?&]/.test(this.passwordValue);
-  }
-  get passwordInputType(): string {
-    return this.passwordVisible ? 'text' : 'password';
+  getBadgeIconPath(icon: string): string {
+    const icons: { [key: string]: string } = {
+      shield: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
+      "credit-card": "M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z",
+      lock: "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z",
+    }
+    return icons[icon] || ""
   }
 }

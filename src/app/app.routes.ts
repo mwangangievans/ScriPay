@@ -20,6 +20,7 @@ import { DashboardB2bComponent } from './B2B/dashboard-b2b/dashboard-b2b.compone
 import { LoginComponent } from './Shared/Auth/login/login.component';
 import { MerchantsComponent } from './B2B/merchants/merchants.component';
 import { OnboardingComponent } from './B2B/onboarding/onboarding.component';
+import { UserManagementComponent } from './B2B/user-management/user-management.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -59,6 +60,8 @@ export const routes: Routes = [
       { path: 'wallet', component: WalletComponent, data: { title: 'Wallet' } },
       { path: 'payments', component: PaymentsComponent, data: { title: 'Payments' } },
       { path: 'merchants', component: MerchantsComponent, data: { title: 'Merchants' } },
+      { path: 'user-management', component: UserManagementComponent, data: { title: 'User management' } },
+
 
     ]
   }
