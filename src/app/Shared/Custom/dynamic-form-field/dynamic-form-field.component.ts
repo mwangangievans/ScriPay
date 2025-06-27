@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, forwardRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { DynamicField } from '../../../B2B/kyc-info/kyc-info.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-dynamic-form-field',

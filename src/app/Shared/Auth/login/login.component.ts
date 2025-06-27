@@ -1,15 +1,14 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from "@angular/core"
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms"
 import { trigger, state, style, transition, animate } from "@angular/animations"
-import { CommonModule } from "@angular/common"
 import { Router, RouterModule } from "@angular/router"
 import { LocalstorageService } from "../../../service/localstorage.service"
 import { UserLoginData } from "../../../interface"
-import { Subscription } from "rxjs"
 import { HttpService } from "../../../service/http.service"
 import { CarouselSlide, LoginResponse } from "./login.interface"
 import { AuthService } from "../../../service/auth.service"
 import { NotificationService } from "../../../service/notification.service"
+import { CommonModule } from "@angular/common"
 
 
 
@@ -18,8 +17,8 @@ import { NotificationService } from "../../../service/notification.service"
   selector: 'app-login',
   standalone: true,
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  styleUrls: ['./login.component.css'],
+  imports: [ReactiveFormsModule, RouterModule, CommonModule],
   animations: [
     trigger("slideAnimation", [
       transition(":enter", [

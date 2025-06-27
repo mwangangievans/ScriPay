@@ -1,6 +1,5 @@
 import { Component, type OnDestroy, type OnInit } from "@angular/core"
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms"
-import { CommonModule } from "@angular/common"
 import { animate, style, transition, trigger } from "@angular/animations"
 import { Subscription } from "rxjs"
 import { LocalstorageService } from "../../service/localstorage.service"
@@ -11,6 +10,7 @@ import { HttpService } from "../../service/http.service"
 import type { UserObject } from "../../Shared/Auth/user.interface"
 import { HttpHeaders } from "@angular/common/http"
 import type { submittedKycs } from "./kyc.interface"
+import { CommonModule } from "@angular/common"
 
 export interface Countries {
   id: number

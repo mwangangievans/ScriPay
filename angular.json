@@ -33,7 +33,11 @@
             "prerender": true,
             "ssr": {
               "entry": "server.ts"
-            }
+            },
+            "sourceMap": false,
+            "namedChunks": false,
+            "extractLicenses": false,
+            "optimization": false
           },
           "configurations": {
             "production": {
@@ -56,21 +60,19 @@
               "extractLicenses": true
             },
             "development": {
+              "sourceMap": false,
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.prod.ts",
-                  "with": "src/environments/environment.ts"
-                }
-              ]
+              "namedChunks": false
             }
           },
           "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "hmr": true
+          },
           "configurations": {
             "production": {
               "buildTarget": "ScriPay:build:production"

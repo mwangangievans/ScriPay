@@ -1,14 +1,13 @@
 import { Component, type OnInit, type OnDestroy, HostListener } from "@angular/core"
 import { animate, style, transition, trigger } from "@angular/animations"
-import { CommonModule } from "@angular/common"
 import { Subscription } from "rxjs"
 import { MerchantsInfoComponent } from "../merchants-info/merchants-info.component"
 import { KycInfoComponent } from "../kyc-info/kyc-info.component"
 import { OnboardingService } from "../../service/onboarding.service"
 import { LocalstorageService } from "../../service/localstorage.service"
-import { isPlatformBrowser } from "@angular/common"
 import { DocumentStatusComponent } from "../document-status/document-status.component"
 import { Router } from "@angular/router"
+import { CommonModule } from "@angular/common"
 
 interface Step {
   id: number

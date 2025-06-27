@@ -18,7 +18,7 @@ export class TextInputComponent {
   @Input() label: string = 'Label'; // Default label
   @Input() tooltip: string = 'Tooltip text'; // Default tooltip message
   @Input() control!: FormControl; // Ensure control is passed in
-  @Input() errorMessages: { [key: string]: string } = {}; 
+  @Input() errorMessages: { [key: string]: string } = {};
   @Input() showIcon: boolean = false; // New input to toggle icon
   @Input() showLabel: boolean = false; // New input to toggle icon
 
@@ -31,7 +31,7 @@ export class TextInputComponent {
 
   hasError(errorType: string): boolean {
     // Check if the control has the error and has been touched or dirty
-    
+
     return this.control.hasError(errorType) && (this.control.dirty || this.control.touched);
   }
 

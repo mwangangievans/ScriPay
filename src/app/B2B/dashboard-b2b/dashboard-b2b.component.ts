@@ -1,4 +1,3 @@
-import { CommonModule } from "@angular/common";
 import { Component, HostListener, OnInit, OnDestroy, Inject } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router, RouterModule, NavigationEnd } from "@angular/router";
@@ -6,8 +5,7 @@ import { AuthService } from "../../service/auth.service";
 import { Subscription } from "rxjs";
 import { filter } from "rxjs/operators";
 import { PLATFORM_ID } from "@angular/core";
-import { isPlatformBrowser } from "@angular/common";
-
+import { CommonModule, isPlatformBrowser } from "@angular/common";
 interface NavItem {
   label: string;
   icon: string;

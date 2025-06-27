@@ -4,10 +4,10 @@ import { Router, RouterModule } from '@angular/router';
 import { HttpService } from '../../../service/http.service';
 import { LoaderService } from '../../../service/loader.service';
 import { Component, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { otpVerificationData, UserRegistration } from '../../../interface';
 import { LocalstorageService } from '../../../service/localstorage.service';
+import { CommonModule } from '@angular/common';
 
 
 @Component({

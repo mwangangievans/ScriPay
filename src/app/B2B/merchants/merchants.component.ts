@@ -1,7 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatStepperModule } from '@angular/material/stepper';
-import { MatIconModule } from '@angular/material/icon';
-import { MatCardModule } from '@angular/material/card';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
@@ -9,6 +6,9 @@ import { HttpService } from '../../service/http.service';
 import { Countries, Merchant, onbordingRequiremnetByCountry, Pagination } from '../B2B.interface';
 // import { NgSelectModule } from '@ng-select/ng-select';
 import { LocalstorageService } from '../../service/localstorage.service';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 
 
 

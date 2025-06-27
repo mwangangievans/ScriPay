@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LocalstorageService } from '../../service/localstorage.service';
 import { OnboardingService } from '../../service/onboarding.service';
@@ -8,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { HttpService } from '../../service/http.service';
 import { UserObject } from '../../Shared/Auth/user.interface';
 import { Merchant, Pagination } from '../B2B.interface';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-merchants-info',

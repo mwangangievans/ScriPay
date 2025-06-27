@@ -1,10 +1,10 @@
 import { Component, type OnInit, type OnDestroy, ViewChild, type ElementRef } from "@angular/core"
-import { CommonModule } from "@angular/common"
 import { FormsModule } from "@angular/forms"
 import type { Subscription } from "rxjs"
 import { Pagination } from "../B2B.interface"
 import { OnboardingService } from "../../service/onboarding.service"
 import { HttpService } from "../../service/http.service"
+import { CommonModule } from "@angular/common"
 
 interface DocumentMapper {
   id: number
