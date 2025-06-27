@@ -3,10 +3,9 @@ const { fontFamily } = require('tailwindcss/defaultTheme');
 
 module.exports = {
   content: [
-    "./src/**/*.{html, ts}",
+    "./src/**/*.{html,ts}",
     "./node_modules/flowbite/**/*.js"
   ],
-
   theme: {
     screens: {
       'sm': '640px',
@@ -49,6 +48,6 @@ module.exports = {
     },
   },
   plugins: [
-        require('flowbite/plugin')
-    ]
-}
+    require('flowbite/plugin')
+  ]
+};

@@ -55,11 +55,13 @@ export const routes: Routes = [
     data: { title: 'Dashboard' },
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: IndexB2bComponent, data: { title: 'Dashboard' } },
-      { path: 'analytics', component: AnalitycsComponent, data: { title: 'Analytics' } },
+      { path: 'dashboard', component: IndexComponent, data: { title: 'Dashboard' } },
+      // { path: 'analytics', component: AnalitycsComponent, data: { title: 'Analytics' } },
+      { path: 'analytics', component: ActivityComponent, data: { title: 'Analytics' } },
       { path: 'wallet', component: WalletComponent, data: { title: 'Wallet' } },
       { path: 'payments', component: PaymentsComponent, data: { title: 'Payments' } },
       { path: 'merchants', component: MerchantsComponent, data: { title: 'Merchants' } },
+      { path: 'settings', component: SettingsComponent, data: { title: 'Settings' } },
       { path: 'user-management', component: UserManagementComponent, data: { title: 'User management' } },
 
 
