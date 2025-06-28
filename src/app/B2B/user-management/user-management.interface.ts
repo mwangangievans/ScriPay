@@ -33,18 +33,20 @@ export interface Role {
   merchant: number | null
 }
 
+export interface permission {
+  created_at: string
+  id: number
+  modified_at: string
+  name: string
+  access: "Internal" | "External"
+  status: boolean
+}
+
 export interface PermissionRole {
   created_at: string
   id: number
   modified_at: string
-  permission: {
-    created_at: string
-    id: number
-    modified_at: string
-    name: string
-    access: "Internal" | "External"
-    status: boolean
-  }
+  permission: permission
   role: {
     created_at: string
     id: number

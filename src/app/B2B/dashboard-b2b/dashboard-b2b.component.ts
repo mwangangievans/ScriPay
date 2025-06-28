@@ -6,6 +6,8 @@ import { Subscription } from "rxjs";
 import { filter } from "rxjs/operators";
 import { PLATFORM_ID } from "@angular/core";
 import { CommonModule, isPlatformBrowser } from "@angular/common";
+import { UserObject } from "../../Shared/Auth/user.interface";
+import { LocalstorageService } from "../../service/localstorage.service";
 interface NavItem {
   label: string;
   icon: string;
@@ -34,6 +36,8 @@ export class DashboardB2bComponent implements OnInit, OnDestroy {
   dropdownOpen = false;
 
   private routerSubscription: Subscription = new Subscription();
+  userObject: UserObject
+
 
   navItems: NavItem[] = [
     {
@@ -68,22 +72,26 @@ export class DashboardB2bComponent implements OnInit, OnDestroy {
     },
   ];
 
-  user: User = {
-    name: "Sammy Maina",
-    email: "helloworld@gmail.com",
-    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face",
-    role: "Admin",
-  };
+  // user: User = {
+  //   name: "Sammy Maina",
+  //   email: "helloworld@gmail.com",
+  //   avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face",
+  //   role: "Admin",
+  // };
 
   constructor(
     public router: Router,
     private route: ActivatedRoute,
     private titleService: Title,
     private authService: AuthService,
+    private localStorageService: LocalstorageService,
+
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
   ngOnInit(): void {
+    this.userObject = this.localStorageService.get("userObject")
+
     // Listen for route changes
     this.routerSubscription = this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -191,7 +199,7 @@ export class DashboardB2bComponent implements OnInit, OnDestroy {
   }
 
   getUserInitials(): string {
-    return this.user.name
+    return this.userObject.user.fullname
       .split(" ")
       .map((n) => n[0])
       .join("")
@@ -199,10 +207,14 @@ export class DashboardB2bComponent implements OnInit, OnDestroy {
   }
 
   getFirstName(): string {
-    return this.user.name.split(" ")[0];
+    return this.userObject.user.fullname.split(" ")[0];
   }
 
   isRouteActive(route: string): boolean {
     return this.router.url === route || (route === "/b2b/dashboard" && this.router.url.endsWith("/dashboard"));
+  }
+
+  isActive(route: string): boolean {
+    return this.router.isActive(route, { paths: 'exact', queryParams: 'exact', fragment: 'ignored', matrixParams: 'ignored' });
   }
 }

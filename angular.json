@@ -29,15 +29,14 @@
               "src/styles.css"
             ],
             "scripts": [],
-            "server": "src/main.server.ts",
-            "prerender": true,
-            "ssr": {
-              "entry": "server.ts"
-            },
             "sourceMap": false,
             "namedChunks": false,
             "extractLicenses": false,
-            "optimization": false
+            "optimization": {
+              "scripts": true,
+              "styles": true,
+              "fonts": false
+            }
           },
           "configurations": {
             "production": {
@@ -54,14 +53,22 @@
                 }
               ],
               "outputHashing": "all",
-              "optimization": true,
+              "optimization": {
+                "scripts": true,
+                "styles": true,
+                "fonts": false
+              },
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true
             },
             "development": {
               "sourceMap": false,
-              "optimization": false,
+              "optimization": {
+                "scripts": true,
+                "styles": true,
+                "fonts": false
+              },
               "extractLicenses": false,
               "namedChunks": false
             }

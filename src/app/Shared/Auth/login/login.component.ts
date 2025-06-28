@@ -228,7 +228,6 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.localStorageService.set('userObject', loginData);
             this.authService.saveTokens(response.body.tokens.access_token, response.body.tokens.refresh_token);
             // if (response.body.is_merchant && response.body.merchant?.active) {
-            //   debugger
 
             //   this.router.navigate(['/b2b/dashboard']);
 

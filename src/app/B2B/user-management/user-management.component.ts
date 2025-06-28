@@ -1,9 +1,12 @@
 import { Component, type OnInit, type OnDestroy, type ElementRef, ViewChild, type AfterViewInit } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { FormsModule } from "@angular/forms"
-import { Subject, debounceTime, takeUntil, distinctUntilChanged } from "rxjs"
-import { PermissionRole, Role, User } from "./user-management.interface"
+import { Subject, debounceTime, takeUntil, distinctUntilChanged, Subscription } from "rxjs"
+import { permission, PermissionRole, Role, User } from "./user-management.interface"
 import { UserManagementService } from "../../service/user-management.service"
+import { HttpService } from "../../service/http.service"
+import { Pagination } from "../B2B.interface"
+import { NotificationService } from "../../service/notification.service"
 
 @Component({
   selector: "app-user-management",
@@ -21,7 +24,9 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
   // Data
   users: User[] = []
   roles: Role[] = []
+  permissions: permission[] = []
   permissionRoles: PermissionRole[] = []
+
 
   // UI State
   activeTab = "users"
@@ -62,7 +67,9 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
   private searchSubject = new Subject<string>()
   private destroy$ = new Subject<void>()
 
-  constructor(private userManagementService: UserManagementService) { }
+  constructor(private userManagementService: UserManagementService, private httpService: HttpService, private notify: NotificationService,
+
+  ) { }
 
   ngOnInit() {
     this.setupSearchDebounce()
@@ -142,6 +149,8 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   private loadInitialData() {
+    // this.loadUsers()
+    // this.loadRoles()
     this.resetAndLoadUsers()
     this.resetAndLoadRoles()
     this.resetAndLoadPermissions()
@@ -176,12 +185,108 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
       })
   }
 
+  loadUsers(): void {
+    const url = "onboarding/staffs"
+    this.httpService.get<{ data: User[]; totalCount: number; hasMore: boolean }>(url)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          if (this.page === 1) {
+            this.users = response.body.data;
+          } else {
+            this.users = [...this.users, ...response.body.data];
+          }
+          this.totalCount = response.body.totalCount;
+          this.hasMore = response.body.hasMore;
+          this.page++;
+          this.loading = false;
+          this.initialLoading = false;
+        },
+        error: (error) => {
+          this.notify.showError(`${error.message}`, 'Error');
+          console.error("Error loading users:", error);
+          this.loading = false;
+          this.initialLoading = false;
+        },
+        complete: () => { }
+      });
+  }
+
+  loadRoles(): void {
+    const url = "authorization/roles"
+    this.httpService.get<Pagination<Role>>(url)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+
+          if (this.rolesPage === 1) {
+            this.roles = response.body.results;
+
+          } else {
+            this.roles = [...this.roles, ...response.body.results];
+
+          }
+          this.rolesTotalCount = response.body.count;
+          this.rolesHasMore = !!response.body.next; // Check if there's a next page
+          this.rolesPage++;
+          this.rolesLoading = false;
+          this.rolesInitialLoading = false;
+
+        },
+        error: (error) => {
+          this.notify.showError(`${error.message}`, 'Error');
+          console.error("Error loading roles:", error);
+          this.rolesLoading = false;
+          this.rolesInitialLoading = false;
+        },
+        complete: () => { }
+      });
+
+  }
+
+  loadPermissions(): void {
+    const url = "authorization/role-permissions"
+    this.httpService.get<Pagination<PermissionRole>>(url)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+
+          if (this.permissionsPage === 1) {
+            this.permissionRoles = response.body.results;
+            console.log("permissionRoles response--------1:", this.permissionRoles);
+
+          } else {
+            this.permissionRoles = [...this.permissionRoles, ...response.body.results];
+            console.log("permissionRoles response----2:", this.permissionRoles);
+
+          }
+          this.permissionsTotalCount = response.body.count;
+          this.permissionsHasMore = !!response.body.next; // Check if there's a next page
+          this.permissionsPage++;
+          this.permissionsLoading = false;
+          this.permissionsInitialLoading = false;
+
+        },
+        error: (error) => {
+          this.notify.showError(`${error.message}`, 'Error');
+          console.error("Error loading roles:", error);
+          this.permissionsLoading = false;
+          this.permissionsInitialLoading = false;
+        },
+        complete: () => { }
+      });
+
+  }
+
+
   private resetAndLoadUsers() {
     this.users = []
     this.page = 1
     this.hasMore = true
     this.initialLoading = true
-    this.loadMoreUsers()
+    // this.loadMoreUsers()
+    this.loadUsers()
+
   }
 
   // Roles methods
@@ -218,7 +323,8 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
     this.rolesPage = 1
     this.rolesHasMore = true
     this.rolesInitialLoading = true
-    this.loadMoreRoles()
+    // this.loadMoreRoles()
+    this.loadRoles()
   }
 
   // Permissions methods
@@ -255,7 +361,8 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
     this.permissionsPage = 1
     this.permissionsHasMore = true
     this.permissionsInitialLoading = true
-    this.loadMorePermissions()
+    // this.loadMorePermissions()
+    this.loadPermissions()
   }
 
   // Event handlers
@@ -270,6 +377,16 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
 
   onTabChange(tab: string) {
     this.activeTab = tab
+    if (tab === "users") {
+      this.loadUsers()
+      // this.resetAndLoadUsers()
+    }
+    else if (tab === "roles") {
+      this.resetAndLoadRoles()
+    }
+    else if (tab === "permissions") {
+      this.resetAndLoadPermissions()
+    }
   }
 
   // Utility methods
