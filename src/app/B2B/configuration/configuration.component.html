@@ -1,0 +1,702 @@
+<div class="min-h-screen ">
+  <!-- Enhanced Header -->
+  <!-- <div class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-200/50 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center space-x-4">
+          <div
+            class="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-500 rounded-xl flex items-center justify-center shadow-lg">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+              </path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-xl font-bold bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">
+              SCRIPAY Config
+            </h1>
+            <p class="text-sm text-gray-500 hidden sm:block">Payment Configuration Dashboard</p>
+          </div>
+        </div>
+        <button class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors" (click)="toggleMobileMenu()">
+          <svg *ngIf="!mobileMenuOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+          <svg *ngIf="mobileMenuOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div> -->
+
+  <div class="w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+    <!-- Enhanced Stats Overview -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+      <div *ngFor="let stat of stats; let i = index"
+        class="relative overflow-hidden border-0 shadow-lg bg-white/70 backdrop-blur-sm hover:shadow-xl transition-all duration-300 rounded-xl animate-slide-up"
+        [style.animation-delay]="i * 100 + 'ms'">
+        <div class="p-4 lg:p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-xs lg:text-sm font-medium text-gray-600 mb-1">{{ stat.label }}</p>
+              <p class="text-xl lg:text-2xl font-bold text-gray-900">{{ stat.value }}</p>
+              <p class="text-xs lg:text-sm font-medium"
+                [class]="stat.change.startsWith('+') ? 'text-green-600' : 'text-gray-500'">
+                {{ stat.change !== '0' ? stat.change : '' }}
+              </p>
+            </div>
+            <div [class]="'p-2 lg:p-3 rounded-xl bg-gradient-to-r from-gray-100 to-gray-50 ' + stat.color">
+              <svg class="w-5 h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <!-- Icon paths would go here based on stat.icon -->
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z">
+                </path>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Enhanced Main Configuration Card -->
+    <div class="shadow-2xl border-0 bg-white/80 backdrop-blur-sm overflow-hidden rounded-xl">
+      <!-- Enhanced Mobile-First Tab Navigation -->
+      <div class="border-b border-gray-100 bg-gray-50/50 p-4 md:p-6">
+        <div [class]="mobileMenuOpen ? 'block' : 'hidden md:block'">
+          <div
+            class="grid grid-cols-2 md:grid-cols-5 bg-white shadow-sm border border-gray-200 p-1 rounded-xl h-auto gap-1">
+            <button *ngFor="let tab of [
+                { value: 'scopes', label: 'Transaction Scopes', color: 'hover:bg-purple-600/10' },
+                { value: 'fees', label: 'Fee Management', color: 'hover:bg-green-500/10' },
+                { value: 'mobile', label: 'Mobile Money', color: 'hover:bg-blue-500/10' },
+                { value: 'sms', label: 'SMS Config', color: 'hover:bg-orange-500/10' },
+                { value: 'webhooks', label: 'Webhooks', color: 'hover:bg-purple-400/10' }
+              ]" (click)="setActiveTab(tab.value)"
+              [class]="'transition-all duration-300 rounded-lg p-3 md:p-4 ' + tab.color + (activeTab === tab.value ? ' bg-gradient-to-r from-purple-600 to-blue-500 text-white shadow-lg' : '')">
+              <span class="text-xs md:text-sm font-medium">{{ tab.label }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transaction Scopes Tab -->
+      <div *ngIf="activeTab === 'scopes'" class="p-4 md:p-6 space-y-6 animate-fade-in">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div class="space-y-1">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-900">Transaction Scopes</h2>
+            <p class="text-gray-600">Configure and manage payment transaction types</p>
+          </div>
+          <button (click)="addScope()"
+            class="bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl px-6 py-3 flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            Add New Scope
+          </button>
+        </div>
+
+        <div class="grid gap-4 md:gap-6">
+          <div *ngFor="let scope of scopes; let i = index"
+            class="group hover:shadow-xl transition-all duration-500 border-0 bg-gradient-to-r from-white to-gray-50/50 overflow-hidden rounded-xl animate-slide-up"
+            [style.animation-delay]="i * 150 + 'ms'">
+            <div class="p-6">
+              <div class="flex flex-col lg:flex-row justify-between gap-6">
+                <div class="flex-1 space-y-4">
+                  <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+                    <span [class]="'px-3 py-1 rounded-full font-medium ' + getActiveBadgeClass(scope.active)">
+                      {{ scope.scope }}
+                    </span>
+                    <div class="flex items-center gap-2">
+                      <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" [checked]="scope.active" (change)="toggleScope(scope)"
+                          class="sr-only peer">
+                        <div
+                          class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-blue-500">
+                        </div>
+                      </label>
+                      <span class="text-sm font-medium text-gray-700">
+                        {{ scope.active ? 'Active' : 'Inactive' }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="space-y-2">
+                    <p class="text-gray-600 leading-relaxed">{{ scope.description }}</p>
+                    <div class="flex flex-wrap gap-4 text-sm">
+                      <div class="flex items-center gap-1">
+                        <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                        <span class="font-medium text-gray-700">{{ scope.transactions }} transactions</span>
+                      </div>
+                      <div class="flex items-center gap-1">
+                        <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1">
+                          </path>
+                        </svg>
+                        <span class="font-medium text-gray-700">{{ scope.volume }} volume</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex flex-row lg:flex-col gap-2">
+                  <button (click)="editScope(scope)"
+                    class="border border-purple-300 text-purple-600 hover:bg-purple-50 transition-all duration-300 rounded-xl bg-transparent px-4 py-2 flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                      </path>
+                    </svg>
+                    Edit
+                  </button>
+                  <button (click)="deleteScope(scope)"
+                    class="border border-red-200 text-red-600 hover:bg-red-50 transition-all duration-300 rounded-xl bg-transparent px-4 py-2 flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                      </path>
+                    </svg>
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fee Management Tab -->
+      <div *ngIf="activeTab === 'fees'" class="p-4 md:p-6 space-y-6 animate-fade-in">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div class="space-y-1">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-900">Fee Management</h2>
+            <p class="text-gray-600">Configure transaction fees and commission structures</p>
+          </div>
+          <button (click)="addFeeRule()"
+            class="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl px-6 py-3 flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            Add Fee Rule
+          </button>
+        </div>
+
+        <div class="grid gap-6">
+          <div *ngFor="let fee of fees; let i = index"
+            class="group hover:shadow-xl transition-all duration-500 border-0 bg-gradient-to-r from-white to-green-50/30 overflow-hidden rounded-xl animate-slide-up"
+            [style.animation-delay]="i * 150 + 'ms'">
+            <div class="p-6">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                <div class="flex items-center gap-2">
+                  <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1">
+                    </path>
+                  </svg>
+                  <h3 class="text-xl text-gray-900 font-semibold">{{ fee.scope }}</h3>
+                </div>
+                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm w-fit">{{ fee.status }}</span>
+              </div>
+              <p class="text-gray-600 mb-6">{{ fee.feeType }} fee structure for {{ fee.provider }}</p>
+
+              <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-white/70 rounded-xl p-4 border border-gray-100">
+                  <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Charge Type</p>
+                  <p class="text-lg font-bold text-gray-900">{{ fee.chargeType }}</p>
+                </div>
+                <div class="bg-white/70 rounded-xl p-4 border border-gray-100">
+                  <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Fee Value</p>
+                  <p class="text-lg font-bold text-green-600">
+                    {{ fee.chargeType === 'Percentage' ? fee.value + '%' : 'KES ' + fee.value }}
+                  </p>
+                </div>
+                <div class="bg-white/70 rounded-xl p-4 border border-gray-100">
+                  <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Min Amount</p>
+                  <p class="text-lg font-bold text-gray-900">KES {{ fee.minValue }}</p>
+                </div>
+                <div class="bg-white/70 rounded-xl p-4 border border-gray-100">
+                  <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Max Amount</p>
+                  <p class="text-lg font-bold text-gray-900">KES {{ fee.maxValue }}</p>
+                </div>
+              </div>
+
+              <div class="flex flex-col sm:flex-row gap-3">
+                <button (click)="editFee(fee)"
+                  class="border border-green-200 text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl bg-transparent px-4 py-2 flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                    </path>
+                  </svg>
+                  Modify Fee
+                </button>
+                <button (click)="viewFeeHistory(fee)"
+                  class="border border-gray-200 text-gray-600 hover:bg-gray-50 transition-all duration-300 rounded-xl bg-transparent px-4 py-2 flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                    </path>
+                  </svg>
+                  View History
+                </button>
+                <button (click)="deleteFee(fee)"
+                  class="border border-red-200 text-red-600 hover:bg-red-50 transition-all duration-300 rounded-xl bg-transparent px-4 py-2 flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                    </path>
+                  </svg>
+                  Remove
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Money Tab -->
+      <div *ngIf="activeTab === 'mobile'" class="p-4 md:p-6 space-y-6 animate-fade-in">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div class="space-y-1">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-900">Mobile Money Integration</h2>
+            <p class="text-gray-600">Manage mobile payment provider credentials and settings</p>
+          </div>
+          <button (click)="addMobileProvider()"
+            class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl px-6 py-3 flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            Add Provider
+          </button>
+        </div>
+
+        <div class="grid gap-6">
+          <div *ngFor="let credential of mobileCredentials; let i = index"
+            class="group hover:shadow-xl transition-all duration-500 border-0 bg-gradient-to-r from-white to-blue-50/30 overflow-hidden rounded-xl animate-slide-up"
+            [style.animation-delay]="i * 150 + 'ms'">
+            <div class="p-6">
+              <div class="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <h3 class="text-xl text-gray-900 font-semibold">{{ credential.provider }}</h3>
+                      <span *ngIf="credential.isDefault"
+                        class="bg-blue-500 text-white px-2 py-1 rounded-full text-xs">Primary</span>
+                    </div>
+                    <p class="text-gray-600">Short Code: {{ credential.shortCode }} • {{ credential.billType }}</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" [checked]="credential.status" (change)="toggleMobileCredential(credential)"
+                      class="sr-only peer">
+                    <div
+                      class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-blue-500 peer-checked:to-blue-600">
+                    </div>
+                  </label>
+                  <span [class]="'px-3 py-1 rounded-full text-sm border ' + getStatusBadgeClass(credential.status)">
+                    {{ credential.status ? 'Active' : 'Inactive' }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="bg-white/70 rounded-xl p-4 border border-gray-100">
+                  <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Transactions</p>
+                  <p class="text-lg font-bold text-blue-500">{{ credential.transactions }}</p>
+                </div>
+                <div class="bg-white/70 rounded-xl p-4 border border-gray-100">
+                  <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Last Used</p>
+                  <p class="text-lg font-bold text-gray-900">{{ credential.lastUsed }}</p>
+                </div>
+                <div class="bg-white/70 rounded-xl p-4 border border-gray-100">
+                  <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Bill Type</p>
+                  <p class="text-sm font-medium text-gray-900">{{ credential.billType }}</p>
+                </div>
+              </div>
+
+              <div class="border-t border-gray-100 pt-6 mb-6">
+                <h4 class="font-semibold text-gray-900 flex items-center gap-2 mb-4">
+                  <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                    </path>
+                  </svg>
+                  API Credentials
+                </h4>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  <div class="space-y-2">
+                    <label class="text-sm font-medium text-gray-700">Consumer Key</label>
+                    <div class="flex gap-2">
+                      <input [type]="showSecrets ? 'text' : 'password'" value="••••••••••••••••••••••••••••••••"
+                        readonly
+                        class="flex-1 font-mono text-sm bg-gray-50/50 border border-gray-200 rounded-xl px-3 py-2">
+                      <button (click)="toggleShowSecrets()"
+                        class="border border-gray-200 rounded-xl px-3 py-2 hover:bg-gray-50 transition-colors">
+                        <svg *ngIf="!showSecrets" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                          </path>
+                        </svg>
+                        <svg *ngIf="showSecrets" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21">
+                          </path>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="space-y-2">
+                    <label class="text-sm font-medium text-gray-700">Consumer Secret</label>
+                    <div class="flex gap-2">
+                      <input [type]="showSecrets ? 'text' : 'password'" value="••••••••••••••••••••••••••••••••"
+                        readonly
+                        class="flex-1 font-mono text-sm bg-gray-50/50 border border-gray-200 rounded-xl px-3 py-2">
+                      <button (click)="toggleShowSecrets()"
+                        class="border border-gray-200 rounded-xl px-3 py-2 hover:bg-gray-50 transition-colors">
+                        <svg *ngIf="!showSecrets" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                          </path>
+                        </svg>
+                        <svg *ngIf="showSecrets" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21">
+                          </path>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex flex-col sm:flex-row gap-3">
+                <button (click)="editMobileCredential(credential)"
+                  class="border border-blue-300 text-blue-500 hover:bg-blue-50 transition-all duration-300 rounded-xl bg-transparent px-4 py-2 flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                    </path>
+                  </svg>
+                  Update Credentials
+                </button>
+                <button (click)="testMobileConnection(credential)"
+                  class="border border-green-200 text-green-600 hover:bg-green-50 transition-all duration-300 rounded-xl bg-transparent px-4 py-2 flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                  </svg>
+                  Test Connection
+                </button>
+                <button (click)="deleteMobileCredential(credential)"
+                  class="border border-red-200 text-red-600 hover:bg-red-50 transition-all duration-300 rounded-xl bg-transparent px-4 py-2 flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                    </path>
+                  </svg>
+                  Remove
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SMS Configuration Tab -->
+      <div *ngIf="activeTab === 'sms'" class="p-4 md:p-6 space-y-6 animate-fade-in">
+        <div class="space-y-1 mb-6">
+          <h2 class="text-2xl md:text-3xl font-bold text-gray-900">SMS Configuration</h2>
+          <p class="text-gray-600">Configure SMS providers and customize notification templates</p>
+        </div>
+
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+          <!-- SMS Provider Card -->
+          <div
+            class="border-0 shadow-xl bg-gradient-to-br from-white to-orange-50/30 hover:shadow-2xl transition-all duration-500 rounded-xl">
+            <div class="p-6">
+              <div class="flex items-center gap-2 mb-4">
+                <div
+                  class="w-8 h-8 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
+                  <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                    </path>
+                  </svg>
+                </div>
+                <h3 class="text-xl text-gray-900 font-semibold">SMS Provider Setup</h3>
+              </div>
+              <p class="text-gray-600 mb-6">Configure your SMS service provider for notifications</p>
+
+              <div class="space-y-4">
+                <div class="space-y-2">
+                  <label class="text-sm font-semibold text-gray-700">SMS Provider</label>
+                  <select [(ngModel)]="smsProvider.provider"
+                    class="w-full rounded-xl border-gray-200 bg-white/70 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                    <option value="africas-talking">Africa's Talking</option>
+                    <option value="jambopay">Jambopay SMS</option>
+                  </select>
+                </div>
+
+                <div class="space-y-2">
+                  <label class="text-sm font-semibold text-gray-700">Sender ID</label>
+                  <input [(ngModel)]="smsProvider.senderId" placeholder="SCRIPAY"
+                    class="w-full rounded-xl border-gray-200 bg-white/70 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                </div>
+
+                <div class="grid grid-cols-1 gap-4">
+                  <div class="space-y-2">
+                    <label class="text-sm font-semibold text-gray-700">API Key</label>
+                    <input [(ngModel)]="smsProvider.apiKey" type="password" placeholder="Enter your API key"
+                      class="w-full rounded-xl border-gray-200 bg-white/70 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                  </div>
+                  <div class="space-y-2">
+                    <label class="text-sm font-semibold text-gray-700">API Secret</label>
+                    <input [(ngModel)]="smsProvider.apiSecret" type="password" placeholder="Enter your API secret"
+                      class="w-full rounded-xl border-gray-200 bg-white/70 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                  </div>
+                </div>
+              </div>
+
+              <button (click)="saveSmsProvider()"
+                class="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white rounded-xl py-3 shadow-lg hover:shadow-xl transition-all duration-300 mt-6 flex items-center justify-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4">
+                  </path>
+                </svg>
+                Save Provider Configuration
+              </button>
+            </div>
+          </div>
+
+          <!-- SMS Templates Card -->
+          <div
+            class="border-0 shadow-xl bg-gradient-to-br from-white to-purple-50/30 hover:shadow-2xl transition-all duration-500 rounded-xl">
+            <div class="p-6">
+              <div class="flex items-center gap-2 mb-4">
+                <div
+                  class="w-8 h-8 bg-gradient-to-r from-purple-400 to-purple-600 rounded-lg flex items-center justify-center">
+                  <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                    </path>
+                  </svg>
+                </div>
+                <h3 class="text-xl text-gray-900 font-semibold">Message Templates</h3>
+              </div>
+              <p class="text-gray-600 mb-6">Customize SMS notification templates for different events</p>
+
+              <div class="space-y-4">
+                <div class="space-y-2">
+                  <label class="text-sm font-semibold text-gray-700">Template Scope</label>
+                  <select [(ngModel)]="smsTemplate.scope"
+                    class="w-full rounded-xl border-gray-200 bg-white/70 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <option value="mobile-collection">Mobile Collection</option>
+                    <option value="card-collection">Card Collection</option>
+                    <option value="payout">Payout Notification</option>
+                    <option value="failed">Failed Transaction</option>
+                  </select>
+                </div>
+
+                <div class="space-y-2">
+                  <label class="text-sm font-semibold text-gray-700">Message Template</label>
+                  <textarea [(ngModel)]="smsTemplate.message" rows="5"
+                    class="w-full rounded-xl border-gray-200 bg-white/70 resize-none px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"></textarea>
+                  <p class="text-xs text-gray-500">
+                    <!-- Available variables: {{amount}}, {currency}, {phone}, {reference}, {merchant} -->
+                  </p>
+                </div>
+
+                <div class="flex items-center justify-between p-4 bg-white/70 rounded-xl border border-gray-100">
+                  <div>
+                    <label class="text-sm font-semibold text-gray-700">Template Status</label>
+                    <p class="text-xs text-gray-500">Enable this template for notifications</p>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" [(ngModel)]="smsTemplate.active" class="sr-only peer">
+                    <div
+                      class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-purple-400 peer-checked:to-purple-600">
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <button (click)="saveSmsTemplate()"
+                class="w-full bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700 text-white rounded-xl py-3 shadow-lg hover:shadow-xl transition-all duration-300 mt-6 flex items-center justify-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4">
+                  </path>
+                </svg>
+                Save Template
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Webhooks Tab -->
+      <div *ngIf="activeTab === 'webhooks'" class="p-4 md:p-6 space-y-6 animate-fade-in">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div class="space-y-1">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-900">Webhook Management</h2>
+            <p class="text-gray-600">Configure webhook endpoints for real-time event notifications</p>
+          </div>
+          <button (click)="addWebhook()"
+            class="bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl px-6 py-3 flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            Add Webhook
+          </button>
+        </div>
+
+        <div class="grid gap-6">
+          <div *ngFor="let webhook of webhooks; let i = index"
+            class="group hover:shadow-xl transition-all duration-500 border-0 bg-gradient-to-r from-white to-purple-50/30 overflow-hidden rounded-xl animate-slide-up"
+            [style.animation-delay]="i * 150 + 'ms'">
+            <div class="p-6">
+              <div class="flex flex-col lg:flex-row justify-between gap-6">
+                <div class="flex-1 space-y-4">
+                  <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="w-10 h-10 bg-gradient-to-r from-purple-400 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1">
+                          </path>
+                        </svg>
+                      </div>
+                      <div>
+                        <h3 class="font-bold text-lg text-gray-900">{{ webhook.name }}</h3>
+                        <p class="text-sm text-gray-500">Last triggered: {{ webhook.lastTriggered }}</p>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" [checked]="webhook.active" (change)="toggleWebhook(webhook)"
+                          class="sr-only peer">
+                        <div
+                          class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-purple-400 peer-checked:to-purple-600">
+                        </div>
+                      </label>
+                      <span [class]="'px-3 py-1 rounded-full text-sm border ' + getStatusBadgeClass(webhook.active)">
+                        {{ webhook.active ? 'Active' : 'Inactive' }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="space-y-3">
+                    <div class="bg-gray-50/70 rounded-xl p-3 border border-gray-100">
+                      <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Endpoint URL</p>
+                      <p class="text-sm font-mono text-gray-900 break-all">{{ webhook.url }}</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div class="bg-white/70 rounded-xl p-3 border border-gray-100">
+                        <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Success Rate</p>
+                        <div class="flex items-center gap-2">
+                          <p class="text-lg font-bold text-green-600">{{ webhook.successRate }}%</p>
+                          <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                          </svg>
+                        </div>
+                      </div>
+                      <div class="bg-white/70 rounded-xl p-3 border border-gray-100">
+                        <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Total Calls</p>
+                        <p class="text-lg font-bold text-purple-600">{{ formatNumber(webhook.totalCalls) }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex flex-row lg:flex-col gap-2">
+                  <button (click)="editWebhook(webhook)"
+                    class="border border-purple-300 text-purple-600 hover:bg-purple-50 transition-all duration-300 rounded-xl bg-transparent px-4 py-2 flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                      </path>
+                    </svg>
+                    Edit
+                  </button>
+                  <button (click)="testWebhook(webhook)"
+                    class="border border-blue-300 text-blue-500 hover:bg-blue-50 transition-all duration-300 rounded-xl bg-transparent px-4 py-2 flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    Test
+                  </button>
+                  <button (click)="deleteWebhook(webhook)"
+                    class="border border-red-200 text-red-600 hover:bg-red-50 transition-all duration-300 rounded-xl bg-transparent px-4 py-2 flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                      </path>
+                    </svg>
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add New Webhook Form -->
+        <div
+          class="border-2 border-dashed border-purple-300/50 hover:border-purple-400 hover:shadow-lg transition-all duration-300 bg-gradient-to-r from-white to-purple-50/20 rounded-xl">
+          <div class="p-6">
+            <div class="text-center mb-6">
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">Add New Webhook</h3>
+              <p class="text-sm text-gray-600">Configure a new webhook endpoint for event notifications</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="space-y-2">
+                <label class="text-sm font-semibold text-gray-700">Webhook Name</label>
+                <input [(ngModel)]="newWebhook.name" placeholder="e.g., Payment Success Notifications"
+                  class="w-full rounded-xl border-gray-200 bg-white/70 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500">
+              </div>
+              <div class="space-y-2">
+                <label class="text-sm font-semibold text-gray-700">Webhook URL</label>
+                <input [(ngModel)]="newWebhook.url" placeholder="https://your-domain.com/webhook/payments"
+                  class="w-full rounded-xl border-gray-200 bg-white/70 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500">
+              </div>
+            </div>
+
+            <div class="flex justify-center mt-6">
+              <button (click)="createWebhook()"
+                class="bg-gradient-to-r from-purple-400 to-purple-600 hover:from-purple-500 hover:to-purple-700 text-white rounded-xl px-8 py-3 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+                Create Webhook
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

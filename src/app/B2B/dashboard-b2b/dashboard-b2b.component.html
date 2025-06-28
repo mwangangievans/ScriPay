@@ -140,6 +140,34 @@
           </div>
         </button>
 
+        <button routerLink="/b2b/configurations" routerLinkActive="active"
+          class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group relative overflow-hidden"
+          [ngClass]="{
+            'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg border border-blue-500': isActive('/b2b/configurations'),
+            'text-slate-300 hover:text-white hover:bg-slate-700': !isActive('/b2b/configurations'),
+            'lg:justify-center lg:px-2': sidebarCollapsed
+          }">
+          <div *ngIf="isActive('/b2b/configurations')"
+            class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-10 rounded-xl">
+          </div>
+          <svg class="h-5 w-5 transition-transform duration-200 relative z-10"
+            [ngClass]="{'scale-110': isActive('/b2b/configurations'), 'group-hover:scale-105': !isActive('/b2b/configurations')}"
+            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+            </path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z">
+            </path>
+          </svg>
+          <span class="font-medium transition-all duration-300 relative z-10"
+            [ngClass]="{'lg:hidden': sidebarCollapsed, 'block': !sidebarCollapsed}">
+            Configurations
+          </span>
+          <div *ngIf="isActive('/b2b/configurations')"
+            class="absolute right-2 w-2 h-2 bg-blue-400 rounded-full animate-pulse">
+          </div>
+        </button>
+
         <button routerLink="/b2b/user-management" routerLinkActive="active"
           class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group relative overflow-hidden"
           [ngClass]="{

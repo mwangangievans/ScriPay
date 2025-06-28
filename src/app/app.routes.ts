@@ -21,6 +21,7 @@ import { LoginComponent } from './Shared/Auth/login/login.component';
 import { MerchantsComponent } from './B2B/merchants/merchants.component';
 import { OnboardingComponent } from './B2B/onboarding/onboarding.component';
 import { UserManagementComponent } from './B2B/user-management/user-management.component';
+import { ConfigurationComponent } from './B2B/configuration/configuration.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -62,6 +63,7 @@ export const routes: Routes = [
       { path: 'payments', component: PaymentsComponent, data: { title: 'Payments' } },
       { path: 'merchants', component: MerchantsComponent, data: { title: 'Merchants' } },
       { path: 'settings', component: SettingsComponent, data: { title: 'Settings' } },
+      { path: 'configurations', component: ConfigurationComponent, data: { title: 'Payment Configuration' } },
       { path: 'user-management', component: UserManagementComponent, data: { title: 'User management' } },
 
 
