@@ -7,11 +7,12 @@ import { UserManagementService } from "../../service/user-management.service"
 import { HttpService } from "../../service/http.service"
 import { Pagination } from "../B2B.interface"
 import { NotificationService } from "../../service/notification.service"
+import { UsersComponent } from "../users/users.component"
 
 @Component({
   selector: "app-user-management",
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, UsersComponent],
   templateUrl: "./user-management.component.html",
   styleUrls: ["./user-management.component.scss"],
 })
